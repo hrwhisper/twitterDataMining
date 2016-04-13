@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter数据挖掘及结果可视化</title>
+
+    {#     use <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet"> #}
+    {#     or use <link href="/static/css/bootstrap.min.css" %}" rel="stylesheet"> #}
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/d3.v3.min.js"></script>
+    <!-- <script src="/static/"js/append_new_iframe.js""></script> -->
+
+</head>
+<body>
+
+<!--  导航栏-->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/"> <i class="fa fa-twitter" style="font-size:20px;"></i> Twitter 数据挖掘与可视化</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/">首页</a></li>
+            <li><a href="/topic">实时主题检测</a></li>
+            <li><a href="#">情感分析</a></li>
+            <li class="disabled"><a href="#">网络分析</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+{% block mainbody %}
+    <p>original</p>
+{% endblock %}
+
+
+</body>
+</html>

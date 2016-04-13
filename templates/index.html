@@ -1,0 +1,158 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+
+
+    <div id="myCarousel" class="carousel slide" style="margin-top:-20px">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="background-image-holder" style="background: url(/static/image/top1.jpg) 50% 0;">
+                </div>
+            </div>
+            <div class="item">
+                <div class="background-image-holder" style="background: url(/static/image/sentiment_3.jpg) 50% 0;">
+                </div>
+            </div>
+
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>主题检测</h1>
+                    <h6>Topic detection</h6>
+                    <p class="lead">
+                        Either you're going to the grocery store or working on heavily complicated project, GoodTask 3
+                        will fit right for you. You can check your checklist on Today Widget and Apple Watch on-the-go
+                        and also manage calendar events with detail subtasks for each task.
+                    </p>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <img src="/static/image/topic_4.jpg" alt="sentiment" class="img-thumbnail image-section">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <img src="/static/image/sentiment_1.gif" alt="sentiment" class="img-thumbnail image-section">
+                </div>
+                <div class="col-sm-6">
+                    <h1>情感分析</h1>
+                    <h6>Sentiment analysis</h6>
+                    <p class="lead">
+                        Either you're going to the grocery store or working on heavily complicated project, GoodTask 3
+                        will fit right for you. You can check your checklist on Today Widget and Apple Watch on-the-go
+                        and also manage calendar events with detail subtasks for each task.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>数据可视化</h1>
+                    <h6>Data visualization</h6>
+                    <p class="lead">
+                        Either you're going to the grocery store or working on heavily complicated project, GoodTask 3
+                        will fit right for you. You can check your checklist on Today Widget and Apple Watch on-the-go
+                        and also manage calendar events with detail subtasks for each task.
+                    </p>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <div class="col-sm-6 text-center ">
+                        <div class="visualization"></div>
+                        <script src="../static/js/index.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 text-center ">
+                    <img src="/static/image/sentiment_3.jpg" alt="sentiment" class="img-thumbnail image-section">
+                </div>
+                <div class="col-sm-6">
+                    <h1>情感分析</h1>
+                    <h6>Sentiment analysis</h6>
+                    <p class="lead">
+                        Either you're going to the grocery store or working on heavily complicated project, GoodTask 3
+                        will fit right for you. You can check your checklist on Today Widget and Apple Watch on-the-go
+                        and also manage calendar events with detail subtasks for each task.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="footer-header"> <i class="fa fa-twitter" aria-hidden="true"> </i>  twitter  数据挖掘与结果可视化 </span>
+                    <br/><br/>
+                    <div class="table-responsive keywords-wrap ">
+                        <table class="table">
+                            <tr>
+                                <td>Topic-analysis :</td>
+                                <td>LDA</td>
+                            </tr>
+                            <tr>
+                                <td>Sentiment-analysis :</td>
+                                <td>logical</td>
+                            </tr>
+                            <tr>
+                                <td>Visualization :</td>
+                                <td>D3 | Echarts | Highcharts</td>
+                            </tr>
+                            <tr>
+                                <td>WEB :</td>
+                                <td>Django | MongoDB | Bootstrap</td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                    <br/><br/>
+                    <div class="copyright text-center">© Copyright <a href="https://www.hrwhisper.me" target="_blank">hrwhisper</a>
+                        - All Rights Reserved
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

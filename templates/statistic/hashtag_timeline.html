@@ -1,0 +1,104 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    <input type="hidden" value="{{ date }}" id="date">
+    <input type="hidden" value="{{ hashtag }}" id="hashtag">
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script>
+        param = {
+            "date": $("#date").innerHTML,
+            "hashtag": $("#hashtag").innerHTML
+        };
+        $.ajax({
+            url: '/statistic/hashtag_timeline_data',
+            data: param,
+            success: function (v) {
+                console.log(v);
+                hashtag_timeline_init(v);
+            },
+            dataType: 'json'
+        });
+
+        function hashtag_timeline_init(data) {
+            var myChart = echarts.init(document.getElementById('main'));
+
+            option = {
+                title: {
+                    text: $("#hashtag").val() + ' (hashtag) 时间关系图',
+                    subtext: 'From ' + data['dates'][0] + ' To ' + data['dates'][data['dates'].length - 1],
+                    x: 'center',
+                    align: 'right'
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    bottom: 80
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        return params[0].name + '<br/>' + params[0].data;
+                    },
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+                dataZoom: [
+                    {
+                        show: true,
+                        realtime: true,
+                        start: 60,
+                        end: 80
+                    },
+                    {
+                        type: 'inside',
+                        realtime: true,
+                        start: 60,
+                        end: 80
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisLine: {onZero: false},
+                        data: data['dates']
+                                .map(function (str) {
+                                    return str.replace(' ', '\n')
+                                })
+                    }
+                ],
+                yAxis: [
+                    {
+                        name: 'Count',
+                        type: 'value'
+                        // max: Math.max.apply({},data['cnt'])+50
+                    }
+                ],
+                series: [
+                    {
+                        name: 'hashtag计数',
+                        type: 'line',
+                        hoverAnimation: false,
+                        areaStyle: {
+                            normal: {}
+                        },
+                        lineStyle: {
+                            normal: {
+                                width: 1
+                            }
+                        },
+                        data: data['cnt']
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+    </script>
+{% endblock %}

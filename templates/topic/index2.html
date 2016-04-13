@@ -1,0 +1,39 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    <script>
+
+        {#      # TODO a new request , cancle previous #}
+        function get_topic_result(param) {
+            $.ajax({
+                url: 'stream_trends',
+                data: param,
+                success: function (v) {
+                    if (v == null) return;
+                    var p = '<p>' + v + '</p>';
+                    console.log(v);
+                    // Uncaught TypeError: Cannot read property 'ownerDocument' of undefined
+                    $('.topic_res').append(p);
+                },
+                dataType: 'json'
+            });
+        }
+
+        function start_topic_result() {
+            get_topic_result()
+            setInterval('get_topic_result()', 10000);
+        }
+
+    </script>
+
+    <form action="">
+        hashtag:<input type="text" name="hashtag" value="Christmas"/>
+        date:<input type="text" name="date" value="2015-12-20"/>
+        <input type="button" value="submit" onclick="start_topic_result()">
+    </form>
+
+
+    <div class="topic_res"></div>
+
+
+{% endblock %}

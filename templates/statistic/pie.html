@@ -1,0 +1,65 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    <input type="hidden" value="{{ date }}" id="date">
+    <div id="main" style="width: 1000px;height:600px;"></div>
+
+    <script>
+        param = {
+            "date": $("#date").innerHTML,
+        };
+        $.ajax({
+            url: '/statistic/hashtag_pie_data',
+            data: param,
+            success: function (v) {
+                pie_chart_init(v);
+            },
+            dataType: 'json'
+        });
+
+        function pie_chart_init(data) {
+            var myChart = echarts.init(document.getElementById('main'));
+
+            option = {
+                title: {
+                    text: $("#date").val(),
+                    subtext: '比例图',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: data['label_data']
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: data['name_value'],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        }
+    </script>
+{% endblock %}

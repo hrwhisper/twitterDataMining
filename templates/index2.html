@@ -1,0 +1,35 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    <form action="" id="network_retweet_form">
+        retweet<input type="text" name="date" value="2015-11-22"/>
+        <input type="button" value="submit" onclick="network_retweet_iframe()">
+    </form>
+
+    <form action="" id="statistic_hashtag_timeline_form">
+        hashtag:<input type="text" name="hashtag" value="Christmas"/>
+        date:<input type="text" name="date" value="2015-12-20"/>
+        <input type="button" value="submit" onclick="statistic_hashtag_timeline()">
+    </form>
+
+
+    <form action="" id="statistic_hashtag_timeline_form">
+        hashtag1:<input type="text" name="hashtag" value="Christmas"/>
+        hashtag2:<input type="text" name="hashtag" value="christmas"/>
+        date:<input type="text" name="date" value="2015-12-20"/>
+        <input type="button" value="submit" onclick="statistic_hashtag_compare()">
+    </form>
+
+
+    <form action="" id="statistic_hashtag_timeline_form">
+        date:<input type="text" name="date" value="2015-12-20"/>
+        <input type="button" value="submit" onclick="statistic_hashtag_pie()">
+    </form>
+
+
+    <form action="topic/strean_trends" id="statistic_hashtag_timeline_form">
+        date:<input type="text" name="date" value="2015-12-20"/>
+        <input type="button" value="submit" onclick="statistic_hashtag_pie()">
+    </form>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    <input type="hidden" value="{{ date }}" id="date">
+    <input type="hidden" value="{{ hashtag1 }}" id="hashtag1">
+    <input type="hidden" value="{{ hashtag2 }}" id="hashtag2">
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script>
+        param = {
+            "date": $("#date").val(),
+            "hashtag1": $("#hashtag1").val(),
+            "hashtag2": $("#hashtag2").val()
+        };
+        $.ajax({
+            url: '/statistic/hashtag_compare_data',
+            data: param,
+            success: function (v) {
+                // console.log(v);
+                hashtag_compare_area_stack_init(v);
+            },
+            dataType: 'json'
+        });
+
+        function hashtag_compare_area_stack_init(data) {
+            var myChart = echarts.init(document.getElementById('main'));
+            option = {
+                title: {
+                    text: '堆叠区域图'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: [param.hashtag1, param.hashtag2]
+                },
+                dataZoom: [
+                    {
+                        show: true,
+                        realtime: true,
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        realtime: true,
+                        start: 60,
+                        end: 80
+                    }
+                ],
+                toolbox: {
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: 50,
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: data.dates
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: param.hashtag1,
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {normal: {}},
+                        data: data['cnt'][param.hashtag1]
+                    },
+                    {
+                        name: param.hashtag2,
+                        type: 'line',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {normal: {}},
+                        data: data['cnt'][param.hashtag2]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+    </script>
+{% endblock %}
