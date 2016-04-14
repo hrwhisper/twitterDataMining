@@ -9,7 +9,7 @@ import twitter
 
 
 class TwitterStream(TwitterBasic):
-    def __init__(self, conn):
+    def __init__(self, conn=None):
         TwitterBasic.__init__(self)
         # threading.Thread.__init__(self)
         self.conn = conn
@@ -19,19 +19,19 @@ class TwitterStream(TwitterBasic):
     def get(self):
         self.get_data = True
 
-    def stream_data(self, track_list=None, follow_list=None, locations_list=None, colname='stream', save_to_db=False):
+    def stream_data(self, track_list=None, follow_list=None, geo_list=None, colname='stream', save_to_db=False):
         '''
             https://dev.twitter.com/streaming/reference/post/statuses/filter
             The default access level allows up to 400 track keywords, 5,000 follow userids and 25 0.1-360 degree location boxes.
 
-
         :param track_list:str list      ;
         :param follow_list:list (str list or int list ) ; usr_id list
+        :param geo_list: list ; geo list
         :return: None
         '''
         kwg = {'language': 'en'}
 
-        if not track_list and not follow_list and not locations_list:
+        if not track_list and not follow_list and not geo_list:
             kwg['track'] = 'twitter'
 
         if track_list:

@@ -23,6 +23,7 @@ class Singleton(type):
 class TopicTrendsManager(object):
     __metaclass__ = Singleton
 
+    # TODO cancel current process about previous query
     def __init__(self):
         self.topics = []
         self.lock = threading.Lock()

@@ -10866,3 +10866,13 @@ details: Easy there, Turbo. Too many requests recently. Enhance your calm.
 2016-03-01 15:37:21    <urlopen error [Errno 10060] > 
 2016-03-01 15:37:42    <urlopen error [Errno 10060] > 
 2016-03-01 15:38:18    <urlopen error [Errno 10054] > 
+2016-04-14 21:38:18    <urlopen error EOF occurred in violation of protocol (_ssl.c:590)> 
+2016-04-14 21:39:01    Twitter sent status 420 for URL: 1.1/statuses/filter.json using parameters: (language=en&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=11665319705936084415&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1460641138&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&track=twitter&oauth_signature=AlV9pXe6htUDwFr8tob4WqpbUK8%3D)
+details: Exceeded connection limit for user
+ 
+2016-04-14 21:39:03    Twitter sent status 420 for URL: 1.1/statuses/filter.json using parameters: (language=en&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=3178661648413000151&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1460641141&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&track=twitter&oauth_signature=oJnV%2BfV5urBgz2Cxqoyb45BKQK8%3D)
+details: Exceeded connection limit for user
+ 
+2016-04-14 21:39:05    Twitter sent status 420 for URL: 1.1/statuses/filter.json using parameters: (language=en&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=3120307804141356477&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1460641143&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&track=twitter&oauth_signature=6mG0rglNH9aAXTsoNimYujsAj3k%3D)
+details: Exceeded connection limit for user
+ 
