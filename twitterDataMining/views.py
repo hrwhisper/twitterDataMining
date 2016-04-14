@@ -2,6 +2,7 @@
 
 # Created by hrwhisper on 2016/2/3.
 from django.http import HttpResponse
+
 from django.shortcuts import render
 
 

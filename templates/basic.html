@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,19 +22,7 @@
 <body>
 
 <!--  导航栏-->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="/"> <i class="fa fa-twitter" style="font-size:20px;"></i> Twitter 数据挖掘与可视化</a>
-    </div>
-    <div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="/">首页</a></li>
-            <li><a href="/topic">实时主题检测</a></li>
-            <li><a href="#">情感分析</a></li>
-            <li class="disabled"><a href="#">网络分析</a></li>
-        </ul>
-    </div>
-</nav>
+{% include "nav.html" %}
 
 
 {% block mainbody %}

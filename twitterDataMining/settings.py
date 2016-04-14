@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'network',
     'sentiment',
     'topic',
-    'statistic'
+    'statistic',
+    'twitterDataMining'
 ]
 
 MIDDLEWARE_CLASSES = [
