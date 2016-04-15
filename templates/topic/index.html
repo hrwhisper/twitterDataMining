@@ -3,11 +3,11 @@
 {% block mainbody %}
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters">
         话题追踪
     </button>
 
-    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade in" id="streamParameters" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,32 +15,98 @@
                             aria-hidden="true">×</span></button>
                     <h4 class="modal-title" id="myModalLabel">选择跟踪的参数</h4></div>
                 <div class="modal-body">
-                    <label for="track-textarea" class="control-label">Track:</label><br/>
-                    <i>Keywords to track. Phrases of keywords are specified by a comma-separated list.</i>
-                    <textarea class="form-control" id="track-textarea" rows="3"></textarea>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseOne">
+                                        默认设置
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                   Only use track = "twitter"
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseTwo">
+                                        高级设置
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <label for="trackText" class="control-label">Track:</label><br/>
+                                    <i>Keywords to track. Phrases of keywords are specified by a comma-separated
+                                        list.</i>
+                                    <textarea class="form-control" id="trackText" rows="3"></textarea>
 
-                    <hr>
-                    <label for="follow-textarea" class="control-label">Follow:</label><br/>
-                    <i>A comma separated list of user IDs, indicating the users to return statuses for in the
-                        stream.</i>
-                    <textarea class="form-control" id="follow-textarea" rows="3"></textarea>
+                                    <hr>
+                                    <label for="followText" class="control-label">Follow:</label><br/>
+                                    <i>A comma separated list of user IDs, indicating the users to return statuses for
+                                        in the
+                                        stream.</i>
+                                    <textarea class="form-control" id="followText" rows="3"></textarea>
 
-                    <hr>
-                    <label for="location-textarea" class="control-label">Locations:</label><br/>
-                    <i>Specifies a set of bounding boxes to track. </i>
-                    <textarea class="form-control" id="location-textarea" rows="3"></textarea>
-
+                                    <hr>
+                                    <label for="locationText" class="control-label">Locations:</label><br/>
+                                    <i>Specifies a set of bounding boxes to track. </i>
+                                    <textarea class="form-control" id="locationText" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="startStream()">Start</button>
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <script>
-        $('#myModal').modal('hide');
+        var _track,_follow,_location;
+        function startStream(){
+            var track = $('#trackText').val();
+            var follow = $('#followText').val();
+            var location = $('#locationText').val();
+            get_topic_result();
+            setInterval('get_topic_result()', 10000);
+{#           TODO wait css cancel#}
+            $('#streamParameters').modal('hide');
+        }
+
+
+        {#      # TODO a new request , cancle previous #}
+        function get_topic_result(param) {
+            $.ajax({
+                url: 'stream_trends',
+                data: param,
+                success: function (v) {
+                    if (v == null) {
+                        //console.log('wait');
+                        return;
+                    }
+
+                    var p = '<p>' + v + '</p>';
+                    console.log(v);
+                    // Uncaught TypeError: Cannot read property 'ownerDocument' of undefined
+                    $('.topic_res').append(p);
+                },
+                dataType: 'json'
+            });
+        }
     </script>
 
 {% endblock %}
