@@ -1,6 +1,3 @@
-
-
-
 .carousel .carousel-inner .item{
 	height:700px;
 }
@@ -163,5 +160,5 @@
 }
     
 
-
-
+/* Topic page */
+#topicText p   { text-indent:2em }

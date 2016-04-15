@@ -3,9 +3,7 @@
 {% block mainbody %}
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters">
-        话题追踪
-    </button>
+
 
     <div class="modal fade in" id="streamParameters" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -71,13 +69,44 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
+    <div class="container">
 
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters"
+                style="margin-bottom: 10px">
+            话题追踪
+        </button>
 
+        <div class="panel panel-default" id="topicText">
+            <div class="panel-heading">Panel heading without title</div>
+            <div class="panel-body">
+                <h3>
+                    <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                       aria-controls="collapseExample">
+                        Topic 1 50%
+                    </a>
+                </h3>
+                <div class="collapse in" id="collapseExample">
+                    <p>a fax d wt wra f fx afw </p>
+                    <p>a fax d wt wra f fx afw </p>
+                </div>
 
+                <hr>
+                <h3>
+                    <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                       aria-controls="collapseExample">
+                        Topic 1 50%
+                    </a>
+                </h3>
+                <div class="collapse in" id="collapseExample">
+                    <p>a fax d wt wra f fx afw </p>
+                    <p>a fax d wt wra f fx afw </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <script>
         var _track, _follow, _location;
@@ -102,9 +131,9 @@
             $.ajax({
                 url: 'stream_trends',
                 data: {
-                    'track':_track,
-                    'follow':_follow,
-                    'location':_location,
+                    'track': _track,
+                    'follow': _follow,
+                    'location': _location,
                 },
                 success: function (v) {
                     if (v == null) {
