@@ -27,7 +27,7 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                   Only use track = "twitter"
+                                    Only use track = "twitter"
                                 </div>
                             </div>
                         </div>
@@ -75,24 +75,37 @@
 
     </div>
 
+
+
+
+
     <script>
-        var _track,_follow,_location;
-        function startStream(){
+        var _track, _follow, _location;
+        function startStream() {
             var track = $('#trackText').val();
             var follow = $('#followText').val();
             var location = $('#locationText').val();
+
+            _track = track;
+            _follow = follow;
+            _location = location;
+
             get_topic_result();
             setInterval('get_topic_result()', 10000);
-{#           TODO wait css cancel#}
+            {#           TODO wait css cancel#}
             $('#streamParameters').modal('hide');
         }
 
 
         {#      # TODO a new request , cancle previous #}
-        function get_topic_result(param) {
+        function get_topic_result() {
             $.ajax({
                 url: 'stream_trends',
-                data: param,
+                data: {
+                    'track':_track,
+                    'follow':_follow,
+                    'location':_location,
+                },
                 success: function (v) {
                     if (v == null) {
                         //console.log('wait');

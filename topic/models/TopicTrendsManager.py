@@ -89,7 +89,7 @@ class TopicTrends(multiprocessing.Process):
             self.olda.fit(doc_chunk)
 
         res = self.olda.get_lda_info()
-        for topic_id, (topic_likelihood, topic_words, topic_tweets) in res.items():
+        for topic_id, topic_likelihood, topic_words, topic_tweets in res:
             print '{}%\t{}'.format(round(topic_likelihood * 100, 2), topic_words)
             print '\t', topic_tweets
 

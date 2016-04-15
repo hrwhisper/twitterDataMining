@@ -371,15 +371,15 @@ class OnlineLDA(object):
         if return_most_representative_tweets:
             representative_tweets = self.get_most_representative_tweets(topic_distribution)
 
-        res = {}
+        res = []
         for topic_id, probability in topic_order:
-            cur = [probability]
+            cur = [str(topic_id), probability]
             if return_topic_words:
                 cur.append(topic_words[topic_id])
             if return_most_representative_tweets:
                 cur.append(self._corpus.original_docs[representative_tweets[topic_id]])
 
-            res[str(topic_id)] = cur
+            res.append(cur)
         return res
 
 
@@ -429,7 +429,7 @@ def main():
 
         print datetime.datetime.now() - start
         with codecs.open(r'G:\test18.out', "w", "utf-8-sig") as f:
-            for topic_id, (topic_likelihood, topic_words, topic_tweets) in olda.get_lda_info().items():
+            for topic_id, (topic_likelihood, topic_words, topic_tweets) in olda.get_lda_info():
                 print '{}%\t{}'.format(round(topic_likelihood * 100, 2), topic_words)
                 print '\t', topic_tweets
                 f.write(topic_tweets + '\n')
