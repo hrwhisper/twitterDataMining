@@ -31,10 +31,13 @@ class TopicTrendsManager(object):
 
     def get_result(self):
         res = None
+
+        print 'process count', multiprocessing.active_children()
         if self.lock.acquire():
             if self.topics:
                 res = self.topics.pop(0)
             self.lock.release()
+        # self.topic_trends.terminate()
         return res
 
     def receive_lda_result(self):
@@ -47,13 +50,14 @@ class TopicTrendsManager(object):
 
 
 class TopicTrends(multiprocessing.Process):
-    def __init__(self, lda_send_conn, period=1):
+    def __init__(self, lda_send_conn, period=2):
         super(TopicTrends, self).__init__()
         self.period = period
         self.lda_send_conn = lda_send_conn
         self.parent_conn, self.child_conn = multiprocessing.Pipe()
 
     def run(self):
+
         twitter_stream = TwitterStream(self.child_conn)
         twitter_stream_thread = threading.Thread(target=twitter_stream.run)
         twitter_stream_thread.setDaemon(True)
@@ -68,6 +72,8 @@ class TopicTrends(multiprocessing.Process):
             t = threading.Thread(target=self.do_some_from_data, args=(tweets,))
             t.setDaemon(True)
             t.start()
+            print 'TopicTrends threading.live : ', list(threading.enumerate())
+
             # print sum(tweets)
         print 'end'
 
@@ -83,7 +89,7 @@ class TopicTrends(multiprocessing.Process):
 
 
 class TwitterStream(object):
-    def __init__(self,conn):
+    def __init__(self, conn):
         super(TwitterStream, self).__init__()
         self.conn = conn
         self.tweets = []
@@ -112,7 +118,7 @@ def main():
             print res
         else:
             print 'None, wait'
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 if __name__ == '__main__':

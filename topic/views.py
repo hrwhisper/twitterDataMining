@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 # Create your views here.
 import json
 from django.http import HttpResponse
@@ -9,12 +10,31 @@ def index(request):
     return render(request, 'topic/index.html')
 
 
+# TODO 检查参数合法性
 def stream_trends(request):
-    track = request.GET['track']
-    follow = request.GET['follow']
-    location = request.GET['location']
-    print track, follow, location
+    param = dict(request.GET.items())
+    for x, t in param.items():
+        if param[x] == '':
+            del param[x]
 
-    topic_trends = TopicTrendsManager()
-    res = topic_trends.get_result()
+    # ---------- stream ---------
+    # track = param.get('track', None)
+    # follow = param.get('follow', None)
+    # location = param.get('location', None)
+    # storeIntoDB = param.get('storeIntoDB', None)
+    # storeIntoDBName = param.get('storeIntoDBName', None)
+    #
+    #
+    #  ---------- LDA ------------
+    # LDA_k = param.get('LDA_k', None)
+    # LDA_timeWindow = param.get('LDA_timeWindow', None)
+    #
+    #
+    # ----------- Local -----------
+    # startDate = param.get('startDate', None)
+    # endDate = param.get('endDate', None)
+    # endDate = param.get('localCollectionsName', None)
+
+    topic_trends = TopicTrendsManager(param)
+    res = topic_trends.get_result(param)
     return HttpResponse(json.dumps(res), content_type="application/json")

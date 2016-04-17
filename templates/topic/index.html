@@ -2,45 +2,57 @@
 
 {% block mainbody %}
 
-    <!-- Button trigger modal -->
-
-
-    <div class="modal fade in" id="streamParameters" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade in" id="streamParameters" tabindex="-1" role="dialog"
+         aria-labelledby="streamParametersLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="myModalLabel">选择跟踪的参数</h4></div>
+                    <h4 class="modal-title" id="streamParametersLabel">选择跟踪的参数</h4></div>
                 <div class="modal-body">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseOne">
-                                        默认设置
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    Only use track = "twitter"
+
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active"><a href="#quickStart" data-toggle="tab">快速开始</a></li>
+                        <li><a href="#onlineStreamSetting" data-toggle="tab">在线数据设置</a></li>
+                        <li><a href="#localDataSetting" data-toggle="tab">本地数据设置</a></li>
+                    </ul>
+
+                    <div id="topicTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="quickStart">
+                            <div class="panel-body">
+                                <div class="col-sm-6 paramDiv">
+                                    <h3>Stream参数</h3>
+                                    <hr>
+                                    <label class="control-label">Track:</label>
+                                    <input class="form-control" type="text" placeholder="twitter" disabled>
+                                    <hr>
+
+                                    <label class="control-label">Follow:</label>
+                                    <input class="form-control" type="text" placeholder="None" disabled>
+                                    <hr>
+
+                                    <label class="control-label">Location:</label>
+                                    <input class="form-control" type="text" placeholder="None" disabled>
+                                </div>
+                                <div class="col-sm-6  paramDiv border-left">
+                                    <h3>数据来源</h3>
+                                    <hr>
+                                    <p><a><span class="glyphicon glyphicon-ok font-size-16"></span></a> 在线数据</p>
+                                    <p><span class="glyphicon glyphicon-remove font-size-16"></span> 本地数据</p>
+                                    <hr>
+                                    <h3>说明</h3>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Track | Follow | Location 均使用默认参数</li>
+                                        <li class="list-group-item">使用 <strong>在线高级设置</strong>配置上述参数</li>
+                                        <li class="list-group-item">使用twitter Stream <strong> 实时数据</strong></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseTwo">
-                                        高级设置
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in">
-                                <div class="panel-body">
+                        <div class="tab-pane fade" id="onlineStreamSetting">
+                            <div class="panel-body">
+                                <div class="col-sm-12">
                                     <label for="trackText" class="control-label">Track:</label><br/>
                                     <i>Keywords to track. Phrases of keywords are specified by a comma-separated
                                         list.</i>
@@ -60,95 +72,87 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="localDataSetting">
+                            <div class="panel-body">
+                                <div class="col-sm-6 paramDiv">
+                                    <h3>时间选择</h3>
+                                    <hr>
+                                    {#                                    TODO jquery ui 日期选择插件#}
+                                    <label class="control-label">起始时间:</label><br/>
+                                    <input class="form-control" type="text" placeholder="2015-11-13" id="startDate">
+
+                                    <label class="control-label">结束时间:</label><br/>
+                                    <input class="form-control" type="text" placeholder="None" id="endDate">
+                                </div>
+                                <div class="col-sm-6 paramDiv border-left">
+                                    <h3>本地数据库选择</h3>
+                                    <hr>
+                                    {#                                    TODO 服务器读取数据库表明，做一个selection#}
+                                    <label class="control-label">数据表名(collections):</label><br/>
+                                    <input class="form-control" type="text" placeholder="stream"
+                                           id="localCollectionsName">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
+                    <div class="panel-body text-left">
+                        <div class="col-sm-6 paramDiv">
+                            <h3>LDA参数设置</h3>
+                            <label class="control-label">LDA主题数 K </label>
+                            <input class="form-control" type="text" placeholder="25" id="LdaK" disabled>
+                            <hr>
+                            <label class="control-label">时间窗口大小(分钟) L</label>
+                            <input class="form-control" type="text" placeholder="5" id="LdaTimeWindow" disabled></div>
+
+
+                        <div class="col-sm-6  paramDiv border-left">
+                            <h3>其他选项</h3>
+                            <hr>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="streamStoreIntoDB" disabled> 存入数据库
+                                </label>
+                            </div>
+                            <label class="control-label">保存的数据表名(collections)</label>
+                            <input class="form-control" type="text" placeholder="stream" id="streamStoreDBName"
+                                   disabled>
+
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="startStream()">Start</button>
+                    <button type="button" class="btn btn-primary" onclick="startStream()" id="startTopicButton">Start
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="container">
-
         <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters"
                 style="margin-bottom: 10px">
             话题追踪
         </button>
-
-        <div class="panel panel-default" id="topicText">
+        <div class="panel panel-default">
             <div class="panel-heading">Panel heading without title</div>
-            <div class="panel-body">
+            <div class="panel-body" id="topicText">
                 <h3>
-                    <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
-                       aria-controls="collapseExample">
+                    <a role="button" data-toggle="collapse" href="#collapseTopicx" aria-expanded="false"
+                       aria-controls="collapseTopicx">
                         Topic 1 50%
                     </a>
                 </h3>
-                <div class="collapse in" id="collapseExample">
+                <div class="collapse in" id="collapseTopicx">
                     <p>a fax d wt wra f fx afw </p>
                     <p>a fax d wt wra f fx afw </p>
                 </div>
-
                 <hr>
-                <h3>
-                    <a role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
-                       aria-controls="collapseExample">
-                        Topic 1 50%
-                    </a>
-                </h3>
-                <div class="collapse in" id="collapseExample">
-                    <p>a fax d wt wra f fx afw </p>
-                    <p>a fax d wt wra f fx afw </p>
-                </div>
             </div>
         </div>
-
     </div>
 
-    <script>
-        var _track, _follow, _location;
-        function startStream() {
-            var track = $('#trackText').val();
-            var follow = $('#followText').val();
-            var location = $('#locationText').val();
-
-            _track = track;
-            _follow = follow;
-            _location = location;
-
-            get_topic_result();
-            setInterval('get_topic_result()', 10000);
-            {#           TODO wait css cancel#}
-            $('#streamParameters').modal('hide');
-        }
-
-
-        {#      # TODO a new request , cancle previous #}
-        function get_topic_result() {
-            $.ajax({
-                url: 'stream_trends',
-                data: {
-                    'track': _track,
-                    'follow': _follow,
-                    'location': _location,
-                },
-                success: function (v) {
-                    if (v == null) {
-                        //console.log('wait');
-                        return;
-                    }
-
-                    var p = '<p>' + v + '</p>';
-                    console.log(v);
-                    // Uncaught TypeError: Cannot read property 'ownerDocument' of undefined
-                    $('.topic_res').append(p);
-                },
-                dataType: 'json'
-            });
-        }
-    </script>
+    <script src="/static/js/topic.js"></script>
 
 {% endblock %}

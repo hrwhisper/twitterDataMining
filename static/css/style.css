@@ -1,9 +1,9 @@
-.carousel .carousel-inner .item{
-	height:700px;
+.carousel .carousel-inner .item {
+    height: 700px;
 }
 
-.carousel .carousel-inner .item:before{
-	position: absolute;
+.carousel .carousel-inner .item:before {
+    position: absolute;
     width: 100%;
     height: 100%;
     top: 0px;
@@ -13,8 +13,8 @@
     background-color: #222222;
 }
 
-.carousel .carousel-inner .item .background-image-holder{
-	position: absolute;
+.carousel .carousel-inner .item .background-image-holder {
+    position: absolute;
     top: 0px;
     left: 0px;
     width: 100%;
@@ -24,8 +24,8 @@
     background-position: 50% 50% !important;
 }
 
-.section:nth-of-type(even){
-	background: #f4f4f4;
+.section:nth-of-type(even) {
+    background: #f4f4f4;
 }
 
 .section {
@@ -35,130 +35,154 @@
     overflow: hidden;
 }
 
-.section h1{
-	font-family: "微软雅黑";
+.section h1 {
+    font-family: "微软雅黑";
 }
 
-.section h6{
-	font-size: 16px;
-	font-weight: bold;
-	margin-bottom: 25px;
-	margin-top:10px;
-	font-style:italic;
+.section h6 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    margin-top: 10px;
+    font-style: italic;
 }
 
-.section p.lead{
-	font-size: 16px;
+.section p.lead {
+    font-size: 16px;
     line-height: 30px;
     font-weight: normal;
 }
 
-.image-section ,.section .visualization{
-	/*margin-top:40px;*/
-	max-width:450px;
+.image-section, .section .visualization {
+    /*margin-top:40px;*/
+    max-width: 450px;
 }
-
 
 .section form {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
+
 .section .hide {
-  display: none;
+    display: none;
 }
+
 .section .coeff .dot {
-  fill: hsla(207, 63%, 27%, 0.2);
+    fill: hsla(207, 63%, 27%, 0.2);
 }
+
 .section .coeff.last .dot {
-  fill: hsla(207, 63%, 27%, 1.0);
+    fill: hsla(207, 63%, 27%, 1.0);
 }
+
 .section .coeff .circle {
-  fill: none;
-  stroke: hsl(0, 0%, 70%);
+    fill: none;
+    stroke: hsl(0, 0%, 70%);
 }
+
 .section .coeff.first .circle {
-  fill: none;
-  stroke: hsl(0, 0%, 30%);
+    fill: none;
+    stroke: hsl(0, 0%, 30%);
 }
+
 .section .coeff.last .circle {
-  display: none;
+    display: none;
 }
+
 .section .graph {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 3px;
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 3px;
 }
+
 .section .trace {
-  fill: none;
-  stroke: steelblue;
+    fill: none;
+    stroke: steelblue;
 }
+
 .section .proj {
-  fill: none;
-  stroke: #000;
+    fill: none;
+    stroke: #000;
 }
+
 .section .axis {
-  stroke: hsl(0, 0%, 70%);
+    stroke: hsl(0, 0%, 70%);
 }
 
-.footer{
-	background-color: #282e33;
-	padding-top:80px;
-	padding-bottom:80px;
+.footer {
+    background-color: #282e33;
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
-.footer h2{
-	opacity: 0.5;
+.footer h2 {
+    opacity: 0.5;
     color: #fff;
-  
-}
-
-.footer .footer-header{
-	font-size:30px;
-	color:#eee; 
-	opacity: 0.6;
-}
-
-.footer .fa{
-	font-size:36px !important;
-}
-
-.footer .keywords-wrap{
-	max-width:450px;
-  /*margin:0 auto;*/
-}
-
-
-.footer .table{
-	font-family: "微软雅黑";
-	font-size:16px;
-	line-height:1.2;
-	color:#eee; 
-	opacity: 0.6;
 
 }
 
-.footer .table td{
-  border-top: none;
+.footer .footer-header {
+    font-size: 30px;
+    color: #eee;
+    opacity: 0.6;
 }
 
-
-.footer .keywords span{
-	float:right;
+.footer .fa {
+    font-size: 36px !important;
 }
 
+.footer .keywords-wrap {
+    max-width: 450px;
+    /*margin:0 auto;*/
+}
 
-.copyright{
-	opacity: 0.5;
+.footer .table {
+    font-family: "微软雅黑";
+    font-size: 16px;
+    line-height: 1.2;
+    color: #eee;
+    opacity: 0.6;
+
+}
+
+.footer .table td {
+    border-top: none;
+}
+
+.footer .keywords span {
+    float: right;
+}
+
+.copyright {
+    opacity: 0.5;
     color: #fff;
     font-size: 12px;
 }
 
-.copyright a{
-	color: #aaa;
+.copyright a {
+    color: #aaa;
     font-weight: 600;
 }
-    
 
 /* Topic page */
-#topicText p   { text-indent:2em }
+#topicText p {
+    text-indent: 2em
+}
+
+#streamParameters .paramDiv {
+    padding-right: 40px;
+}
+
+#streamParameters .border-left {
+    border-left: 1px dashed #eee;
+    padding-left: 30px !important;
+}
+
+#streamParameters .panel-body input{
+    margin-bottom: 15px;
+}
+
+.font-size-16{
+    font-size:16px;
+}

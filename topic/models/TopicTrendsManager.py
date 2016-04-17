@@ -2,7 +2,6 @@
 
 # Created by hrwhisper on 2016/4/8.
 
-
 import threading
 import multiprocessing
 import time
@@ -24,21 +23,36 @@ class TopicTrendsManager(object):
     __metaclass__ = Singleton
 
     # TODO cancel current process about previous query
-    def __init__(self):
+    def __init__(self, param):
+        self.param = param
         self.topics = []
         self.lock = threading.Lock()
         self.parent_conn, self.child_conn = multiprocessing.Pipe()
-        self.topic_trends = TopicTrends(self.child_conn)
+
+        self.topic_trends = TopicTrends(self.param, self.child_conn)
         self.topic_trends.start()
+
         topic_trends_get = threading.Thread(target=self.receive_lda_result)
         topic_trends_get.start()
 
-    def get_result(self):
+    def get_result(self, param):
         res = None
-        if self.lock.acquire():
-            if self.topics:
-                res = self.topics.pop(0)
-            self.lock.release()
+        if self.param == param:
+            if self.lock.acquire():
+                if self.topics:
+                    res = self.topics.pop(0)
+                self.lock.release()
+
+        else:  # if self.param != param:
+            self.param = param
+            self.topic_trends.terminate()
+            self.topic_trends = TopicTrends(self.param, self.child_conn)
+            self.topic_trends.start()
+
+            if self.lock.acquire():
+                self.topics = []
+                self.lock.release()
+
         return res
 
     def receive_lda_result(self):
@@ -50,8 +64,9 @@ class TopicTrendsManager(object):
 
 
 class TopicTrends(multiprocessing.Process):
-    def __init__(self, lda_send_conn, period=60):
+    def __init__(self, param, lda_send_conn, period=60):
         super(TopicTrends, self).__init__()
+        self.param = param
         self.period = period
         self.lda_send_conn = lda_send_conn
         self.parent_conn, self.child_conn = multiprocessing.Pipe()
@@ -95,11 +110,10 @@ class TopicTrends(multiprocessing.Process):
 
         self.lda_send_conn.send(res)
 
-
-def terminate(self):
-    super(TopicTrends, self).terminate()
-    self.parent_conn.close()
-    self.child_conn.close()
+    def terminate(self):
+        super(TopicTrends, self).terminate()
+        self.parent_conn.close()
+        self.child_conn.close()
 
 
 if __name__ == '__main__':
