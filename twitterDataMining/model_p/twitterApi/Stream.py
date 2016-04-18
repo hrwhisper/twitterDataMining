@@ -31,6 +31,8 @@ class TwitterStream(TwitterBasic):
         :param colname:
         :return: None
         """
+        print track_list, follow_list, geo_list, save_to_db, colname
+
         kwg = {'language': 'en'}
 
         if not track_list and not follow_list and not geo_list:
@@ -49,9 +51,10 @@ class TwitterStream(TwitterBasic):
 
         twitter_stream = twitter.TwitterStream(auth=self.twitter_api.auth)
         stream = twitter_stream.statuses.filter(**kwg)
+        print kwg
 
         for i, tweet in enumerate(stream):
-            if not i % 1000: print i, datetime.datetime.now(), ' ', tweet
+            if not i % 100: print i, datetime.datetime.now(), ' ', tweet
             tweet = dict(tweet)
             if 'id' in tweet:
                 self.tweets.append(tweet)
@@ -74,10 +77,10 @@ if __name__ == '__main__':
 
 
     t = TwitterStream()
-    track_list = ['twitter']
+    track_list = None
     while True:
         try:
-            t.stream_data(track_list=track_list, colname='stream')
+            t.stream_data(track_list=track_list, save_to_db=False, colname='stream')
         except Exception, e:
             with open('error_log.txt', 'a+') as f:
                 erro_info = get_current_time() + '    ' + str(e) + ' \n'

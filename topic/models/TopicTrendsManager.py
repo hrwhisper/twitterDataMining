@@ -29,7 +29,7 @@ class TopicTrendsManager(object):
         self.lock = threading.Lock()
         self.parent_conn, self.child_conn = multiprocessing.Pipe()
 
-        self.topic_trends = TopicTrends(self.param, self.child_conn)
+        self.topic_trends = TopicTrends(param, self.child_conn)
         self.topic_trends.start()
 
         topic_trends_get = threading.Thread(target=self.receive_lda_result)
@@ -44,12 +44,14 @@ class TopicTrendsManager(object):
         res = None
 
         if self.param == param:
+            print 'equal'
             if self.lock.acquire():
                 if self.topics:
                     res = self.topics.pop(0)
                 self.lock.release()
 
         else:  # if self.param != param:
+            print 'not equal'
             self.param = param
             self.topic_trends.terminate()
             self.topic_trends = TopicTrends(self.param, self.child_conn)
@@ -70,7 +72,7 @@ class TopicTrendsManager(object):
 
 
 class TopicTrends(multiprocessing.Process):
-    def __init__(self, param, lda_send_conn, period=20):
+    def __init__(self, param, lda_send_conn, period=60):
         super(TopicTrends, self).__init__()
         self.param = param
         self.period = period
@@ -84,7 +86,7 @@ class TopicTrends(multiprocessing.Process):
         twitter_stream = TwitterStream(self.child_conn)
         twitter_stream_thread = threading.Thread(target=twitter_stream.stream_data,
                                                  args=(self.param.track, self.param.follow, self.param.location,
-                                                       self.param.storeIntoDB, self.param.storeIntoDBName))
+                                                       self.param.storeIntoDB, self.param.storeIntoDBName,))
         twitter_stream_thread.setDaemon(True)
         twitter_stream_thread.start()
 
@@ -104,10 +106,10 @@ class TopicTrends(multiprocessing.Process):
         # DO something from tweets
 
         doc_chunk = [tweet['text'] for tweet in tweets]
-
+        print len(doc_chunk)
         if not self.olda:
-            self.corpus = Corpus(doc_chunk, chunk_limit=self.param.LDA_k)
-            self.olda = OnlineLDA(self.corpus, K=self.param.LDA_timeWindow)
+            self.corpus = Corpus(doc_chunk, chunk_limit=self.param.LDA_timeWindow)
+            self.olda = OnlineLDA(self.corpus, K=self.param.LDA_k)
         else:
             self.olda.fit(doc_chunk)
 

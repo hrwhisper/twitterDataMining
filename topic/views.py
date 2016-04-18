@@ -13,12 +13,7 @@ def index(request):
 
 # TODO 检查参数的合法性
 def stream_trends(request):
-    param = dict(request.GET.items())
-    for x, t in param.items():
-        if param[x] == '':
-            del param[x]
-
-    param_manager = TopicParameterManager(param)
+    param_manager = TopicParameterManager(request.GET.items())
     topic_trends = TopicTrendsManager(param_manager)
     res = topic_trends.get_result(param_manager)
     return HttpResponse(json.dumps(res), content_type="application/json")

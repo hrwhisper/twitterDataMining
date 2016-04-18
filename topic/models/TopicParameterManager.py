@@ -5,11 +5,16 @@
 
 class TopicParameterManager(object):
     def __init__(self, param):
+        param = dict(param)
+        for x, t in param.items():
+            if param[x] == '':
+                del param[x]
+
         # ---------- stream ---------
         self.track = param.get('track', None)
         self.follow = param.get('follow', None)
         self.location = param.get('location', None)
-        self.storeIntoDB = param.get('storeIntoDB', False)
+        self.storeIntoDB = param.get('storeIntoDB', False) == 'true'
         self.storeIntoDBName = param.get('storeIntoDBName', 'stream')
 
         # ---------- LDA ------------
@@ -30,3 +35,7 @@ class TopicParameterManager(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __str__(self):
+        return self.track, self.follow, self.location, self.storeIntoDB, self.storeIntoDBName, \
+               self.LDA_k, self.LDA_timeWindow, self.startDate

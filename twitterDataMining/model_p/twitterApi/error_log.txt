@@ -10876,3 +10876,4 @@ details: Exceeded connection limit for user
 2016-04-14 21:39:05    Twitter sent status 420 for URL: 1.1/statuses/filter.json using parameters: (language=en&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=3120307804141356477&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1460641143&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&track=twitter&oauth_signature=6mG0rglNH9aAXTsoNimYujsAj3k%3D)
 details: Exceeded connection limit for user
  
+2016-04-18 09:38:58    '' 
