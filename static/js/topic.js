@@ -45,7 +45,7 @@ var userTopicParam = {
         else {
             this.setCommonNone();
 
-            if (this.__mode == 1) {
+            if (this.__mode === 1) {
                 this.setMode2None();
 
                 this.track = $('#trackText').val();
@@ -54,7 +54,7 @@ var userTopicParam = {
                 this.storeIntoDB = $('#streamStoreIntoDB').is(':checked'); //TODO check is it ok?
                 this.storeIntoDBName = $('#streamStoreDBName').val();
             }
-            else if (this.__mode == 2) {
+            else if (this.__mode === 2) {
                 this.setMode1None();
                 this.startDate = $('#startDate').val();
                 this.endDate = $('#endDate').val();
@@ -67,8 +67,9 @@ var userTopicParam = {
     },
 
     getParam: function () {
-        if (this.__mode == 0 || this.__mode == 1) {
+        if (this.__mode === 0 || this.__mode === 1) {
             return {
+                'mode': this.__mode,
                 'track': this.track,
                 'follow': this.follow,
                 'location': this.location,
@@ -78,8 +79,9 @@ var userTopicParam = {
                 'storeIntoDBName': this.storeIntoDBName
             }
         }
-        else if (this.__mode == 2) {
+        else if (this.__mode === 2) {
             return {
+                'mode': this.__mode,
                 'startDate': this.startDate,
                 'endDate': this.endDate,
                 'localCollectionsName': this.localCollectionsName,
@@ -165,9 +167,9 @@ function startStream() {
     userTopicParam.update();
     console.log(userTopicParam.getParam());
     get_topic_result();
-    if(userTopicParam.__first)
-    setInterval('get_topic_result()', 10000);
-    userTopicParam.__first=false;
+    if (userTopicParam.__first)
+        setInterval('get_topic_result()', 10000);
+    userTopicParam.__first = false;
     //          TODO wait css cancel
     $('#streamParameters').modal('hide');
 }
@@ -182,7 +184,7 @@ function get_topic_result() {
             if (v == null)  return;
             topic_text(v);
         },
-        error :function(v){
+        error: function (v) {
             console.log(error + v);
         },
         dataType: 'json'

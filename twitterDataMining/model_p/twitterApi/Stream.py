@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 # Created by hrwhisper on 2016/1/25.
-import threading
 import time
 import datetime
 from Basic import TwitterBasic
@@ -11,7 +10,7 @@ import twitter
 class TwitterStream(TwitterBasic):
     def __init__(self, conn=None):
         TwitterBasic.__init__(self)
-        # threading.Thread.__init__(self)
+
         self.conn = conn
         self.tweets = []
         self.get_data = False
@@ -19,23 +18,23 @@ class TwitterStream(TwitterBasic):
     def ready_receive(self):
         self.get_data = True
 
-    def stream_data(self, track_list=None, follow_list=None, geo_list=None, save_to_db=False, colname='stream'):
+    def stream_data(self, track_list=None, follow_list=None, locations_list=None, save_to_db=False,
+                    collection_name='stream'):
         """
             https://dev.twitter.com/streaming/reference/post/statuses/filter
             The default access level allows up to 400 track keywords, 5,000 follow userids and 25 0.1-360 degree location boxes.
 
         :param track_list:str list      ;
         :param follow_list:list (str list or int list ) ; usr_id list
-        :param geo_list: list ; geo list
+        :param locations_list: list ; geo list
         :param save_to_db:
-        :param colname:
+        :param collection_name:
         :return: None
         """
-        print track_list, follow_list, geo_list, save_to_db, colname
 
         kwg = {'language': 'en'}
 
-        if not track_list and not follow_list and not geo_list:
+        if not track_list and not follow_list and not locations_list:
             kwg['track'] = 'twitter'
 
         if track_list:
@@ -44,17 +43,15 @@ class TwitterStream(TwitterBasic):
         if follow_list:
             kwg['follow'] = ','.join(str(follow) for follow in follow_list)
 
-        # TODO add location list
-        # if locations_list:
-        #     kwg['locations'] = ','.join(str(locations) for locations in locations_list)
-
+        if locations_list:
+            kwg['locations'] = ','.join(str(locations) for locations in locations_list)
 
         twitter_stream = twitter.TwitterStream(auth=self.twitter_api.auth)
         stream = twitter_stream.statuses.filter(**kwg)
         print kwg
 
         for i, tweet in enumerate(stream):
-            if not i % 100: print i, datetime.datetime.now(), ' ', tweet
+            if not i % 500: print i, datetime.datetime.now(), ' ', tweet
             tweet = dict(tweet)
             if 'id' in tweet:
                 self.tweets.append(tweet)
@@ -65,7 +62,7 @@ class TwitterStream(TwitterBasic):
                     self.tweets = []
 
                 if save_to_db:
-                    self.save_tweets_to_mongodb(tweet, colname=colname)
+                    self.save_tweets_to_mongodb(tweet, colname=collection_name)
 
 
 if __name__ == '__main__':

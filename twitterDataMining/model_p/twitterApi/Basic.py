@@ -6,25 +6,25 @@ import sys
 import time
 from urllib2 import URLError
 from httplib import BadStatusLine
-
 import datetime
 import pymongo
 import twitter
 
 
+# TODO sigleton?
 class MongoDb(object):
     def __init__(self):
         self._client = pymongo.MongoClient()
         self.db = self._client.twitter3
 
-    def getDB(self):
+    def get_db(self):
         return self.db
 
 
 class TwitterBasic(object):
     def __init__(self):
         self.twitter_api = self.oauth_login()
-        self.db = MongoDb().getDB()
+        self.db = MongoDb().get_db()
 
     @staticmethod
     def oauth_login():
@@ -168,7 +168,6 @@ class TwitterBasic(object):
                                 DB.save(t)
 
                 return tweet['id']
-
 
         if not isinstance(tweets, list):
             tweets = [tweets]

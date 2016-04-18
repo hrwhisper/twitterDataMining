@@ -5,6 +5,8 @@
 import threading
 import multiprocessing
 import time
+
+from twitterDataMining.model_p.twitterApi.LocalStream import LocalStream
 from twitterDataMining.model_p.twitterApi.Stream import TwitterStream
 from topic.models.Corpus import Corpus
 from topic.models.OnlineLDA import OnlineLDA
@@ -22,7 +24,6 @@ class Singleton(type):
 class TopicTrendsManager(object):
     __metaclass__ = Singleton
 
-    # TODO cancel current process about previous query
     def __init__(self, param):
         self.param = param
         self.topics = []
@@ -44,14 +45,12 @@ class TopicTrendsManager(object):
         res = None
 
         if self.param == param:
-            print 'equal'
             if self.lock.acquire():
                 if self.topics:
                     res = self.topics.pop(0)
                 self.lock.release()
 
         else:  # if self.param != param:
-            print 'not equal'
             self.param = param
             self.topic_trends.terminate()
             self.topic_trends = TopicTrends(self.param, self.child_conn)
@@ -83,23 +82,43 @@ class TopicTrends(multiprocessing.Process):
         self.olda = None
 
     def run(self):
-        twitter_stream = TwitterStream(self.child_conn)
-        twitter_stream_thread = threading.Thread(target=twitter_stream.stream_data,
-                                                 args=(self.param.track, self.param.follow, self.param.location,
-                                                       self.param.storeIntoDB, self.param.storeIntoDBName,))
-        twitter_stream_thread.setDaemon(True)
-        twitter_stream_thread.start()
+        if self.param.mode != 2:  # online stream data(use twitter API)
+            twitter_stream = TwitterStream(self.child_conn)
+            twitter_stream_thread = threading.Thread(target=twitter_stream.stream_data,
+                                                     args=(self.param.track, self.param.follow, self.param.location,
+                                                           self.param.storeIntoDB, self.param.storeIntoDBName,))
+            twitter_stream_thread.setDaemon(True)
+            twitter_stream_thread.start()
 
-        print ' threading.active_count()', threading.active_count()
-        # TODO error count > 3 kill
-        while True:
-            time.sleep(self.period)
-            twitter_stream.ready_receive()
-            tweets = self.parent_conn.recv()
-            t = threading.Thread(target=self.do_some_from_data, args=(tweets,))
-            t.setDaemon(True)
-            t.start()
-        print 'end'
+            print ' threading.active_count()', threading.active_count()
+            # TODO error count > 3 kill
+            while True:
+                time.sleep(self.period)
+                twitter_stream.ready_receive()
+                tweets = self.parent_conn.recv()
+                t = threading.Thread(target=self.do_some_from_data, args=(tweets,))
+                t.setDaemon(True)
+                t.start()
+
+        else:  # local database data
+            condition = threading.Condition()
+            local_stream = LocalStream()
+            local_stream_thread = threading.Thread(target=local_stream.stream_data,
+                                                   args=(condition, self.param.startDate, self.param.endDate,
+                                                         self.param.localCollectionsName,))
+            local_stream_thread.setDaemon(True)
+            local_stream_thread.start()
+            print ' threading.active_count()', threading.active_count()
+
+            if condition.acquire():
+                while True:
+                    print 'wait to receive'
+                    if local_stream.tweets:
+                        self.do_some_from_data(local_stream.tweets)
+                        local_stream.tweets = []
+                        condition.notify()
+
+                    condition.wait()
 
     def do_some_from_data(self, tweets):
         print 'total_tweets', len(tweets)

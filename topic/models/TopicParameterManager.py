@@ -10,6 +10,8 @@ class TopicParameterManager(object):
             if param[x] == '':
                 del param[x]
 
+        self.mode = int(param.get('mode', 1))
+
         # ---------- stream ---------
         self.track = param.get('track', None)
         self.follow = param.get('follow', None)
@@ -31,11 +33,11 @@ class TopicParameterManager(object):
                and self.storeIntoDB == other.storeIntoDB and self.storeIntoDBName == other.storeIntoDBName \
                and self.LDA_k == other.LDA_k and self.LDA_timeWindow == other.LDA_timeWindow \
                and self.startDate == other.startDate and self.endDate == other.endDate \
-               and self.localCollectionsName == other.localCollectionsName
+               and self.localCollectionsName == other.localCollectionsName and self.mode == other.mode
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __str__(self):
         return self.track, self.follow, self.location, self.storeIntoDB, self.storeIntoDBName, \
-               self.LDA_k, self.LDA_timeWindow, self.startDate
+               self.LDA_k, self.LDA_timeWindow, self.startDate, self.endDate, self.localCollectionsName
