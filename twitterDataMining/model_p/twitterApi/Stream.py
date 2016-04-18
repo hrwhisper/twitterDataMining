@@ -16,19 +16,21 @@ class TwitterStream(TwitterBasic):
         self.tweets = []
         self.get_data = False
 
-    def get(self):
+    def ready_receive(self):
         self.get_data = True
 
-    def stream_data(self, track_list=None, follow_list=None, geo_list=None, colname='stream', save_to_db=False):
-        '''
+    def stream_data(self, track_list=None, follow_list=None, geo_list=None, save_to_db=False, colname='stream'):
+        """
             https://dev.twitter.com/streaming/reference/post/statuses/filter
             The default access level allows up to 400 track keywords, 5,000 follow userids and 25 0.1-360 degree location boxes.
 
         :param track_list:str list      ;
         :param follow_list:list (str list or int list ) ; usr_id list
         :param geo_list: list ; geo list
+        :param save_to_db:
+        :param colname:
         :return: None
-        '''
+        """
         kwg = {'language': 'en'}
 
         if not track_list and not follow_list and not geo_list:
@@ -43,6 +45,7 @@ class TwitterStream(TwitterBasic):
         # TODO add location list
         # if locations_list:
         #     kwg['locations'] = ','.join(str(locations) for locations in locations_list)
+
 
         twitter_stream = twitter.TwitterStream(auth=self.twitter_api.auth)
         stream = twitter_stream.statuses.filter(**kwg)

@@ -4,6 +4,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from topic.models.TopicTrendsManager import TopicTrendsManager
+from topic.models.TopicParameterManager import TopicParameterManager
 
 
 def index(request):
@@ -17,24 +18,7 @@ def stream_trends(request):
         if param[x] == '':
             del param[x]
 
-    # ---------- stream ---------
-    # track = param.get('track', None)
-    # follow = param.get('follow', None)
-    # location = param.get('location', None)
-    # storeIntoDB = param.get('storeIntoDB', None)
-    # storeIntoDBName = param.get('storeIntoDBName', None)
-    #
-    #
-    #  ---------- LDA ------------
-    # LDA_k = param.get('LDA_k', None)
-    # LDA_timeWindow = param.get('LDA_timeWindow', None)
-    #
-    #
-    # ----------- Local -----------
-    # startDate = param.get('startDate', None)
-    # endDate = param.get('endDate', None)
-    # endDate = param.get('localCollectionsName', None)
-
-    topic_trends = TopicTrendsManager(param)
-    res = topic_trends.get_result(param)
+    param_manager = TopicParameterManager(param)
+    topic_trends = TopicTrendsManager(param_manager)
+    res = topic_trends.get_result(param_manager)
     return HttpResponse(json.dumps(res), content_type="application/json")
