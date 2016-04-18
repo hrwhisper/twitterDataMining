@@ -11,7 +11,7 @@ def index(request):
     return render(request, 'topic/index.html')
 
 
-# TODO 检查参数合法性
+# TODO 检查参数的合法性
 def stream_trends(request):
     param = dict(request.GET.items())
     for x, t in param.items():
