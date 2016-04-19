@@ -1,0 +1,127 @@
+<div class="modal fade in" id="streamParameters" tabindex="-1" role="dialog"
+     aria-labelledby="streamParametersLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="streamParametersLabel">选择跟踪的参数</h4></div>
+            <div class="modal-body">
+
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#quickStart" data-toggle="tab">快速开始</a></li>
+                    <li><a href="#onlineStreamSetting" data-toggle="tab">在线数据设置</a></li>
+                    <li><a href="#localDataSetting" data-toggle="tab">本地数据设置</a></li>
+                </ul>
+
+                <div id="topicTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="quickStart">
+                        <div class="panel-body">
+                            <div class="col-sm-6 paramDiv">
+                                <h3>Stream参数</h3>
+                                <hr>
+                                <label class="control-label">Track:</label>
+                                <input class="form-control" type="text" placeholder="twitter" disabled>
+                                <hr>
+
+                                <label class="control-label">Follow:</label>
+                                <input class="form-control" type="text" placeholder="None" disabled>
+                                <hr>
+
+                                <label class="control-label">Location:</label>
+                                <input class="form-control" type="text" placeholder="None" disabled>
+                            </div>
+                            <div class="col-sm-6  paramDiv border-left">
+                                <h3>数据来源</h3>
+                                <hr>
+                                <p><a><span class="glyphicon glyphicon-ok font-size-16"></span></a> 在线数据</p>
+                                <p><span class="glyphicon glyphicon-remove font-size-16"></span> 本地数据</p>
+                                <hr>
+                                <h3>说明</h3>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Track | Follow | Location 均使用默认参数</li>
+                                    <li class="list-group-item">使用 <strong>在线高级设置</strong>配置上述参数</li>
+                                    <li class="list-group-item">使用twitter Stream <strong> 实时数据</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="onlineStreamSetting">
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <label for="trackText" class="control-label">Track:</label><br/>
+                                <i>Keywords to track. Phrases of keywords are specified by a comma-separated
+                                    list.</i>
+                                <textarea class="form-control" id="trackText" rows="3"></textarea>
+
+                                <hr>
+                                <label for="followText" class="control-label">Follow:</label><br/>
+                                <i>A comma separated list of user IDs, indicating the users to return statuses for
+                                    in the
+                                    stream.</i>
+                                <textarea class="form-control" id="followText" rows="3"></textarea>
+
+                                <hr>
+                                <label for="locationText" class="control-label">Locations:</label><br/>
+                                <i>Specifies a set of bounding boxes to track. </i>
+                                <textarea class="form-control" id="locationText" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="localDataSetting">
+                        <div class="panel-body">
+                            <div class="col-sm-6 paramDiv">
+                                <h3>时间选择</h3>
+                                <hr>
+                                {#                                    TODO jquery ui 日期选择插件#}
+                                <label class="control-label">起始时间:</label><br/>
+                                <input class="form-control" type="text" placeholder="2015-11-13" id="startDate">
+
+                                <label class="control-label">结束时间:</label><br/>
+                                <input class="form-control" type="text" placeholder="None" id="endDate">
+                            </div>
+                            <div class="col-sm-6 paramDiv border-left">
+                                <h3>本地数据库选择</h3>
+                                <hr>
+                                {#                                    TODO 服务器读取数据库表明，做一个selection#}
+                                <label class="control-label">数据表名(collections):</label><br/>
+                                <input class="form-control" type="text" placeholder="stream"
+                                       id="localCollectionsName">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="panel-body text-left">
+                    <div class="col-sm-6 paramDiv">
+                        <h3>LDA参数设置</h3>
+                        <label class="control-label">LDA主题数 K </label>
+                        <input class="form-control" type="text" placeholder="25" id="LdaK" disabled>
+                        <hr>
+                        <label class="control-label">时间窗口大小(分钟) L</label>
+                        <input class="form-control" type="text" placeholder="5" id="LdaTimeWindow" disabled></div>
+
+
+                    <div class="col-sm-6  paramDiv border-left">
+                        <h3>其他选项</h3>
+                        <hr>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="streamStoreIntoDB" disabled> 存入数据库
+                            </label>
+                        </div>
+                        <label class="control-label">保存的数据表名(collections)</label>
+                        <input class="form-control" type="text" placeholder="stream" id="streamStoreDBName"
+                               disabled>
+
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="startStream()" id="startTopicButton">Start
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

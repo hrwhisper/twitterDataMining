@@ -111,9 +111,9 @@ var res = [
     ['3', '20%', ['a', 'e', 'd'], 'hahahahh xxlaal']
 ];
 
-topic_text(res);
+append_topic_text(res);
 
-function topic_text(res) {
+function append_topic_text(res) {
     var topicText = $('#topicText');
     topicText.empty();
     for (var i = 0; i < res.length; i++) {
@@ -182,7 +182,7 @@ function get_topic_result() {
         data: userTopicParam.getParam(),
         success: function (v) {
             if (v == null)  return;
-            topic_text(v);
+            append_topic_text(v);
         },
         error: function (v) {
             console.log(error + v);
@@ -190,3 +190,5 @@ function get_topic_result() {
         dataType: 'json'
     });
 }
+
+
