@@ -1,12 +1,6 @@
 # -*- coding:utf-8 -*-
 
 # Created by hrwhisper on 2016/4/5.
-# -*- coding:utf-8 -*-
-
-# Created by hrwhisper on 2016/3/27.
-# At this update from test 17.
-# Only use max entropy to calculate most representative tweet
-# delete some never used function
 import codecs
 import datetime
 from collections import Counter
@@ -17,6 +11,10 @@ from scipy.special import gammaln, psi
 from Corpus import Corpus
 
 np.random.seed(100000001)
+
+
+def float_2_decimals(x):
+    return int(x * 100 + 0.05) / 100.
 
 
 def dirichlet_expectation(alpha):
@@ -310,21 +308,23 @@ class OnlineLDA(object):
         return np.exp(-perwordbound)
 
     def get_topic_words(self, num_words=10):
-        '''
+        """
             return topic words (num_words total) for each topic
-        '''
-        _lambda = self._lambda
-        index = np.argsort(_lambda)
+            :param num_words: return exactly number of words
+        """
+        _lambda = self._lambda * 1.0 / np.sum(self._lambda, axis=1)[:, np.newaxis]
+        index = np.argsort(_lambda)[:, ::-1]  # reverse
         res = []
         for i in xrange(self._K):
-            res.append([self._corpus.vocab.id2word[word_id] for word_id in index[i][::-1][:num_words]])
+            res.append([(self._corpus.vocab.id2word[word_id], float_2_decimals(_lambda[i][word_id]))
+                        for word_id in index[i, :num_words]])
         return res
 
     def get_doc_topic_distribution(self):
-        '''
+        """
             for each document in Corpus, get their most likely topic.
             return a topic_id list
-        '''
+        """
         if self.gamma is None:
             self.update()
 
@@ -332,9 +332,9 @@ class OnlineLDA(object):
         return topic_distribution
 
     def get_topic_order(self, topic_distribution=None):
-        '''
+        """
             return a list of tuple(topic_id,topic_probability)
-        '''
+        """
         if topic_distribution is None:
             topic_distribution = self.get_doc_topic_distribution()
 
@@ -345,9 +345,9 @@ class OnlineLDA(object):
         return topic_order
 
     def get_most_representative_tweets(self, topic_distribution=None):
-        '''
+        """
             return a list of max entropy doc id for each document
-        '''
+        """
         if topic_distribution is None:
             topic_distribution = self.get_doc_topic_distribution()
         # [(docs_id,cosine_distance)]
@@ -373,7 +373,7 @@ class OnlineLDA(object):
 
         res = []
         for topic_id, probability in topic_order:
-            cur = [str(topic_id), probability]
+            cur = [str(topic_id), float_2_decimals(probability)]
             if return_topic_words:
                 cur.append(topic_words[topic_id])
             if return_most_representative_tweets:

@@ -19,5 +19,5 @@ import topic.views
 urlpatterns = [
     url(r'^$', topic.views.index),
     url(r'stream_trends$', topic.views.stream_trends),
-
+    url(r'bubble$', topic.views.bubble),
 ]

@@ -17,3 +17,7 @@ def stream_trends(request):
     topic_trends = TopicTrendsManager(param_manager)
     res = topic_trends.get_result(param_manager)
     return HttpResponse(json.dumps(res), content_type="application/json")
+
+
+def bubble(request):
+    return render(request, 'topic/result_bubble.html')

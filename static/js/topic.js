@@ -118,7 +118,7 @@ function append_topic_text(res) {
     topicText.empty();
     for (var i = 0; i < res.length; i++) {
         var topic_html = '<h3><a role="button" data-toggle="collapse" href="#collapseTopic' + res[i][0] + '" ' +
-            'aria-expanded="false" aria-controls="collapseTopic' + res[i][0] + '">Topic' + res[i][0] + ' ' +
+            'aria-expanded="false" aria-controls="collapseTopic' + res[i][0] + '">Topic ' + res[i][0] + ' ' +
             res[i][1] + '</a></h3>' + '<div class="collapse in" id="collapseTopic' + res[i][0] + '">' +
             '<p>' + res[i][2] + '</p>' + '<p>' + res[i][3] + '</p></div>';
         if (i != res.length - 1) topic_html += '<hr>';
@@ -182,6 +182,7 @@ function get_topic_result() {
         data: userTopicParam.getParam(),
         success: function (v) {
             if (v == null)  return;
+            console.log(v);
             append_topic_text(v);
         },
         error: function (v) {
@@ -191,4 +192,94 @@ function get_topic_result() {
     });
 }
 
+function test_data() {
+    var res = [
+        [
+            "1",
+            0.6,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4]
+            ],
+            "This is one"
+        ],
+        [
+            "2",
+            0.1,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4]
+            ],
+            "This is two"
+        ],
+        [
+            "3",
+            0.3,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4]
+            ],
+            "This is three"
+        ]
+    ];
 
+    console.log(res);
+
+    var data = {'name': new Date().toString().slice(0, 25), 'children': []};
+
+    for (var i = 0; i < res.length; i++) {
+        var cur = {'name': res[i][0], 'children': []};
+        var row = res[i][2];
+        for (var j = 0; j < row.length; j++) {
+            var temp = {'name': row[j][0], 'size': row[j][1] * res[i][1]};
+            cur['children'].push(temp);
+        }
+        data['children'].push(cur);
+    }
+    //	console.log(data);
+    return data;
+}
+
+
+function send_message(iframe) {
+    console.log('send' + test_data());
+    iframe.contentWindow.postMessage(JSON.stringify(test_data()), '*');
+}
+
+$(function () {
+    $('#topicToolBar input[type="checkbox"]').bootstrapSwitch();
+    $('#topicToolBar input[type="checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        var id = $(this).attr("name");
+        if (state) {
+            var div = document.createElement("div");
+            div.className = "embed-responsive embed-responsive-4by3";
+            div.id = id;
+
+            $("#result").append(div);
+
+            var iframe = document.createElement("iframe");
+            iframe.src = "./" + id;
+
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", function () {
+                    send_message(iframe);
+                });
+            } else {
+                iframe.onload = function () {
+                    send_message(iframe);
+                };
+            }
+            div.appendChild(iframe);
+        }
+        else {
+            id = '#' + id;
+            $(id).remove();
+        }
+    });
+});

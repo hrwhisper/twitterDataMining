@@ -1,27 +1,5 @@
 <script src="/static/js/bootstrap-switch.min.js"></script>
 
-<script>
-    $(function () {
-        $('#topicToolBar input[type="checkbox"]').bootstrapSwitch();
-        $('#topicToolBar input[type="checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
-            if (state) {
-                var id = $(this).attr("name");
-                console.log(id);
-                var iframe = '<div class="embed-responsive embed-responsive-4by3" id="' + id + '">' +
-                        '<iframe src="//www.baidu.com" frameborder="0" ></iframe></div>';
-                $("#result").append(iframe);
-            }
-            else {
-                var id = '#' + $(this).attr("name");
-                console.log(id);
-                $(id).remove();
-            }
-        });
-    });
-
-
-</script>
-
 
 <div id="topicToolBar">
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters"
@@ -29,7 +7,7 @@
         话题追踪
     </button>
     <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
-        <li><a href="#topic_text">文字结果
+        <li><a href="#topic_text" >文字结果
                 <span style="float:right">
                     <input type="checkbox" name="topic_text" data-size="mini">
                 </span>
