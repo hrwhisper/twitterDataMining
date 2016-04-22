@@ -1,0 +1,503 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+{% block style %}
+    <style>
+        form {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        path {
+            stroke: #fff;
+            cursor: pointer;
+            fill-rule: evenodd;
+        }
+
+        text {
+            font: 11px sans-serif;
+            cursor: pointer;
+        }
+
+        #explanation {
+            position: absolute;
+            text-align: left;
+            color: #666;
+            z-index: -1;
+        }
+
+        #percentage {
+            font-size: 2.5em;
+        }
+    </style>
+{% endblock %}
+
+
+{% block mainbody %}
+    <div id="main">
+        <div id="sequence"></div>
+        <div id="chart">
+            <div id="explanation" style="visibility: hidden;">
+                <span id="percentage"></span><br/>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //a.getFullYear() +"-"+(a.getMonth()+1)+"-"+ a.getDate()+" "+a.getHours()+":"+a.getMinutes()
+        var width, height, radius, x, y, color, vis, path, text, arc, first = true;
+        var center_root;
+        var max_value = 0, min_value = 1;
+
+        window.addEventListener("message", function (evt) {
+            function sunburst_format_data(data) {
+                var t = data.children;
+                for (var i = 0; i < t.length; i++) {
+                    var cur = t[i].children.sort(function (a, b) {
+                        return b.size - a.size;   //从大到小排序
+                    });
+                    var j = 0;
+                    var total = 0.0, sum = 0.0;
+                    for (j = 0; j < cur.length; j++) {
+                        total += cur[j].size;
+                    }
+
+                    var new_node = [];
+                    for (j = 0; j < cur.length; j++) {
+                        var to_delete = cur.shift();
+                        new_node.push(to_delete);
+                        sum += to_delete.size / total;
+                        if (sum >= 0.4) break;	//TODO if j==0 but sum >=0.4
+                    }
+                    var new_children = {"_name": new_node[0].name, "children": new_node};
+                    //new_children["children"].shift();
+
+                    cur.unshift(Object(new_children));
+
+                    cur.sort(function randomsort(a, b) {
+                        return Math.random() > .5 ? -1 : 1;
+                    });
+
+                }
+                console.log('sunburst_format_data after');
+                console.log(data);
+            }
+
+            var data = JSON.parse(evt.data);
+            sunburst_format_data(data);
+            draw(data);
+
+        }, false);
+
+        function draw(data) {
+            if (!first) {
+                d3.selectAll("svg").remove();
+            }
+            first = false;
+
+            initializeBreadcrumbTrail();
+
+            width = $("body").width();
+            height = width / 1.3;
+            radius = Math.min(width, height) / 2;
+
+            x = d3.scale.linear()
+                    .range([0, 2 * Math.PI]);
+
+            y = d3.scale.pow().exponent(0.5).domain([0, 1]).range([0, radius]);
+            //var y = d3.scale.sqrt() .range([0, radius]);
+
+            color = d3.scale.category20c();
+
+            vis = d3.select("#chart").append("svg:svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+            var svg = vis.append("svg:g")
+                    .attr("id", "container")
+                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            console.log($("#sequence").height());
+
+
+            var partition = d3.layout.partition()
+                    .sort(null)
+                    .value(function (d) {
+                        return d.size;
+                    });
+
+            arc = d3.svg.arc()
+                    .startAngle(function (d) {
+                        return Math.max(0, Math.min(2 * Math.PI, x(d.x)));
+                    })
+                    .endAngle(function (d) {
+                        return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx)));
+                    })
+                    .innerRadius(function (d) {
+                        /*if(d.depth <= 1)
+                         return Math.max(0, y(d.y));
+                         var t = d.parent;
+
+                         //var mul = d.depth <= 1? 1 : d.parent.value;
+                         return Math.max(0, y(t.y + t.dy *t.value));*/
+                        return Math.max(0, y(d.y));
+                    })
+                    .outerRadius(function (d) {
+                        //var mul = d.depth <= 1? d.value : d.parent.value;
+                        //return Math.max(0, y(d.y + d.dy * mul));
+
+                        return Math.max(0, y(d.y + d.dy));
+                    });
+
+            // Keep track of the node that is currently being displayed as the root.
+            var node;
+
+            node = root = data;
+
+            var gArcs = svg.datum(root).selectAll("path")
+                    .data(partition.nodes)
+                    .enter()
+                    .append("g");
+
+            path = gArcs.append("path")
+                    .attr("d", arc)
+                    .style("fill", function (d) {
+                        if (d.depth === 0) center_root = d;
+                        return getColor(d);
+                    })
+                    .on("click", click)
+                    .on("mouseover", mouseover)
+                    .each(stash);
+
+            d3.select("#container").on("mouseleave", mouseleave);
+
+            text = gArcs.append("text")
+                    .attr("class", "nodeText")
+                    .attr("dy", ".2em")
+                    .attr("transform", function (d, i) {
+                        if (i !== 0) {		//除圆中心的文字外，都进行平移旋转
+                            var r = x(d.x + d.dx / 2);	//旋转角度
+
+                            //超过180°的文字调整旋转角度，防止文字是倒的
+                            var angle = Math.PI / 2;
+                            r += r < Math.PI ? ( angle * -1 ) : angle;
+                            r *= 180 / Math.PI;
+
+                            return "translate(" + (arc.centroid(d)) + ")" + "rotate(" + r + ")";
+                        }
+                    })
+                    .text(function (d, i) {
+                        return d.name;
+                    }).each(function (d) {
+                        return textHidden(d, this);
+                    })
+                    .style('visibility', function (d) {
+                        return d.visible ? null : "hidden";
+                    })
+                    .on("click", click)
+                    .on("mouseover", mouseover);
+
+
+            var duration = 400;
+
+
+            function do_click(d, to_parent) {
+                function t(n, e) {
+                    return n === e ? !0 : n.children ? n.children.some(function (n) {
+                        return t(n, e)
+                    }) : !1
+                }
+
+                node = d;
+                path.transition()
+                        .duration(duration)
+                        .attrTween("d", arcTweenZoom(d));
+
+                text.transition()
+                        .duration(duration)
+                        .attrTween("text-anchor", function (t) {
+                            return function () {
+                                return x(t.x + t.dx / 2) > Math.PI ? "end" : "start"
+                            }
+                        }).attrTween("transform", function (t) {
+                    return function () {
+                        var r = x(t.x + t.dx / 2);	//旋转角度
+                        var angle = Math.PI / 2;
+                        r += r < Math.PI ? ( angle * -1 ) : angle;
+                        r *= 180 / Math.PI;
+                        return "translate(" + (arc.centroid(t)) + ")" + "rotate(" + r + ")";
+                    }
+                }).style("fill-opacity", function (e) {
+                            return t(d, e) ? 1 : 1e-6
+                        })
+                        .each("end", function (e) {
+                            d3.select(this).style("visibility", t(d, e) && isTextNotHidden(e, this) ? null : "hidden")
+                        }).style("visibility", function (e) {
+                    return t(d, e) && isTextNotHidden(e, this) ? null : "hidden";
+                });
+
+            }
+
+            function click(d) {
+                if (d.depth > 1) return do_click(d.parent);
+                return do_click(d);
+            }
+        }
+
+        function explanation_position_update() {
+
+            $("#explanation").css("left", (vis.attr("width") - $("#explanation").width()) / 2);
+            $("#explanation").css("top", (vis.attr("height") - $("#explanation").height() + $("#sequence").height() + b.h ) / 2);
+        }
+
+
+        function isTextNotHidden(d, obj) {
+            var bb = obj.getBBox(),
+                    center = arc.centroid(d);
+
+            var topLeft = {
+                x: center[0] + bb.x,
+                y: center[1] + bb.y
+            };
+
+            var topRight = {
+                x: topLeft.x + bb.width,
+                y: topLeft.y
+            };
+
+            var bottomLeft = {
+                x: topLeft.x,
+                y: topLeft.y + bb.height
+            };
+
+            var bottomRight = {
+                x: topLeft.x + bb.width,
+                y: topLeft.y + bb.height
+            };
+            return pointIsInArc(topLeft, d, arc) &&
+                    pointIsInArc(topRight, d, arc) &&
+                    pointIsInArc(bottomLeft, d, arc) &&
+                    pointIsInArc(bottomRight, d, arc);
+        }
+
+        function textHidden(d, obj) {
+            d.visible = isTextNotHidden(d, obj);
+        }
+
+        function pointIsInArc(pt, ptData, d3Arc) {
+            // Center of the arc is assumed to be 0,0
+            // (pt.x, pt.y) are assumed to be relative to the center
+            var r1 = d3Arc.innerRadius()(ptData), // Note: Using the innerRadius
+                    r2 = d3Arc.outerRadius()(ptData),
+                    theta1 = d3Arc.startAngle()(ptData),
+                    theta2 = d3Arc.endAngle()(ptData);
+
+            var dist = pt.x * pt.x + pt.y * pt.y,
+                    angle = Math.atan2(pt.x, -pt.y); // Note: different coordinate system.
+
+            angle = (angle < 0) ? (angle + Math.PI * 2) : angle;
+
+            return (r1 * r1 <= dist) && (dist <= r2 * r2) &&
+                    (theta1 <= angle) && (angle <= theta2);
+        }
+
+        function getColor(d) {
+            if (d.depth === 0) return "white";
+            target = d.children ? d : d.parent;
+            return color("name" in target ? target.name : target._name);
+        }
+        function getAncestors(node) {
+            var path = [];
+            var current = node;
+            while (current.parent) {
+                path.unshift(current);
+                current = current.parent;
+            }
+            return path;
+        }
+
+        // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
+        var b = {
+            w: 75, h: 30, s: 3, t: 10
+        };
+
+        function initializeBreadcrumbTrail() {
+            // Add the svg area.
+            var trail = d3.select("#sequence").append("svg:svg")
+                    .attr("width", width)
+                    .attr("height", 50)
+                    .attr("id", "trail");
+            // Add the label at the end, for the percentage.
+            trail.append("svg:text")
+                    .attr("id", "endlabel")
+                    .style("fill", "#000");
+        }
+
+        function breadcrumbPoints(d, i) {
+            var points = [];
+            points.push("0,0");
+            points.push(b.w + ",0");
+            points.push(b.w + b.t + "," + (b.h / 2));
+            points.push(b.w + "," + b.h);
+            points.push("0," + b.h);
+            if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
+                points.push(b.t + "," + (b.h / 2));
+            }
+            return points.join(" ");
+        }
+
+        function updateBreadcrumbs(nodeArray, percentageString) {
+            //d3.select("#sequence svg").remove();
+            //initializeBreadcrumbTrail();
+
+            // Data join; key function combines name and depth (= position in sequence).
+            var g = d3.select("#trail")
+                    .selectAll("g")
+                    .data(nodeArray, function (d) {
+                        return d.name + d.depth;
+                    });
+
+
+            g.select("polygon")
+                    .style("fill", function (d) {
+                        return getColor(d);
+                    });
+
+            g.select("text")
+                    .text(function (d) {
+                        return d.name;
+                    });
+            ;
+
+            // Add breadcrumb and label for entering nodes.
+            var entering = g.enter().append("svg:g");
+
+            entering.append("svg:polygon")
+                    .attr("points", breadcrumbPoints)
+                    .style("fill", function (d) {
+                        return getColor(d);
+                    });
+
+            entering.append("svg:text")
+                    .attr("x", (b.w + b.t) / 2)
+                    .attr("y", b.h / 2)
+                    .attr("dy", "0.35em")
+                    .attr("text-anchor", "middle")
+                    .text(function (d) {
+                        return d.name;
+                    });
+
+            // Set position for entering and updating nodes.
+            g.attr("transform", function (d, i) {
+                return "translate(" + i * (b.w + b.s) + ", 0)";
+            });
+
+            // Remove exiting nodes.
+            g.exit().remove();
+
+            // Now move and update the percentage at the end.
+            d3.select("#trail").select("#endlabel")
+                    .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
+                    .attr("y", b.h / 2)
+                    .attr("dy", "0.35em")
+                    .attr("text-anchor", "middle")
+                    .text(percentageString);
+
+            // Make the breadcrumb trail visible, if it's hidden.
+            d3.select("#trail")
+                    .style("visibility", "");
+
+
+        }
+
+        function mouseover(d, i) {
+            if (!i) return mouseleave(d, i);
+
+            var sequenceArray = getAncestors(d);
+
+            var percentage = d.children ? d.value : d.value / d.parent.value;
+            percentage = (100 * percentage).toPrecision(3);
+            if (percentage < 0.1) {
+                percentageString = "< 0.1";
+            }
+            percentage = percentage + "%";
+
+
+            d3.select("#percentage")
+                    .text((d.name? d.name:">=0.4") + " : " + percentage);
+
+            d3.select("#explanation")
+                    .style("visibility", "");
+
+            explanation_position_update();
+
+            //center_root.text(d.name + " : " + percentage);
+
+            updateBreadcrumbs(sequenceArray, percentage)
+            //d3.select(this).style("fill","yellow");
+
+            // Fade all the segments.
+            d3.selectAll("path")
+                    .style("opacity", 0.3);
+
+            // Then highlight only those that are an ancestor of the current segment.
+            vis.selectAll("path")
+                    .filter(function (node) {
+                        return (sequenceArray.indexOf(node) >= 0);
+                    })
+                    .style("opacity", 1);
+        }
+
+        function mouseleave(d, i) {
+            // Hide the breadcrumb trail
+
+
+            d3.select("#trail")
+                    .style("visibility", "hidden");
+
+            d3.select("#explanation")
+                    .style("visibility", "hidden");
+
+            // Deactivate all segments during transition.
+
+            path.on("mouseover", mouseover);
+
+            // Transition each segment to full opacity and then reactivate it.
+
+            path.transition()
+                    .duration(100)
+                    .style("opacity", 1);
+
+            d3.select("#explanation")
+                    .style("visibility", "hidden");
+
+        }
+
+        d3.select(self.frameElement).style("height", height + "px");
+
+        // Setup for switching data: stash the old values for transition.
+        function stash(d) {
+            d.x0 = d.x;
+            d.dx0 = d.dx;
+        }
+
+        // When zooming: interpolate the scales.
+        function arcTweenZoom(d) {
+            var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+                    yd = d3.interpolate(y.domain(), [d.y, 1]),
+                    yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+            return function (d, i) {
+                return i ? function (t) {
+                    return arc(d);
+                } : function (t) {
+                    x.domain(xd(t));
+                    y.domain(yd(t)).range(yr(t));
+                    return arc(d);
+                };
+            };
+        }
+
+
+    </script>
+
+{% endblock %}

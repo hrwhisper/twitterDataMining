@@ -1,0 +1,164 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+{% block style %}
+    <style>
+        .chart {
+            display: block;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        text {
+            font-size: 11px;
+        }
+
+        rect {
+            fill: none;
+        }
+    </style>
+{% endblock %}
+
+
+{% block mainbody %}
+    <script>
+        var w, hx, y, svg, first = true;
+        window.addEventListener("message", function (evt) {
+            var data = JSON.parse(evt.data);
+            console.log('receive' + data);
+            draw(data);
+        }, false);
+
+        function draw(data) {
+            if (!first) {
+                d3.select("svg").remove();
+            }
+            first = false;
+            w = $("body").width();
+            h = w / 1.6;
+            x = d3.scale.linear().range([0, w]);
+            y = d3.scale.linear().range([0, h]);
+
+            var color = d3.scale.category20c(),
+                    root,
+                    node;
+
+            var treemap = d3.layout.treemap()
+                    .round(false)
+                    .size([w, h])
+                    .sticky(true)
+                    .value(function (d) {
+                        return d.size;
+                    });
+
+            svg = d3.select("body").insert("svg:svg", "h2")
+                    .attr("class", "chart")
+                    .style("width", w + "px")
+                    .style("height", h + "px")
+                    .append("svg:svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .append("svg:g")
+                    .attr("transform", "translate(.5,.5)");
+
+
+            node = root = data;
+
+            var nodes = treemap.nodes(root)
+                    .filter(function (d) {
+                        return !d.children;
+                    });
+
+            var cell = svg.selectAll("g")
+                    .data(nodes)
+                    .enter().append("svg:g")
+                    .attr("class", "cell")
+                    .attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    })
+                    .on("click", function (d) {
+                        return zoom(node == d.parent ? root : d.parent);
+                    });
+
+            cell.append("svg:rect")
+                    .attr("width", function (d) {
+                        return d.dx - 1;
+                    })
+                    .attr("height", function (d) {
+                        return d.dy - 1;
+                    })
+                    .style("fill", function (d) {
+                        return color(d.parent.name);
+                    });
+
+            cell.append("svg:text")
+                    .attr("x", function (d) {
+                        return d.dx / 2;
+                    })
+                    .attr("y", function (d) {
+                        return d.dy / 2;
+                    })
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", "middle")
+                    .text(function (d) {
+                        return d.name;
+                    })
+                    .style("opacity", function (d) {
+                        d.w = this.getComputedTextLength();
+                        return d.dx > d.w ? 1 : 0;
+                    });
+
+            d3.select(window).on("click", function () {
+                zoom(root);
+            });
+
+            d3.select("select").on("change", function () {
+                treemap.value(this.value == "size" ? size : count).nodes(root);
+                zoom(node);
+
+            });
+        }
+
+
+        function size(d) {
+            return d.size;
+        }
+
+        function count(d) {
+            return 1;
+        }
+
+        function zoom(d) {
+            var kx = w / d.dx, ky = h / d.dy;
+            x.domain([d.x, d.x + d.dx]);
+            y.domain([d.y, d.y + d.dy]);
+
+            var t = svg.selectAll("g.cell").transition()
+                    .duration(d3.event.altKey ? 7500 : 750)
+                    .attr("transform", function (d) {
+                        return "translate(" + x(d.x) + "," + y(d.y) + ")";
+                    });
+
+            t.select("rect")
+                    .attr("width", function (d) {
+                        return kx * d.dx - 1;
+                    })
+                    .attr("height", function (d) {
+                        return ky * d.dy - 1;
+                    })
+
+            t.select("text")
+                    .attr("x", function (d) {
+                        return kx * d.dx / 2;
+                    })
+                    .attr("y", function (d) {
+                        return ky * d.dy / 2;
+                    })
+                    .style("opacity", function (d) {
+                        return kx * d.dx > d.w ? 1 : 0;
+                    });
+
+            node = d;
+            d3.event.stopPropagation();
+        }
+    </script>
+{% endblock %}

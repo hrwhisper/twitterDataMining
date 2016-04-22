@@ -1,3 +1,9 @@
+.body {
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
 .carousel .carousel-inner .item {
     height: 700px;
 }
@@ -187,10 +193,9 @@
     font-size: 16px;
 }
 
-
 /*topic tool bar*/
 #topicToolBar ul.nav-tabs {
-    width:250px;
+    width: 250px;
     margin-top: 20px;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -228,9 +233,9 @@
 
 #topicToolBar ul.nav-tabs .affix, #topicToolBar ul.nav-tabs .affix-bottom {
     top: 30px; /* Set the top position of pinned element */
-    width:250px;
+    width: 250px;
 }
 
-#topicToolBar .switch{
-    float:right;
+#topicToolBar .switch {
+    float: right;
 }

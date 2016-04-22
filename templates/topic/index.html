@@ -2,16 +2,14 @@
 
 {% block mainbody %}
     {% include "topic/parameters_panel.html" %}
-
-    <div class="container">
-        <div class="col-sm-12 col-md-3">
+ <div class="col-sm-12 col-md-2">
             {% include "topic/toolbar.html" %}
         </div>
 
-        <div class="col-sm-12 col-md-9" id="result">
+
+        <div class="col-sm-12 col-md-10" id="result">
             {% include "topic/result_text.html" %}
         </div>
-    </div>
 
 
     <script src="/static/js/topic.js"></script>

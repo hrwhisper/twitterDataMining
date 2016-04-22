@@ -51,7 +51,7 @@ var userTopicParam = {
                 this.track = $('#trackText').val();
                 this.follow = $('#followText').val();
                 this.location = $('#locationText').val();
-                this.storeIntoDB = $('#streamStoreIntoDB').is(':checked'); //TODO check is it ok?
+                this.storeIntoDB = $('#streamStoreIntoDB').is(':checked');
                 this.storeIntoDBName = $('#streamStoreDBName').val();
             }
             else if (this.__mode === 2) {
@@ -92,6 +92,23 @@ var userTopicParam = {
     }
 };
 
+var resultStore = {
+    res: test_data(),
+    data: percent_visualization_format(test_data()),
+    update: function (res) {
+        this.res = res;
+        this.data = percent_visualization_format(res);
+        append_topic_text(res);
+        this.update_visual_diagrams();
+    },
+    // TODO add array to update visual diagrams
+    update_visual_diagrams: function () {
+        send_message($("#iframe_topic_bubble")[0]);
+        send_message($("#iframe_topic_treemap")[0]);
+        send_message($("#iframe_topic_sunburst")[0]);
+    }
+};
+
 jQuery.fn.extend({
     disable: function (state) {
         return this.each(function () {
@@ -104,35 +121,24 @@ jQuery.fn.extend({
     }
 });
 
-
-var res = [
-    ['1', '50%', ['a', 'b', 'c'], 'hahahahh laal'],
-    ['2', '30%', ['h', 'b', 'c'], 'hahahahh laal'],
-    ['3', '20%', ['a', 'e', 'd'], 'hahahahh xxlaal']
-];
-
-append_topic_text(res);
-
 function append_topic_text(res) {
     var topicText = $('#topicText');
     topicText.empty();
     for (var i = 0; i < res.length; i++) {
         var topic_html = '<h3><a role="button" data-toggle="collapse" href="#collapseTopic' + res[i][0] + '" ' +
             'aria-expanded="false" aria-controls="collapseTopic' + res[i][0] + '">Topic ' + res[i][0] + ' ' +
-            res[i][1] + '</a></h3>' + '<div class="collapse in" id="collapseTopic' + res[i][0] + '">' +
+            res[i][1] + '</a></h3>' + '<div class="collapse in text-justify" id="collapseTopic' + res[i][0] + '">' +
             '<p>' + res[i][2] + '</p>' + '<p>' + res[i][3] + '</p></div>';
         if (i != res.length - 1) topic_html += '<hr>';
         topicText.append(topic_html);
     }
 }
 
-
 function cancelStoreIntoDb(checkbox_obj) {
     checkbox_obj.attr("checked", false);
     $('#streamStoreIntoDB').disable(true);
     $('#streamStoreDBName').disable(true).val('');
 }
-
 
 $('#streamStoreIntoDB').click(function () {
     if ($(this).is(':checked')) {
@@ -162,7 +168,6 @@ $('#streamParameters a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     }
 });
 
-
 function startStream() {
     userTopicParam.update();
     console.log(userTopicParam.getParam());
@@ -174,8 +179,6 @@ function startStream() {
     $('#streamParameters').modal('hide');
 }
 
-
-//TODO a new request , cancle previous
 function get_topic_result() {
     $.ajax({
         url: 'stream_trends',
@@ -183,73 +186,262 @@ function get_topic_result() {
         success: function (v) {
             if (v == null)  return;
             console.log(v);
-            append_topic_text(v);
+            resultStore.update(v);
         },
         error: function (v) {
-            console.log(error + v);
+            console.log('------error------' + v);
         },
         dataType: 'json'
     });
 }
 
 function test_data() {
-    var res = [
-        [
-            "1",
-            0.6,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "2",
-            0.1,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "3",
-            0.3,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ]
-    ];
+    return [
+				[
+					"1",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"2",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"3",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"4",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"5",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"6",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"7",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"8",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"9",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"10",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"11",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"12",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"13",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"14",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"15",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"16",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"17",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				],
+				[
+					"18",
+					0.03,
+					[
+						['i',0.2],
+						['j',0.3],
+						['k',0.1],
+						['l',0.4],
+					],
+					"This is three"
+				],[
+					"19",
+					0.04,
+					[
+						['a',0.1],
+						['b',0.2],
+						['c',0.3],
+						['d',0.4],
+					],
+					"This is one"
+				],
+				[
+					"20",
+					0.03,
+					[
+						['e',0.2],
+						['f',0.3],
+						['g',0.1],
+						['h',0.4],
+					],
+					"This is two"
+				]
+			];
+}
 
+
+function getCurrentDate(){
+		var a = new Date();
+		return a.getFullYear() +"-"+(a.getMonth()+1)+"-"+ a.getDate()+" "+a.getHours()+":"+a.getMinutes()+":"+a.getSeconds();
+}
+
+function percent_visualization_format(res) {
+    if (!res) res = test_data();
     console.log(res);
 
-    var data = {'name': new Date().toString().slice(0, 25), 'children': []};
+    var data = {'name': "", 'children': []};
 
     for (var i = 0; i < res.length; i++) {
         var cur = {'name': res[i][0], 'children': []};
         var row = res[i][2];
         for (var j = 0; j < row.length; j++) {
-            var temp = {'name': row[j][0], 'size': row[j][1] * res[i][1]};
+            var temp = {'name': row[j][0], 'size': row[j][1] * res[i][1] *10};
             cur['children'].push(temp);
         }
         data['children'].push(cur);
     }
-    //	console.log(data);
     return data;
 }
 
 
 function send_message(iframe) {
-    console.log('send' + test_data());
-    iframe.contentWindow.postMessage(JSON.stringify(test_data()), '*');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(JSON.stringify(resultStore.data), '*');
 }
 
 $(function () {
@@ -265,6 +457,7 @@ $(function () {
 
             var iframe = document.createElement("iframe");
             iframe.src = "./" + id;
+            iframe.id = "iframe_" + id;
 
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {

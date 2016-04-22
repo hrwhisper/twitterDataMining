@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^$', topic.views.index),
     url(r'stream_trends$', topic.views.stream_trends),
     url(r'bubble$', topic.views.bubble),
+    url(r'treemap$', topic.views.treemap),
+    url(r'sunburst', topic.views.sunburst),
 ]

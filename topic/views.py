@@ -20,4 +20,11 @@ def stream_trends(request):
 
 
 def bubble(request):
-    return render(request, 'topic/result_bubble.html')
+    return render(request, 'topic/visualization/result_bubble.html')
+
+
+def treemap(request):
+    return render(request, 'topic/visualization/result_treemap.html')
+
+def sunburst(request):
+    return render(request, 'topic/visualization/result_sunburst.html')
