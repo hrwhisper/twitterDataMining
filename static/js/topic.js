@@ -94,18 +94,18 @@ var userTopicParam = {
 
 var resultStore = {
     res: test_data(),
-    data: percent_visualization_format(test_data()),
+    percent_data: percent_visualization_format(test_data()),
     update: function (res) {
-        this.res = res;
-        this.data = percent_visualization_format(res);
-        append_topic_text(res);
+        this.percent_data = percent_visualization_format(res);
         this.update_visual_diagrams();
     },
     // TODO add array to update visual diagrams
     update_visual_diagrams: function () {
+        send_message($("#iframe_topic_text")[0],true);
         send_message($("#iframe_topic_bubble")[0]);
         send_message($("#iframe_topic_treemap")[0]);
         send_message($("#iframe_topic_sunburst")[0]);
+        send_message($("#iframe_topic_funnel")[0]);
     }
 };
 
@@ -121,18 +121,6 @@ jQuery.fn.extend({
     }
 });
 
-function append_topic_text(res) {
-    var topicText = $('#topicText');
-    topicText.empty();
-    for (var i = 0; i < res.length; i++) {
-        var topic_html = '<h3><a role="button" data-toggle="collapse" href="#collapseTopic' + res[i][0] + '" ' +
-            'aria-expanded="false" aria-controls="collapseTopic' + res[i][0] + '">Topic ' + res[i][0] + ' ' +
-            res[i][1] + '</a></h3>' + '<div class="collapse in text-justify" id="collapseTopic' + res[i][0] + '">' +
-            '<p>' + res[i][2] + '</p>' + '<p>' + res[i][3] + '</p></div>';
-        if (i != res.length - 1) topic_html += '<hr>';
-        topicText.append(topic_html);
-    }
-}
 
 function cancelStoreIntoDb(checkbox_obj) {
     checkbox_obj.attr("checked", false);
@@ -197,227 +185,227 @@ function get_topic_result() {
 
 function test_data() {
     return [
-				[
-					"1",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"2",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"3",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"4",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"5",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"6",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"7",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"8",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"9",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"10",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"11",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"12",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"13",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"14",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"15",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"16",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"17",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				],
-				[
-					"18",
-					0.03,
-					[
-						['i',0.2],
-						['j',0.3],
-						['k',0.1],
-						['l',0.4],
-					],
-					"This is three"
-				],[
-					"19",
-					0.04,
-					[
-						['a',0.1],
-						['b',0.2],
-						['c',0.3],
-						['d',0.4],
-					],
-					"This is one"
-				],
-				[
-					"20",
-					0.03,
-					[
-						['e',0.2],
-						['f',0.3],
-						['g',0.1],
-						['h',0.4],
-					],
-					"This is two"
-				]
-			];
+        [
+            "1",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "2",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "3",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "4",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "5",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "6",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "7",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "8",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "9",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "10",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "11",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "12",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "13",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "14",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "15",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "16",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "17",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ],
+        [
+            "18",
+            0.03,
+            [
+                ['i', 0.2],
+                ['j', 0.3],
+                ['k', 0.1],
+                ['l', 0.4],
+            ],
+            "This is three"
+        ], [
+            "19",
+            0.04,
+            [
+                ['a', 0.1],
+                ['b', 0.2],
+                ['c', 0.3],
+                ['d', 0.4],
+            ],
+            "This is one"
+        ],
+        [
+            "20",
+            0.03,
+            [
+                ['e', 0.2],
+                ['f', 0.3],
+                ['g', 0.1],
+                ['h', 0.4],
+            ],
+            "This is two"
+        ]
+    ];
 }
 
 
-function getCurrentDate(){
-		var a = new Date();
-		return a.getFullYear() +"-"+(a.getMonth()+1)+"-"+ a.getDate()+" "+a.getHours()+":"+a.getMinutes()+":"+a.getSeconds();
+function getCurrentDate() {
+    var a = new Date();
+    return a.getFullYear() + "-" + (a.getMonth() + 1) + "-" + a.getDate() + " " + a.getHours() + ":" + a.getMinutes() + ":" + a.getSeconds();
 }
 
 function percent_visualization_format(res) {
@@ -427,10 +415,10 @@ function percent_visualization_format(res) {
     var data = {'name': "", 'children': []};
 
     for (var i = 0; i < res.length; i++) {
-        var cur = {'name': res[i][0], 'children': []};
+        var cur = {'name': res[i][0], 'children': [], 'size': res[i][1]};
         var row = res[i][2];
         for (var j = 0; j < row.length; j++) {
-            var temp = {'name': row[j][0], 'size': row[j][1] * res[i][1] *10};
+            var temp = {'name': row[j][0], 'size': row[j][1] * res[i][1] * 10};
             cur['children'].push(temp);
         }
         data['children'].push(cur);
@@ -439,9 +427,9 @@ function percent_visualization_format(res) {
 }
 
 
-function send_message(iframe) {
+function send_message(iframe, not_percent_data) {
     if (!iframe) return;
-    iframe.contentWindow.postMessage(JSON.stringify(resultStore.data), '*');
+    iframe.contentWindow.postMessage(JSON.stringify(not_percent_data ? resultStore.res : resultStore.percent_data), '*');
 }
 
 $(function () {
@@ -458,14 +446,13 @@ $(function () {
             var iframe = document.createElement("iframe");
             iframe.src = "./" + id;
             iframe.id = "iframe_" + id;
-
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {
-                    send_message(iframe);
+                    send_message(iframe,id==='topic_text');
                 });
             } else {
                 iframe.onload = function () {
-                    send_message(iframe);
+                    send_message(iframe,id==='topic_text');
                 };
             }
             div.appendChild(iframe);

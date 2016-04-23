@@ -21,7 +21,7 @@
 
 {% block mainbody %}
     <script>
-        var w, hx, y, svg, first = true;
+        var w, h,x, y, svg, first = true;
         window.addEventListener("message", function (evt) {
             var data = JSON.parse(evt.data);
             console.log('receive' + data);
@@ -34,7 +34,7 @@
             }
             first = false;
             w = $("body").width();
-            h = w / 1.6;
+            h = w / 1.4;
             x = d3.scale.linear().range([0, w]);
             y = d3.scale.linear().range([0, h]);
 
@@ -144,7 +144,7 @@
                     })
                     .attr("height", function (d) {
                         return ky * d.dy - 1;
-                    })
+                    });
 
             t.select("text")
                     .attr("x", function (d) {

@@ -1,0 +1,99 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+
+{% block mainbody %}
+    <script src="/static/js/echarts.min.js"></script>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script type="text/javascript">
+
+		window.addEventListener("message", function (evt) {
+			function funnel_format_data(data){
+				var t = data.children;
+				var res = [];
+                for (var i = 0; i < t.length; i++) {
+                    res.push({
+						'name' : t[i].name,
+						'value': t[i].size * 100
+					});
+                }
+				return res;
+			}
+
+			var data =  JSON.parse(evt.data);
+			var res = funnel_format_data(data);
+			draw(res);
+		}, false);
+
+
+		function draw(data){
+			//$("#main").remove();
+			//$("body").append("<div id='main'> </div>");
+
+			var name = [];
+			for (var i = 0; i < data.length; i++)
+                name.push(data[i].name);
+
+			var main = $("#main"), body = $("body");
+            main.width(body.width());
+            main.height(body.width()/1.34);
+
+			var myChart = echarts.init(document.getElementById('main'));
+
+			// 指定图表的配置项和数据
+			var option = {
+				/*title: {
+					text: '时间比例',
+					subtext: '',
+					left: 'left',
+					top: 'bottom'
+				},*/
+				tooltip: {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c}%"
+				},
+				toolbox: {
+					show: true,
+					orient: 'vertical',
+					top: 'center',
+					feature: {
+						dataView: {readOnly: false},
+						restore: {},
+						saveAsImage: {}
+					}
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left',
+                    //bottom:'15%',
+					data: name,
+					formatter: function (name) {
+					    return 'Topic ' + name;
+				    }
+				},
+				calculable: true,
+				series: [
+					{
+						name: '漏斗图',
+						type: 'funnel',
+						funnelAlign: 'right',
+						width: '80%',
+						height: '90%',
+						label: {
+							normal: {
+								position: 'inside',
+								formatter: '{b}   {c}%'
+							}
+						},
+						center: ['25%', '25%'],
+						data:data
+					}
+				]
+			};
+			myChart.setOption(option);
+		}
+    </script>
+
+
+{% endblock %}

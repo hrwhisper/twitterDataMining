@@ -1,0 +1,44 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+{% block mainbody %}
+    <div class="panel panel-default">
+        <div class="panel-heading">当前话题</div>
+        <div class="panel-body" id="topicText">
+            <h3>
+                <a role="button" data-toggle="collapse" href="#collapseTopic" aria-expanded="false"
+                   aria-controls="collapseTopic">
+                    Topic 1 50%
+                </a>
+            </h3>
+            <div class="collapse in" id="collapseTopic">
+                <p>a fax d wt wra f fx afw </p>
+                <p>a fax d wt wra f fx afw </p>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+
+    <script>
+        window.addEventListener("message", function (evt) {
+            var data = JSON.parse(evt.data);
+            console.log(data);
+
+            append_topic_text(data);
+        }, false);
+
+        function append_topic_text(res) {
+            var topicText = $('#topicText');
+            topicText.empty();
+            for (var i = 0; i < res.length; i++) {
+                var topic_html = '<h3><a role="button" data-toggle="collapse" href="#collapseTopic' + res[i][0] + '" ' +
+                        'aria-expanded="false" aria-controls="collapseTopic' + res[i][0] + '">Topic ' + res[i][0] + ' ' +
+                        res[i][1] + '</a></h3>' + '<div class="collapse in text-justify" id="collapseTopic' + res[i][0] + '">' +
+                        '<p>' + res[i][2] + '</p>' + '<p>' + res[i][3] + '</p></div>';
+                if (i != res.length - 1) topic_html += '<hr>';
+                topicText.append(topic_html);
+            }
+        }
+    </script>
+{% endblock %}
+

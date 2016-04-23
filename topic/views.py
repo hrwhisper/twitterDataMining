@@ -19,6 +19,10 @@ def stream_trends(request):
     return HttpResponse(json.dumps(res), content_type="application/json")
 
 
+def text(request):
+    return render(request, 'topic/visualization/result_text.html')
+
+
 def bubble(request):
     return render(request, 'topic/visualization/result_bubble.html')
 
@@ -26,5 +30,10 @@ def bubble(request):
 def treemap(request):
     return render(request, 'topic/visualization/result_treemap.html')
 
+
 def sunburst(request):
     return render(request, 'topic/visualization/result_sunburst.html')
+
+
+def funnel(request):
+    return render(request, 'topic/visualization/result_funnel.html')
