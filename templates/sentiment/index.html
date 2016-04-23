@@ -1,0 +1,20 @@
+{% extends "basic.html" %}
+
+{% block mainbody %}
+    {% include "sentiment/header.html" %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+                    <div class="navbar-form">
+                        <input type="text" class="form-control" style="width:80%" id="name" placeholder="iphone">
+                        <button href="#" class="btn btn-info btn-color"><span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

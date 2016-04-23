@@ -1,0 +1,23 @@
+<header class="page-header colored-background">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1>
+                    {% block header_title %}
+                        Sentiment analysis
+                    {% endblock %}
+                </h1>
+                <p class="lead">
+                    {% block header_instruction %}
+                        输入您感兴趣的词，进行查询 <br>
+                        如iphone 、 google 等
+                    {% endblock %}
+                </p>
+            </div>
+
+            <div class="col-sm-4 page-head-image">
+                <img src="{% block header_image_src %}{% endblock %}" alt="sentiment" class="img-thumbnail img-circle">
+            </div>
+        </div>
+    </div>
+</header>

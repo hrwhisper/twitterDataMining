@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-import statistic.views
+import sentiment.views
 
 urlpatterns = [
-
+    url(r'^$', sentiment.views.index),
 ]

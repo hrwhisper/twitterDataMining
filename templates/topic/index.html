@@ -1,15 +1,19 @@
 {% extends "basic.html" %}
 
 {% block mainbody %}
-    {% include "topic/parameters_panel.html" %}
-    <div class="col-sm-12 col-md-2">
-        {% include "topic/toolbar.html" %}
-    </div>
 
-    <div class="col-sm-12 col-md-10" id="result">
+    {% include "topic/header.html" %}
+    <section>
+        {% include "topic/parameters_panel.html" %}
 
-    </div>
+        <div class="col-sm-12 col-md-2">
+            {% include "topic/toolbar.html" %}
+        </div>
 
-    <script src="/static/js/topic.js"></script>
+        <div class="col-sm-12 col-md-10" id="result">
 
+        </div>
+
+        <script src="/static/js/topic.js"></script>
+    </section>
 {% endblock %}
