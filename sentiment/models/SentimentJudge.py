@@ -38,8 +38,8 @@ class SentimentJudge(object):
             predicted = s.predict(test_data)
             print np.sum(predicted == _test_target), len(_test_target), np.mean(predicted == _test_target)
     """
-    counter_vector = joblib.load('./classifier/counter_vector.pkl')
-    classifier = joblib.load('./classifier/LogisticRegression.pkl')
+    counter_vector = joblib.load('sentiment/models/classifier/counter_vector.pkl')
+    classifier = joblib.load('sentiment/models/classifier/LogisticRegression.pkl')
 
     def transform(self, X):
         """

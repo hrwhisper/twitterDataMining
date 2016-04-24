@@ -22,6 +22,8 @@ class TwitterRest(TwitterBasic):
         :return: a list contains tweets
         '''
         # search_results = self.twitter_api.search.tweets(q=q, count=100, **kw)
+        kw['lang'] = 'en'
+
         search_results = self.make_twitter_request(self.twitter_api.search.tweets, q=q, count=max_results, **kw)
         statuses = search_results['statuses']
         if save_col_name:
@@ -31,8 +33,7 @@ class TwitterRest(TwitterBasic):
         # A reasonable number of results is ~1000
         # although that number of results may not exist
         # Enforce a reasonable limit
-        # TODO cheack 1000?
-        max_results = max(1000, max_results)
+        max_results = min(1000, max_results)
 
         for _ in xrange(10):  # 10*100 = 1000
             try:
