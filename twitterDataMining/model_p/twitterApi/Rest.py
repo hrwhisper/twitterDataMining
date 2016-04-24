@@ -31,7 +31,8 @@ class TwitterRest(TwitterBasic):
         # A reasonable number of results is ~1000
         # although that number of results may not exist
         # Enforce a reasonable limit
-        # max_results = min(1000, max_results)
+        # TODO cheack 1000?
+        max_results = max(1000, max_results)
 
         for _ in xrange(10):  # 10*100 = 1000
             try:

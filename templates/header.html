@@ -1,7 +1,7 @@
 <header class="page-header colored-background">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-8">
+        <div class="row pull-left">
+            <div class="col-sm-9">
                 <h1>
                     {% block header_title %}
                         Sentiment analysis
@@ -14,10 +14,10 @@
                     {% endblock %}
                 </p>
             </div>
-
-            <div class="col-sm-4 page-head-image">
+            <div class="col-sm-3 page-head-image">
                 <img src="{% block header_image_src %}{% endblock %}" alt="sentiment" class="img-thumbnail img-circle">
             </div>
         </div>
+
     </div>
 </header>

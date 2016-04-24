@@ -1,6 +1,40 @@
 .body {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Lato,'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+nav .menu{
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+}
+
+.overlay-bar .menu li a {
+    color: #fff;
+}
+
+nav .menu li{
+    float: left;
+    margin-right: 76px;
+    position: relative;
+    list-style: none;
+}
+
+nav  .menu li a {
+    font-family: "Raleway", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #777777;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+    padding-bottom: 40px;
+    display: inline-block;
+    line-height: 14px;
 }
 
 .top-bar {
@@ -20,17 +54,17 @@
     background: none;
 }
 
-.overlay-bar .nav li a, .navbar-brand a {
+.overlay-bar .menu li a, .navbar-brand a {
     color: #fff;
 }
 
-.overlay-bar .nav li a:hover, .navbar-brand a:hover {
+.overlay-bar .menu li a:hover, .navbar-brand a:hover {
     color: #fff;
     background: none;
     text-decoration: none;
 }
 
-.overlay-bar .nav > li.disabled > a {
+.overlay-bar .menu > li.disabled > a {
     color: #bbb;
 }
 
@@ -40,7 +74,7 @@
 
 .page-header {
     margin: 0;
-    padding: 160px 0;
+    padding: 160px 0 139px 0;
     border-bottom: none;
 }
 
@@ -56,16 +90,20 @@
 }
 
 .page-header h1 {
-    font-size: 40px;
-    margin-bottom: 40px;
+    font-size: 44px;
+    margin-top:0;
+    margin-bottom: 26px;
     font-weight: 300;
     line-height: 44px;
+    font-family: "Microsoft YaHei UI", sans-serif;
 }
 
 .page-header p.lead {
     font-size: 18px;
     line-height: 30px;
-    font-weight: normal;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-family: "Comic Sans MS","Consolas", cursive, sans-serif
 }
 
 .colored-background {
@@ -114,7 +152,7 @@ section {
 }
 
 section h1 {
-    font-family: "微软雅黑";
+    font-family: "Microsoft YaHei UI", sans-serif;
 }
 
 section h6 {
@@ -216,7 +254,7 @@ section .axis {
 }
 
 .footer .table {
-    font-family: "微软雅黑";
+    font-family: "Microsoft YaHei UI", sans-serif;
     font-size: 16px;
     line-height: 1.2;
     color: #eee;

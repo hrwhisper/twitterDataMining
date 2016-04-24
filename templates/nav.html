@@ -16,26 +16,22 @@
 {#</nav>#}
 
 <div class="nav-container">
-    <nav class=" top-bar overlay-bar">
+    <nav class="top-bar overlay-bar">
         <div class="container">
             <div class="row nav-menu">
-                <div class="col-sm-3 columns navbar-brand">
-                    <a class="" href="/"> <i class="fa fa-twitter" style="font-size:20px;"></i> Twitter
-                        数据挖掘与可视化</a>
+                <div class="col-md-2 col-sm-3 columns">
+                    <i class="fa fa-twitter" style="font-size:40px;"></i>
                 </div>
-
-                <div class="col-sm-9 columns">
-                    <ul class="nav navbar-nav">
+                <div class="col-md-10 col-sm-9 columns">
+                    <ul class="menu">
                         <li class="nav-home {% active '^/$' %}"><a href="/">首页</a></li>
                         <li class="nav-topic {% active 'topic' %}"><a href="/topic">实时主题检测</a></li>
                         <li class="nav-topic {% active 'sentiment' %}"><a href="/sentiment">情感分析</a></li>
-                        <li class="disabled"><a href="#"><del>网络分析</del></a></li>
+                        <li class="disabled"><a href="#">
+                            <del>网络分析</del>
+                        </a></li>
                     </ul>
                 </div>
-            </div>
-
-            <div class="mobile-toggle">
-                <i class="icon icon_menu"></i>
             </div>
         </div>
     </nav>
