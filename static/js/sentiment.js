@@ -5,11 +5,11 @@
 
 option = {
     tooltip: {
-        formatter: "{a} <br/>{c} {b}"
+        formatter: "{c} {b}"
     },
     series: [
         {
-            name: '速度',
+            name: 'positive',
             type: 'gauge',
             z: 3,
             min: 0,
@@ -46,10 +46,10 @@ option = {
                     fontWeight: 'bolder'
                 }
             },
-            data: [{value: 40, name: 'km/h'}]
+            data: [{value: 0, name: 'positive'}]
         },
         {
-            name: '转速',
+            name: 'negative',
             type: 'gauge',
             center: ['30%', '55%'],    // 默认全局居中
             radius: '40%',
@@ -85,22 +85,28 @@ option = {
                     fontWeight: 'bolder'
                 }
             },
-            data: [{value: 1.5, name: 'x1000 r/min'}]
+            data: [{value: 0, name: 'negative'}]
         }
     ]
 };
 
-var gauge = $("#gauge"), body = gauge.parent();
+
+var gauge = $("#gauge");
 gauge.height(gauge.width() / 1.5);
+
 var myChart = echarts.init(document.getElementById('gauge'));
-
-
-option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-option.series[1].data[0].value = (Math.random() * 100).toFixed(2) - 0;
 myChart.setOption(option, true);
 
 
+$(window).resize(function() {
+    gauge.height(gauge.width() / 1.5);
+    myChart.resize();
+});
+
+
+
 function update_sentiment_result(res) {
+    // update gauge charts
     var total_positive = res['total_positive'],
         total_tweets = res['total_tweets'],
         positive_percentage = res['positive_percentage'];
@@ -111,6 +117,29 @@ function update_sentiment_result(res) {
     option.series[1].data[0].value = (negative_percentage * 100).toFixed(2) - 0;
     myChart.setOption(option, true);
 
+
+    //add text
+    $("#positive_sample_result").empty();
+    $("#negative_sample_result").empty();
+    $("#sample_result").show(); //.css("display", "block");
+
+    var positive_text = res['positive_text'],
+        negative_text = res['negative_text'];
+
+    for (var i = 0; i < positive_text.length; i++)
+        update_sentiment_text_sample(positive_text[i], true);
+
+    for (i = 0; i < negative_text.length; i++)
+        update_sentiment_text_sample(negative_text[i], false);
+}
+
+// update_sentiment_text_sample('text' , false); //just text
+function update_sentiment_text_sample(text, is_positive) {
+    var tag_head = '<li class="list-group-item">', tag_end = '</li>';
+    if (is_positive)
+        $("#positive_sample_result").append(tag_head + text + tag_end);
+    else
+        $("#negative_sample_result").append(tag_head + text + tag_end);
 }
 
 

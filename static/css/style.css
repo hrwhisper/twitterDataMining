@@ -1,9 +1,9 @@
 .body {
-    font-family: Lato,'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-family: Lato, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
-nav .menu{
+nav .menu {
     padding: 0;
     margin: 0;
     display: inline-block;
@@ -15,14 +15,14 @@ nav .menu{
     color: #fff;
 }
 
-nav .menu li{
+nav .menu li {
     float: left;
     margin-right: 76px;
     position: relative;
     list-style: none;
 }
 
-nav  .menu li a {
+nav .menu li a {
     font-family: "Raleway", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 12px;
@@ -91,7 +91,7 @@ nav  .menu li a {
 
 .page-header h1 {
     font-size: 44px;
-    margin-top:0;
+    margin-top: 0;
     margin-bottom: 26px;
     font-weight: 300;
     line-height: 44px;
@@ -103,7 +103,7 @@ nav  .menu li a {
     line-height: 30px;
     font-weight: 300;
     letter-spacing: 1px;
-    font-family: "Comic Sans MS","Consolas", cursive, sans-serif
+    font-family: "Comic Sans MS", "Consolas", cursive, sans-serif
 }
 
 .colored-background {
@@ -350,9 +350,15 @@ section .axis {
     float: right;
 }
 
-.btn-color{
-    /*color: #fff;
-    background-color: #182731;
-    border-color: #182731;
-    opacity: 0.7;*/
+.btn-color {
+    background-color: #386674;
+    border-color: #386674
+}
+
+#sentiment_sample_result .lead {
+    font-size: 17px;
+}
+
+#sentiment_sample_result .list-group li {
+    background-color: #f9f9f9;
 }
