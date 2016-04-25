@@ -1,2 +1,4 @@
-'.idea'
-'sentiment/models/classifier'
+.idea
+*.pyc
+*~
+*.swp
