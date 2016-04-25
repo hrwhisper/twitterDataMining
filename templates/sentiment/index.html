@@ -1,5 +1,13 @@
 {% extends "basic.html" %}
 
+{% block include_script %}
+    <script src="/static/js/echarts.min.js"></script>
+    <script src="/static/js/spin.min.js"></script>
+    <script src="/static/js/loading-control.js"></script>
+    <script src="/static/js/sentiment.js"></script>
+{% endblock %}
+
+
 {% block mainbody %}
     {% include "sentiment/header.html" %}
 
@@ -20,8 +28,8 @@
                 <div id="gauge"></div>
             </div>
 
-              <div class="row" id="sample_result" style="display: none">
-{#            <div class="row" id="sentiment_sample_result">#}
+            <div class="row" id="sample_result" style="display: none">
+                {#            <div class="row" id="sentiment_sample_result">#}
                 <div class="col-md-6 col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="lead"><b>Positive tweets</b></span></div>
@@ -32,7 +40,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="lead"><b>Negative tweets</b></span></div>
-                        <ul class="list-group"  id="negative_sample_result">
+                        <ul class="list-group" id="negative_sample_result">
                             <li class="list-group-item">图像的数量</li>
                             <li class="list-group-item">24*7 支持</li>
                             <li class="list-group-item">每年更新成本</li>
@@ -43,8 +51,7 @@
         </div>
     </section>
 
-    <script src="/static/js/echarts.min.js"></script>
-    <script src="/static/js/sentiment.js"></script>
+
 
     {% include "footer.html" %}
 {% endblock %}

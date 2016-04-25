@@ -1,5 +1,13 @@
 {% extends "basic.html" %}
 
+{% block include_script %}
+    <script src="/static/js/spin.min.js"></script>
+    <script src="/static/js/loading-control.js"></script>
+    <link href="/static/css/bootstrap-switch.min.css" rel="stylesheet">
+    <script src="/static/js/d3.v3.min.js"></script>
+{% endblock %}
+
+
 {% block mainbody %}
 
     {% include "topic/header.html" %}

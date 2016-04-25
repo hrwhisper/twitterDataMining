@@ -2,6 +2,25 @@
  * Created by hrwhisper on 2016/4/24.
  */
 
+window.onload = function () {
+
+
+    gauge = $("#gauge");
+    gauge.height(gauge.width() / 1.5);
+
+    myChart = echarts.init(document.getElementById('gauge'));
+    myChart.setOption(option, true);
+
+
+    $(window).resize(function () {
+        gauge.height(gauge.width() / 1.5);
+        myChart.resize();
+    });
+
+
+};
+
+
 
 option = {
     tooltip: {
@@ -90,21 +109,6 @@ option = {
     ]
 };
 
-
-var gauge = $("#gauge");
-gauge.height(gauge.width() / 1.5);
-
-var myChart = echarts.init(document.getElementById('gauge'));
-myChart.setOption(option, true);
-
-
-$(window).resize(function() {
-    gauge.height(gauge.width() / 1.5);
-    myChart.resize();
-});
-
-
-
 function update_sentiment_result(res) {
     // update gauge charts
     var total_positive = res['total_positive'],
@@ -150,6 +154,7 @@ function get_sentiment_result() {
     };
 
     console.log(data);
+    loading_control.start();
 
     $.ajax({
         url: 'sentiment_query',
@@ -157,9 +162,11 @@ function get_sentiment_result() {
         success: function (v) {
             console.log(v);
             update_sentiment_result(v);
+            loading_control.stop();
         },
         error: function (v) {
             console.log('------error------' + v);
+            loading_control.stop();
         },
         dataType: 'json'
     });

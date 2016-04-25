@@ -96,6 +96,7 @@ var resultStore = {
     res: test_data(),
     percent_data: percent_visualization_format(test_data()),
     update: function (res) {
+        this.res = res;
         this.percent_data = percent_visualization_format(res);
         this.update_visual_diagrams();
     },
@@ -168,6 +169,7 @@ function startStream() {
 }
 
 function get_topic_result() {
+    loading_control.start();
     $.ajax({
         url: 'stream_trends',
         data: userTopicParam.getParam(),
@@ -175,9 +177,11 @@ function get_topic_result() {
             if (v == null)  return;
             console.log(v);
             resultStore.update(v);
+            loading_control.stop();
         },
         error: function (v) {
             console.log('------error------' + v);
+            loading_control.stop();
         },
         dataType: 'json'
     });
@@ -410,7 +414,7 @@ function getCurrentDate() {
 
 function percent_visualization_format(res) {
     if (!res) res = test_data();
-    console.log(res);
+    // console.log(res);
 
     var data = {'name': "", 'children': []};
 
