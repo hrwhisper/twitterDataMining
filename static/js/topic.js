@@ -3,12 +3,12 @@
  */
 
 var userTopicParam = {
-    // mode 2
+    // mode 1
     track: null,
     follow: null,
     location: null,
 
-    // mode 3
+    // mode 2
     startDate: null,
     endDate: null,
     localCollectionsName: null,
@@ -69,7 +69,7 @@ var userTopicParam = {
     getParam: function () {
         if (this.__mode === 0 || this.__mode === 1) {
             return {
-                'mode': this.__mode,
+                'mode': 1,
                 'track': this.track,
                 'follow': this.follow,
                 'location': this.location,

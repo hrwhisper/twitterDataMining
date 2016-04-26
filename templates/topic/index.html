@@ -11,17 +11,62 @@
 {% block mainbody %}
 
     {% include "topic/header.html" %}
+    {% include "topic/parameters_panel.html" %}
+    {% include "topic/toolbar.html" %}
+
+    <section id="instruction">
+        <div class="container font-family-yahei">
+            <div class="col-md-4">
+                <h4> <i class="fa fa-cog" aria-hidden="true"></i><strong> 控制面板</strong></li>
+                </h4>
+                <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> 位于最左下角，不影响可视化结果<br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 随页面滚动，方便控制 <br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 点击进行速率控制或者选择可视化图表</p>
+
+
+            </div>
+
+            <div class="col-md-4 col-md-offset-1">
+                <h4> <i class="fa fa-pause-circle-o" aria-hidden="true"></i> <strong> 速率控制</strong></h4>
+                <p>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 暂停时，服务器仍继续计算，但页面不更新 <br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 停止时，服务器也停止计算<br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 点击开始恢复计算 </p>
+            </div>
+
+            <div class="col-md-2 col-md-offset-1">
+                <h4> <i class="fa fa-pie-chart" aria-hidden="true"></i> <strong> 多种图形</strong></h4>
+                <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> 文字结果- 代表性推文 <br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 话题比例 <br>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i> 词的比例</p>
+            </div>
+        </div>
+    </section>
+
+
     <section>
-        {% include "topic/parameters_panel.html" %}
+        <div class="container">
+            <div class="text-center font-family-yahei" style="font-size:25px;">
+                <i class="fa fa-angle-double-down " aria-hidden="true" style="font-size:40px;margin-bottom: 50px;"></i>
 
-        <div class="col-sm-12 col-md-2">
-            {% include "topic/toolbar.html" %}
+                <p><i class="fa fa-hand-o-right" aria-hidden="true"></i> 你想知道 <strong>现在</strong> 人们在讨论什么话题么？</p>
+                <p><i class="fa fa-hand-o-right" aria-hidden="true"></i> 你想跟踪 <strong>某些特定用户</strong> 谈论的话题么？</p>
+                <p><i class="fa fa-hand-o-right" aria-hidden="true"></i> 你想查看 <strong>某些地区</strong> 人们谈论的话题么？</p>
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters"
+                        style="margin-top: 50px;background-color:#418594;border:none">START NOW
+                </button>
+            </div>
         </div>
+    </section>
 
-        <div class="col-sm-12 col-md-10" id="result">
 
+
+    <section>
+        <div class="container">
+            <div class="col-sm-12" id="result">
+
+            </div>
         </div>
-
         <script src="/static/js/topic.js"></script>
     </section>
 {% endblock %}
