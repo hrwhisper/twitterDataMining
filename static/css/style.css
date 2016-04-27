@@ -89,10 +89,9 @@ nav .menu li a {
     background-color: #333333;
 }
 
-.carousel .carousel-inner .item:before{
+.carousel .carousel-inner .item:before {
     opacity: 0.6;
 }
-
 
 .page-header h1 {
     font-size: 44px;
@@ -373,10 +372,13 @@ section .axis {
     background-color: #f9f9f9;
 }
 
+#instruction {
+    padding-left: 60px;
+}
+
 #instruction > div > div h4 {
     margin-bottom: 20px;
 }
-
 
 .font-family-yahei {
     font-family: "Microsoft YaHei UI", sans-serif;

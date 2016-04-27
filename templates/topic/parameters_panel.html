@@ -10,7 +10,7 @@
 
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active"><a href="#quickStart" data-toggle="tab">快速开始</a></li>
-                    <li><a href="#onlineStreamSetting" data-toggle="tab">在线数据设置</a></li>
+                    <li><a href="#onlineStreamSetting" data-toggle="tab">在线数据高级设置</a></li>
                     <li><a href="#localDataSetting" data-toggle="tab">本地数据设置</a></li>
                 </ul>
 
@@ -50,21 +50,21 @@
                         <div class="panel-body">
                             <div class="col-sm-12">
                                 <label for="trackText" class="control-label">Track:</label><br/>
-                                <i>Keywords to track. Phrases of keywords are specified by a comma-separated
-                                    list.</i>
+                                <i>Keywords to track. Phrases of keywords are specified by a comma-separated list.</i>
                                 <textarea class="form-control" id="trackText" rows="3"></textarea>
 
                                 <hr>
                                 <label for="followText" class="control-label">Follow:</label><br/>
                                 <i>A comma separated list of user IDs, indicating the users to return statuses for
-                                    in the
-                                    stream.</i>
+                                    in the stream.</i>
                                 <textarea class="form-control" id="followText" rows="3"></textarea>
 
                                 <hr>
                                 <label for="locationText" class="control-label">Locations:</label><br/>
-                                <i>Specifies a set of bounding boxes to track. </i>
-                                <textarea class="form-control" id="locationText" rows="3"></textarea>
+                                <i>A comma-separated list of longitude,latitude pairs specifying a set of bounding boxes
+                                    to filter Tweets by. </i> <br>
+                                使用 <a data-toggle="modal" data-target="#google_maps_api"><strong> google map </strong></a>选取坐标
+                                <textarea class="form-control" id="locationText" rows="2"></textarea>
                             </div>
                         </div>
                     </div>
@@ -119,9 +119,55 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="streamStatus.start_stream()" id="startTopicButton">Start
+                <button type="button" class="btn btn-primary" onclick="streamStatus.start_stream()"
+                        id="startTopicButton">Start
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="google_maps_api" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    选取locations
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div id="map_canvas" style="width: 100%; height: 450px"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/googleMap.js"></script>
+<script>
+    $("#google_maps_api").on("shown.bs.modal", function () {
+        googleMap.initialize();
+       // googleMap.maps.event.trigger(map, "resize");
+    }).on('hide.bs.modal', function () {
+        var res = '';
+        for (i in googleMap.markers)
+            res += googleMap.markers[i].geo + ',';
+
+        res = res.substring(0,res.length-1);
+        $("#locationText").val(res);
+    });
+
+
+</script>
