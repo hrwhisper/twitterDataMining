@@ -11,11 +11,18 @@ def index(request):
     return render(request, 'topic/index.html')
 
 
-# TODO 检查参数的合法性
+# TODO 检查参数的合法性, and change to post method
 def stream_trends(request):
     param_manager = TopicParameterManager(request.GET.items())
     topic_trends = TopicTrendsManager(param_manager)
     res = topic_trends.get_result(param_manager)
+    return HttpResponse(json.dumps(res), content_type="application/json")
+
+
+def stop_trends(request):
+    topic_trends = TopicTrendsManager(None)
+    topic_trends.stop()
+    res = {"stop": "stop success"}
     return HttpResponse(json.dumps(res), content_type="application/json")
 
 

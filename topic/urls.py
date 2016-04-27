@@ -19,6 +19,7 @@ import topic.views
 urlpatterns = [
     url(r'^$', topic.views.index),
     url(r'stream_trends$', topic.views.stream_trends),
+    url(r'stop_trends$', topic.views.stop_trends),
     url(r'text$', topic.views.text),
     url(r'bubble$', topic.views.bubble),
     url(r'treemap$', topic.views.treemap),

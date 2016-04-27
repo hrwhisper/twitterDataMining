@@ -42,7 +42,8 @@ var loading_control = {
     },
 
     stop: function () {
-        this.spinner.stop();
+        if(this.spinner)
+            this.spinner.stop();
         this.div_wait_bg.style.display = "none";
     }
 };

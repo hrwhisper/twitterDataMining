@@ -19,7 +19,7 @@ var userTopicParam = {
     storeIntoDB: false,
     storeIntoDBName: null,
 
-    __first: true,
+    // __first: true,
     __mode: 0, //0:quick start 1:online stream 2:local data
 
     setMode1None: function () {
@@ -102,13 +102,99 @@ var resultStore = {
     },
     // TODO add array to update visual diagrams
     update_visual_diagrams: function () {
-        send_message($("#iframe_topic_text")[0],true);
-        send_message($("#iframe_topic_bubble")[0]);
-        send_message($("#iframe_topic_treemap")[0]);
-        send_message($("#iframe_topic_sunburst")[0]);
-        send_message($("#iframe_topic_funnel")[0]);
+        this.send_message($("#iframe_topic_text")[0], true);
+        this.send_message($("#iframe_topic_bubble")[0]);
+        this.send_message($("#iframe_topic_treemap")[0]);
+        this.send_message($("#iframe_topic_sunburst")[0]);
+        this.send_message($("#iframe_topic_funnel")[0]);
+    },
+
+    send_message: function (iframe, not_percent_data) {
+        if (!iframe) return;
+        iframe.contentWindow.postMessage(JSON.stringify(not_percent_data ? this.res : this.percent_data), '*');
     }
 };
+
+var streamStatus = {
+    mode: 0, //0 continue, 1:pause, 2:stop
+    interval: null,
+    continue_stream: function () {
+        if (this.mode == 0) return null;
+        this.mode = 0;
+        this.safe_interval();
+    },
+
+    pause_stream: function () {
+        if (this.mode == 1) return null;
+        this.mode = 1;
+        this.stop_interval();
+    },
+
+    stop_stream: function () {
+        if (this.mode == 2) return null;
+        this.mode = 2;
+        this.stop_interval();
+        $.ajax({
+            url: 'stop_trends',
+            //data:'',
+            success: function (v) {
+                if (v == null)  return;
+                console.log(v);
+            },
+            error: function (v) {
+                console.log('------error------' + v);
+            },
+            dataType: 'json'
+        });
+    },
+
+    start_stream: function () {
+        userTopicParam.update();
+        console.log(userTopicParam.getParam());
+
+        loading_control.start();
+        if (this.interval) {
+            this.interval.clearInterval();
+            this.interval = null;
+        }
+        this.safe_interval();
+        //.__first = false;
+        $('#streamParameters').modal('hide');
+    },
+
+    stop_interval: function () {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
+    },
+
+    safe_interval: function () { //to prevent double interval
+        this.stop_interval();
+        get_topic_result();
+        this.interval = setInterval('get_topic_result()', 5000);
+    }
+
+};
+
+function get_topic_result() {
+    $.ajax({
+        url: 'stream_trends',
+        data: userTopicParam.getParam(),
+        success: function (v) {
+            if (v == null)  return;
+            console.log(v);
+            resultStore.update(v);
+            loading_control.stop();
+        },
+        error: function (v) {
+            console.log('------error------' + v);
+            loading_control.stop();
+        },
+        dataType: 'json'
+    });
+}
+
 
 jQuery.fn.extend({
     disable: function (state) {
@@ -121,7 +207,6 @@ jQuery.fn.extend({
         });
     }
 });
-
 
 function cancelStoreIntoDb(checkbox_obj) {
     checkbox_obj.attr("checked", false);
@@ -157,35 +242,6 @@ $('#streamParameters a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     }
 });
 
-function startStream() {
-    userTopicParam.update();
-    console.log(userTopicParam.getParam());
-    get_topic_result();
-    if (userTopicParam.__first)
-        setInterval('get_topic_result()', 10000);
-    userTopicParam.__first = false;
-    //          TODO wait css cancel
-    $('#streamParameters').modal('hide');
-}
-
-function get_topic_result() {
-    loading_control.start();
-    $.ajax({
-        url: 'stream_trends',
-        data: userTopicParam.getParam(),
-        success: function (v) {
-            if (v == null)  return;
-            console.log(v);
-            resultStore.update(v);
-            loading_control.stop();
-        },
-        error: function (v) {
-            console.log('------error------' + v);
-            loading_control.stop();
-        },
-        dataType: 'json'
-    });
-}
 
 function test_data() {
     return [
@@ -406,7 +462,6 @@ function test_data() {
     ];
 }
 
-
 function getCurrentDate() {
     var a = new Date();
     return a.getFullYear() + "-" + (a.getMonth() + 1) + "-" + a.getDate() + " " + a.getHours() + ":" + a.getMinutes() + ":" + a.getSeconds();
@@ -431,11 +486,6 @@ function percent_visualization_format(res) {
 }
 
 
-function send_message(iframe, not_percent_data) {
-    if (!iframe) return;
-    iframe.contentWindow.postMessage(JSON.stringify(not_percent_data ? resultStore.res : resultStore.percent_data), '*');
-}
-
 $(function () {
     $('#topicToolBar input[type="checkbox"]').bootstrapSwitch();
     $('#topicToolBar input[type="checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
@@ -452,11 +502,11 @@ $(function () {
             iframe.id = "iframe_" + id;
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {
-                    send_message(iframe,id==='topic_text');
+                    resultStore.send_message(iframe, id === 'topic_text');
                 });
             } else {
                 iframe.onload = function () {
-                    send_message(iframe,id==='topic_text');
+                    resultStore.send_message(iframe, id === 'topic_text');
                 };
             }
             div.appendChild(iframe);
@@ -465,5 +515,20 @@ $(function () {
             id = '#' + id;
             $(id).remove();
         }
+    });
+
+    $("#continue_stream").click(function () {
+        console.log("continue");
+        streamStatus.continue_stream();
+    });
+
+    $("#pause_stream").click(function () {
+        console.log("pause");
+        streamStatus.pause_stream();
+    });
+
+    $("#stop_stream").click(function () {
+        console.log("stop");
+        streamStatus.stop_stream();
     });
 });

@@ -1,37 +1,5 @@
 <script src="/static/js/bootstrap-switch.min.js"></script>
 
-
-{#<div id="topicToolBar">#}
-{#    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#streamParameters"#}
-{#            style="margin-bottom: 10px">#}
-{#        话题追踪#}
-{#    </button>#}
-{#    <ul class="nav nav-tabs nav-stacked"  data-offset-top="125">#}
-{#        <li><a href="#topic_text" >文字结果#}
-{#                <span style="float:right">#}
-{#                    <input type="checkbox" name="topic_text" data-size="mini">#}
-{#                </span>#}
-{#        </a></li>#}
-{##}
-{#        <li><a href="#topic_bubble">Bubble#}
-{#        <span style="float:right">#}
-{#                    <input type="checkbox" name="topic_bubble" data-size="mini">#}
-{#                </span></a></li>#}
-{#        <li><a href="#topic_treemap">Treemap#}
-{#        <span style="float:right">#}
-{#                    <input type="checkbox" name="topic_treemap" data-size="mini">#}
-{#                </span></a></li>#}
-{#        <li><a href="#topic_sunburst">Sunburst#}
-{#        <span style="float:right">#}
-{#                    <input type="checkbox" name="topic_sunburst" data-size="mini">#}
-{#                </span></a></li>#}
-{#        <li><a href="#topic_funnel">Funnel#}
-{#        <span style="float:right">#}
-{#                    <input type="checkbox" name="topic_funnel" data-size="mini">#}
-{#                </span></a></li>#}
-{#    </ul>#}
-{#</div>#}
-
 <div id="topicToolBar">
    <div class="btn-group dropup">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -40,9 +8,9 @@
         <ul class="dropdown-menu">
             <li><a data-toggle="modal" data-target="#streamParameters"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i> 设置</a></li>
             <li class="divider"></li>
-            <li><a href="#"><i class="fa fa-play" aria-hidden="true"></i> start </a></li>
-            <li><a href="#"><i class="fa fa-pause" aria-hidden="true"></i> pause </a></li>
-            <li><a href="#"><i class="fa fa-stop" aria-hidden="true"></i> stop </a></li>
+            <li id="continue_stream"><a><i class="fa fa-play" aria-hidden="true"></i> continue </a></li>
+            <li id="pause_stream"><a><i class="fa fa-pause" aria-hidden="true"></i> pause </a></li>
+            <li id="stop_stream"><a ><i class="fa fa-stop" aria-hidden="true"></i> stop </a></li>
         </ul>
     </div>
 
@@ -50,7 +18,7 @@
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
 
       <ul class="dropdown-menu" role="menu" style="width:180px">
-        <li><a href="#topic_text" >text<span style="float:right"> <input type="checkbox" name="topic_text" data-size="mini"></span></a></li>
+        <li><a href="#topic_text" >Text<span style="float:right"> <input type="checkbox" name="topic_text" data-size="mini"></span></a></li>
         <li class="divider"></li>
         <li><a href="#topic_bubble">Bubble <span style="float:right"><input type="checkbox" name="topic_bubble" data-size="mini"></span></a></li>
         <li><a href="#topic_treemap">Treemap<span style="float:right"> <input type="checkbox" name="topic_treemap" data-size="mini"> </span></a></li>

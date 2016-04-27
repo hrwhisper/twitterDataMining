@@ -89,6 +89,11 @@ nav .menu li a {
     background-color: #333333;
 }
 
+.carousel .carousel-inner .item:before{
+    opacity: 0.6;
+}
+
+
 .page-header h1 {
     font-size: 44px;
     margin-top: 0;
@@ -103,7 +108,7 @@ nav .menu li a {
     line-height: 30px;
     font-weight: 300;
     letter-spacing: 1px;
-    font-family: "Comic Sans MS", "Consolas", cursive, sans-serif
+    font-family: "Comic Sans MS", "Consolas", cursive, sans-serif;
 }
 
 .colored-background {
@@ -359,8 +364,6 @@ section .axis {
     background-color: #386674;
     border-color: #386674
 }
-
-
 
 #sentiment_sample_result .lead {
     font-size: 17px;

@@ -30,8 +30,10 @@ class TopicTrendsManager(object):
         self.lock = threading.Lock()
         self.parent_conn, self.child_conn = multiprocessing.Pipe()
 
-        self.topic_trends = TopicTrends(param, self.child_conn)
-        self.topic_trends.start()
+        # self.topic_trends = TopicTrends(param, self.child_conn)
+        # self.topic_trends.start()
+
+        self.topic_trends = None
 
         topic_trends_get = threading.Thread(target=self.receive_lda_result)
         topic_trends_get.start()
@@ -43,6 +45,12 @@ class TopicTrendsManager(object):
         :return: topic_list or None
         """
         res = None
+
+        if not self.topic_trends:
+            self.topic_trends = TopicTrends(param, self.child_conn)
+            self.topic_trends.start()
+            self.param = param
+            return res
 
         if self.param == param:
             if self.lock.acquire():
@@ -68,6 +76,13 @@ class TopicTrendsManager(object):
             self.lock.acquire()
             self.topics.append(res)
             self.lock.release()
+
+    def stop(self):
+        if self.topic_trends:
+            self.topic_trends.terminate()
+            self.topic_trends = None
+        self.topics = []
+        # TODO stop receive_lda_result Threads
 
 
 class TopicTrends(multiprocessing.Process):
