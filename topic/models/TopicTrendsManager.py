@@ -139,18 +139,22 @@ class TopicTrends(multiprocessing.Process):
         print 'total_tweets', len(tweets)
         # DO something from tweets
 
-        doc_chunk = [tweet['text'] for tweet in tweets]
-        print len(doc_chunk)
+        # doc_chunk = [tweet['text'] for tweet in tweets]
+        print len(tweets)
         if not self.olda:
-            self.corpus = Corpus(doc_chunk, chunk_limit=self.param.LDA_timeWindow)
+            self.corpus = Corpus(tweets, chunk_limit=self.param.LDA_timeWindow)
             self.olda = OnlineLDA(self.corpus, K=self.param.LDA_k)
         else:
-            self.olda.fit(doc_chunk)
+            self.olda.fit(tweets)
 
-        res = self.olda.get_lda_info()
-        for topic_id, topic_likelihood, topic_words, topic_tweets in res:
-            print '{}%\t{}'.format(round(topic_likelihood * 100, 2), topic_words)
-            print '\t', topic_tweets
+        res = {
+            "lda": self.olda.get_lda_info(),
+            "geo": self.olda.corpus.locations_count
+        }
+        print '-------lda complete'
+        # for topic_id, topic_likelihood, topic_words, topic_tweets in res["lda"]:
+        #     print '{}%\t{}'.format(round(topic_likelihood * 100, 2), topic_words)
+        #     print '\t', topic_tweets
 
         self.lda_send_conn.send(res)
 

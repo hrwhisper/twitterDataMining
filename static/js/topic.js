@@ -93,26 +93,40 @@ var userTopicParam = {
 };
 
 var resultStore = {
-    res: test_data(),
+    lda_result: test_data(),
     percent_data: percent_visualization_format(test_data()),
-    update: function (res) {
-        this.res = res;
-        this.percent_data = percent_visualization_format(res);
+    geo: geo_test_data(),
+    update: function (v) {
+        this.lda_result = v["lda"];
+        this.percent_data = percent_visualization_format(v["lda"]);
+        this.geo = geo_visualization_format(v["geo"]);
         this.update_visual_diagrams();
     },
     // TODO add array to update visual diagrams
     update_visual_diagrams: function () {
-        this.send_message($("#iframe_topic_text")[0], true);
+        this.send_message($("#iframe_topic_text")[0], "topic_text");
         this.send_message($("#iframe_topic_bubble")[0]);
         this.send_message($("#iframe_topic_treemap")[0]);
         this.send_message($("#iframe_topic_sunburst")[0]);
         this.send_message($("#iframe_topic_funnel")[0]);
+        this.send_message($("#iframe_heatmap")[0], "heatmap");
     },
 
-    send_message: function (iframe, not_percent_data) {
+    send_message: function (iframe, id) {
         if (!iframe) return;
-        iframe.contentWindow.postMessage(JSON.stringify(not_percent_data ? this.res : this.percent_data), '*');
+        if (id === "topic_text") {
+            iframe.contentWindow.postMessage(JSON.stringify(this.lda_result), '*');
+        }
+        else if (id === "heatmap") {
+            console.log("heatmap");
+            iframe.contentWindow.postMessage(JSON.stringify(this.geo), '*');
+        }
+        else {
+            iframe.contentWindow.postMessage(JSON.stringify(this.percent_data), '*');
+        }
+
     }
+
 };
 
 var streamStatus = {
@@ -142,7 +156,8 @@ var streamStatus = {
                 console.log(v);
             },
             error: function (v) {
-                console.log('------error------' + v);
+                console.log('------error------');
+                console.log(v);
             },
             dataType: 'json'
         });
@@ -188,7 +203,8 @@ function get_topic_result() {
             loading_control.stop();
         },
         error: function (v) {
-            console.log('------error------' + v);
+            console.log('------error------');
+            console.log(v);
             loading_control.stop();
         },
         dataType: 'json'
@@ -462,9 +478,25 @@ function test_data() {
     ];
 }
 
-function getCurrentDate() {
-    var a = new Date();
-    return a.getFullYear() + "-" + (a.getMonth() + 1) + "-" + a.getDate() + " " + a.getHours() + ":" + a.getMinutes() + ":" + a.getSeconds();
+function geo_test_data() {
+    return [
+        [121.15, 31.89, 9],
+        [-109.781327, 39.608266, 100],
+        [-120.38, 37.35, 33],
+        [-122.207216, 29.985295, 44],
+        [123.97, 47.33, 55],
+        [120.13, 33.38, 11],
+        [118.87, 42.28, 66],
+        [120.33, 36.07, 77],
+        [121.52, 36.89, 88],
+        [102.188043, 38.520089, 123],
+        [118.58, 24.93, 99],
+        [-118.58, 24.73, 9],
+        [-118.58, 24.83, 50],
+        [-120.53, 36.86, 256],
+        [119.46, 35.42, 50],
+        [119.97, 35.88, 1]
+    ];
 }
 
 function percent_visualization_format(res) {
@@ -485,6 +517,17 @@ function percent_visualization_format(res) {
     return data;
 }
 
+function geo_visualization_format(data) {
+    var res = [];
+    for(var geo in data){
+        //console.log(geo);
+        var temp = geo.split(",");
+        if(temp=="null") continue;
+        res.push([temp[0],temp[1],data[geo]]);
+    }
+    return res;
+}
+
 
 $(function () {
     $('#topicToolBar input[type="checkbox"]').bootstrapSwitch();
@@ -502,11 +545,11 @@ $(function () {
             iframe.id = "iframe_" + id;
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {
-                    resultStore.send_message(iframe, id === 'topic_text');
+                    resultStore.send_message(iframe, id);
                 });
             } else {
                 iframe.onload = function () {
-                    resultStore.send_message(iframe, id === 'topic_text');
+                    resultStore.send_message(iframe, id);
                 };
             }
             div.appendChild(iframe);

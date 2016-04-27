@@ -10877,3 +10877,15 @@ details: Exceeded connection limit for user
 details: Exceeded connection limit for user
  
 2016-04-18 09:38:58    '' 
+2016-04-27 16:03:56    Twitter sent status 406 for URL: 1.1/statuses/filter.json using parameters: (language=en&locations=-122.75%2C36.8-73%2C41&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=14311526708360036824&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1461744229&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&oauth_signature=FTBoJqnTyOwP9luSLcga8axQtZc%3D)
+details: Location track items must be given as pairs of comma separated lat/longs: [Ljava.lang.String;@3d73ab75
+ 
+2016-04-27 16:16:29    Twitter sent status 406 for URL: 1.1/statuses/filter.json using parameters: (language=en&locations=-122.75%2C36.8%2C-73%2C41%2C-74.05%2C40.81%2C-76.99%2C38.79%2C-118.30%2C34.23%2C-122.39%2C37.96%2C-122.03%2C37.37%2C2.31%2C48.98%2C-0.14%2C51.52%2C-2.97%2C53.46%2C-1.24%2C51.76%2C-3.72%2C40.43%2C2.17%2C41.41%2C-0.38%2C39.48&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=7549848880381616067&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1461744983&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&oauth_signature=Z5kkPyEl13VSnmWQzGxQsFj0MrE%3D)
+details: Bounding box is invalid: -74.05, 40.81, -76.99, 38.79.  The first pair must be the SW corner of the box
+ 
+2016-04-27 16:17:48    Twitter sent status 406 for URL: 1.1/statuses/filter.json using parameters: (language=en&locations=-118.30%2C34.23%2C-122.39%2C37.96%2C-122.03%2C37.37%2C2.31%2C48.98%2C-0.14%2C51.52%2C-2.97%2C53.46%2C-1.24%2C51.76%2C-3.72%2C40.43%2C2.17%2C41.41%2C-0.38%2C39.48&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=14714626981632174486&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1461745062&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&oauth_signature=Ol%2BTP0vf9ZYGr0%2BlE1p1lEqtA04%3D)
+details: Bounding box is invalid: -118.30, 34.23, -122.39, 37.96.  The first pair must be the SW corner of the box
+ 
+2016-04-27 16:20:35    Twitter sent status 406 for URL: 1.1/statuses/filter.json using parameters: (language=en&locations=-74.05%2C40.81%2C-76.99%2C38.79&oauth_consumer_key=gtebC0hJOZNB0GVxWG2OLi8xh&oauth_nonce=6047350331602113992&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1461745229&oauth_token=4649573330-IEiLE9gFzYEc6FoBqL2zZSyYKBOn86LdkHgtvid&oauth_version=1.0&oauth_signature=2Gp3AQT6BrARcLwVExLkbO%2FzNb4%3D)
+details: Bounding box is invalid: -74.05, 40.81, -76.99, 38.79.  The first pair must be the SW corner of the box
+ 

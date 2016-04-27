@@ -162,7 +162,7 @@
        // googleMap.maps.event.trigger(map, "resize");
     }).on('hide.bs.modal', function () {
         var res = '';
-        for (i in googleMap.markers)
+        for (var i in googleMap.markers)
             res += googleMap.markers[i].geo + ',';
 
         res = res.substring(0,res.length-1);

@@ -1,0 +1,102 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+
+{% block mainbody %}
+    <script src="/static/js/echarts.min.js"></script>
+    <div id="main"></div>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        window.addEventListener("message", function (evt) {
+            console.log("Receive , heatmap");
+            var data = JSON.parse(evt.data);
+            console.log(data);
+            draw(data);
+        }, false);
+
+        function get_max(data) {
+            var max = 0;
+            for (var i = 0; i < data.length; i++) {
+                max = Math.max(data[i][2], max);
+            }
+            return max;
+        }
+
+        function draw(data) {
+            $("#main").remove();
+            $("body").append("<div id='main'> </div>");
+
+            var main = $("#main"), body = $("body");
+            main.width(body.width());
+            main.height(body.width() / 1.34);
+
+
+            console.log("max " + get_max(data));
+            $.get('/static/json/world.json', function (worldJson) {
+                echarts.registerMap('world', worldJson);
+                var myChart = echarts.init(document.getElementById('main'));
+
+                myChart.setOption({
+                    series: [{
+                        type: 'map',
+                        map: 'world'
+                    }]
+                });
+
+                option = {
+                    title: {
+                        text: '当前时间窗口下推文的地理位置信息',
+                        subtext: 'data from twitter.stream',
+                        left: 'center',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    backgroundColor: '#404a59',
+                    visualMap: {
+                        min: 0,
+                        max: get_max(data),
+                        inRange: {
+                            color: ['#d94e5d', '#eac736', '#50a3ba'].reverse()
+                        },
+                        text: ['高', '低'],           // 文本，默认为数值文本
+                        calculable: true,
+                        textStyle: {
+                            color: '#bababa'
+                        }
+                    },
+                    geo: {
+                        map: 'world',
+                        label: {
+                            emphasis: {
+                                show: false
+                            }
+                        },
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                areaColor: '#323c48',
+                                borderColor: '#111'
+                            },
+                            emphasis: {
+                                areaColor: '#2a333d'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'AQI',
+                        type: 'heatmap',
+                        coordinateSystem: 'geo',
+                        data: data //经度 -  纬度 - value
+                    }]
+                };
+                myChart.setOption(option);
+            });
+        }
+
+
+    </script>
+{% endblock %}

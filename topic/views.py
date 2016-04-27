@@ -44,3 +44,7 @@ def sunburst(request):
 
 def funnel(request):
     return render(request, 'topic/visualization/result_funnel.html')
+
+
+def heatmap(request):
+    return render(request, 'topic/visualization/result_heatmap.html')

@@ -73,9 +73,9 @@ class OnlineLDA(object):
         Note that if you pass the same set of D documents in every time and
         set kappa=0 this class can also be used to do batch VB.
         """
-        self._corpus = corpus
+        self.corpus = corpus
         self._K = K
-        self._W = len(self._corpus.vocab)
+        self._W = len(self.corpus.vocab)
         self._D = len(corpus)
         self._alpha = 1.0 / self._K  # np.asarray([1.0 / self._K for _ in xrange(self._K)])  # 1.0 / K  #
         self._eta = 1.0 / self._K  # np.asarray([1.0 / self._K for _ in xrange(self._K)]).reshape((self._K, 1))
@@ -199,7 +199,7 @@ class OnlineLDA(object):
         # rhot will be between 0 and 1, and says how much to weight
         # the information we got from this mini-batch.
         if not corpus:
-            corpus = self._corpus
+            corpus = self.corpus
 
         self.gamma = None
         for pass_ in xrange(self.passes):
@@ -220,11 +220,11 @@ class OnlineLDA(object):
         return self.gamma
 
     def fit(self, docs):
-        new_word_size, delete_word_ids = self._corpus.update(docs)
+        new_word_size, delete_word_ids = self.corpus.update(docs)
 
         # old self._W + new_word_size - len(delete_word_ids) == new self._W
-        self._W = len(self._corpus.vocab)
-        self._D = len(self._corpus)
+        self._W = len(self.corpus.vocab)
+        self._D = len(self.corpus)
         self._updatect = 0
 
         # lambda update
@@ -316,7 +316,7 @@ class OnlineLDA(object):
         index = np.argsort(_lambda)[:, ::-1]  # reverse
         res = []
         for i in xrange(self._K):
-            res.append([(self._corpus.vocab.id2word[word_id], float_2_decimals(_lambda[i][word_id]))
+            res.append([(self.corpus.vocab.id2word[word_id], float_2_decimals(_lambda[i][word_id]))
                         for word_id in index[i, :num_words]])
         return res
 
@@ -351,7 +351,7 @@ class OnlineLDA(object):
         if topic_distribution is None:
             topic_distribution = self.get_doc_topic_distribution()
         # [(docs_id,cosine_distance)]
-        distances = self._corpus.calculate_entropy(self._K, topic_distribution, self._lambda)
+        distances = self.corpus.calculate_entropy(self._K, topic_distribution, self._lambda)
         # print list(map(lambda x: x[1], distances))
         min_dis_id = map(lambda x: x[0], distances)
         return min_dis_id
@@ -377,7 +377,7 @@ class OnlineLDA(object):
             if return_topic_words:
                 cur.append(topic_words[topic_id])
             if return_most_representative_tweets:
-                cur.append(self._corpus.original_docs[representative_tweets[topic_id]])
+                cur.append(self.corpus.original_docs[representative_tweets[topic_id]])
 
             res.append(cur)
         return res

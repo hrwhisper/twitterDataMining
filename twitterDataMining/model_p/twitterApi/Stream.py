@@ -31,6 +31,13 @@ class TwitterStream(TwitterBasic):
         :param collection_name:
         :return: None
         """
+        def location_bounding_box(_locations):
+            t = _locations.split(',')
+            res = ''
+            for i in xrange(0, len(t), 2):
+                x, y = str(float(t[i]) + 1), str(float(t[i + 1]) + 1)
+                res += t[i] + ',' + t[i + 1] + ',' + x + ',' + y + ','
+            return res
 
         kwg = {'language': 'en'}
 
@@ -44,14 +51,15 @@ class TwitterStream(TwitterBasic):
             kwg['follow'] = follow
 
         if locations:
-            kwg['locations'] = locations
+            kwg['locations'] = location_bounding_box(locations)
+
+        print kwg
 
         twitter_stream = twitter.TwitterStream(auth=self.twitter_api.auth)
         stream = twitter_stream.statuses.filter(**kwg)
-        print kwg
 
         for i, tweet in enumerate(stream):
-            print i, datetime.datetime.now(), ' ', tweet
+            if not i % 200: print i, datetime.datetime.now(), ' ', tweet
             tweet = dict(tweet)
             if 'id' in tweet:
                 self.tweets.append(tweet)
@@ -75,7 +83,9 @@ if __name__ == '__main__':
 
     t = TwitterStream()
     track = None
-    locations = '-122.75,36.8,-121.75,37.8,-74,40,-73,41'
+    # locations = u'-122.75,36.8,-73,41,'
+    # locations = u'-74.05,40.81,-73.05,41.81,-76.99,38.79,-75.99,39.79'
+    locations = '-74.05,40.81,-76.99,38.79,-118.30,34.23,-122.39,37.96,-122.03,37.37,2.31,48.98,-0.14,51.52,-2.97,53.46,-1.24,51.76,-3.72,40.43,2.17,41.41,-0.38,39.48'
     while True:
         try:
             t.stream_data(track=track, locations=locations, save_to_db=False)

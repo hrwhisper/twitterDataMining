@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'treemap$', topic.views.treemap),
     url(r'sunburst$', topic.views.sunburst),
     url(r'funnel$', topic.views.funnel),
+    url(r'heatmap$', topic.views.heatmap)
 ]

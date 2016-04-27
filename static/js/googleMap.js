@@ -34,7 +34,7 @@ var googleMap = {
             var Latitude = event.latLng.lng().toFixed(2);
             var longitude = event.latLng.lat().toFixed(2);
             googleMap.addMarker(event.latLng, "name", "<b>Location</b><br>" +Latitude +","+ longitude,
-                longitude + ',' + Latitude);
+                Latitude +","+ longitude);
         });
 
         //google.maps.event.addListener(this.map, 'click', function (event) {
