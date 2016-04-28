@@ -6,8 +6,6 @@
     <div id="main"></div>
 
     <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-
         var myChart = echarts.init(document.getElementById('main'));
 
         window.addEventListener("message", function (evt) {
@@ -26,9 +24,6 @@
         }
 
         function draw(data) {
-            $("#main").remove();
-            $("body").append("<div id='main'> </div>");
-
             var main = $("#main"), body = $("body");
             main.width(body.width());
             main.height(body.width() / 1.34);
@@ -46,7 +41,7 @@
                     }]
                 });
 
-                option = {
+                var option = {
                     title: {
                         text: '当前时间窗口下推文的地理位置信息',
                         subtext: 'data from twitter.stream',

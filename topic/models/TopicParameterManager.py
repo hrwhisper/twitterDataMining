@@ -21,7 +21,7 @@ class TopicParameterManager(object):
 
         # ---------- LDA ------------
         self.LDA_k = param.get('LDA_k', 20)
-        self.LDA_timeWindow = param.get('LDA_timeWindow', 10)
+        self.LDA_timeWindow = param.get('LDA_timeWindow', 20)
 
         # ----------- Local -----------
         self.startDate = param.get('startDate', None)
