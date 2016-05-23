@@ -3,23 +3,17 @@
  */
 
 window.onload = function () {
-
-
     gauge = $("#gauge");
     gauge.height(gauge.width() / 1.5);
 
     myChart = echarts.init(document.getElementById('gauge'));
     myChart.setOption(option, true);
 
-
     $(window).resize(function () {
         gauge.height(gauge.width() / 1.5);
         myChart.resize();
     });
-
-
 };
-
 
 
 option = {
@@ -135,49 +129,54 @@ option = {
                 }
             },
             pointer: {
-                width:2
+                width: 2
             },
-            data:[{value: 0, name: 'neutral'}]
+            data: [{value: 0, name: 'neutral'}]
         }
-
     ]
 };
 
 function update_sentiment_result(res) {
     // update gauge charts
-    var total_positive = res['total_positive'],
-        total_tweets = res['total_tweets'],
-        positive_percentage = res['positive_percentage'];
+    var positive = res['positive'],
+        negative = res['negative'],
+        neutral = res['neutral'];
 
-    var total_negative = total_tweets - total_positive;
-    var negative_percentage = total_negative / total_tweets;
-    option.series[0].data[0].value = (positive_percentage * 100).toFixed(2) - 0;
-    option.series[1].data[0].value = (negative_percentage * 100).toFixed(2) - 0;
+    option.series[0].data[0].value = (positive['percent'] * 100).toFixed(2) - 0;
+    option.series[1].data[0].value = (negative['percent'] * 100).toFixed(2) - 0;
+    option.series[2].data[0].value = (neutral['percent'] * 100).toFixed(2) - 0;
     myChart.setOption(option, true);
-
 
     //add text
     $("#positive_sample_result").empty();
     $("#negative_sample_result").empty();
-    $("#sample_result").show(); //.css("display", "block");
+    $("#neutral_sample_result").empty();
 
-    var positive_text = res['positive_text'],
-        negative_text = res['negative_text'];
+    var positive_text = positive['text'],
+        negative_text = negative['text'],
+        neutral_text = neutral['text'];
 
     for (var i = 0; i < positive_text.length; i++)
-        update_sentiment_text_sample(positive_text[i], true);
+        update_sentiment_text_sample(positive_text[i], 'positive');
 
     for (i = 0; i < negative_text.length; i++)
-        update_sentiment_text_sample(negative_text[i], false);
+        update_sentiment_text_sample(negative_text[i], 'negative');
+
+    for (i = 0; i < neutral_text.length; i++)
+        update_sentiment_text_sample(neutral_text[i], 'neutral');
+
+    $("#sample_result").show(); //.css("display", "block");
 }
 
 // update_sentiment_text_sample('text' , false); //just text
-function update_sentiment_text_sample(text, is_positive) {
+function update_sentiment_text_sample(text, mode) {
     var tag_head = '<li class="list-group-item">', tag_end = '</li>';
-    if (is_positive)
+    if (mode == 'positive')
         $("#positive_sample_result").append(tag_head + text + tag_end);
-    else
+    else if (mode == 'negative')
         $("#negative_sample_result").append(tag_head + text + tag_end);
+    else
+        $("#neutral_sample_result").append(tag_head + text + tag_end);
 }
 
 

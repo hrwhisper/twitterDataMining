@@ -364,11 +364,15 @@ section .axis {
     border-color: #386674
 }
 
-#sentiment_sample_result .lead {
+#sample_result .panel{
+    box-shadow: 2px 2px 2px rgba(0,0,0,.05);
+}
+
+#sample_result .lead {
     font-size: 17px;
 }
 
-#sentiment_sample_result .list-group li {
+#sample_result .list-group li {
     background-color: #f9f9f9;
 }
 
