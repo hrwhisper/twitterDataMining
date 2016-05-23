@@ -35,7 +35,7 @@ option = {
             max: 100,
             splitNumber: 10,
             radius: '70%',
-            center: ['62%', '50%'],    // 默认全局居中
+            center: ['50%', '50%'],    // 默认全局居中
             axisLine: {            // 坐标轴线
                 lineStyle: {       // 属性lineStyle控制线条样式
                     width: 10
@@ -70,7 +70,7 @@ option = {
         {
             name: 'negative',
             type: 'gauge',
-            center: ['30%', '55%'],    // 默认全局居中
+            center: ['18%', '55%'],    // 默认全局居中
             radius: '40%',
             min: 0,
             max: 100,
@@ -105,7 +105,41 @@ option = {
                 }
             },
             data: [{value: 0, name: 'negative'}]
+        },
+        {
+            name: 'neutral',
+            type: 'gauge',
+            center: ['78%', '50%'],    // 默认全局居中
+            radius: '25%',
+            min: 0,
+            max: 100,
+            startAngle: 135,
+            endAngle: -50,
+            splitNumber: 2,
+            axisLine: {            // 坐标轴线
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    width: 8
+                }
+            },
+            axisTick: {            // 坐标轴小标记
+                splitNumber: 5,
+                length: 10,        // 属性length控制线长
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: 'auto'
+                }
+            },
+            splitLine: {           // 分隔线
+                length: 15,         // 属性length控制线长
+                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+                    color: 'auto'
+                }
+            },
+            pointer: {
+                width:2
+            },
+            data:[{value: 0, name: 'neutral'}]
         }
+
     ]
 };
 
