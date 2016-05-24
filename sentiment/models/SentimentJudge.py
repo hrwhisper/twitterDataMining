@@ -8,6 +8,7 @@ from sklearn import metrics
 from sklearn.externals import joblib
 from sentiment.models.tools.pre_process import pre_process, pos_process
 from sentiment.models.tools.read_data import read_all_test_data
+from twitterDataMining.model_p.Singleton import Singleton
 
 
 class SentimentJudge(object):
@@ -18,11 +19,12 @@ class SentimentJudge(object):
             predicted = s.predict(test_data)
             print np.sum(predicted == _test_target), len(_test_target), np.mean(predicted == _test_target)
     """
-    # counter_vector = joblib.load('sentiment/models/classifier/counter_vector.pkl')
-    # classifier = joblib.load('sentiment/models/classifier/LogisticRegression.pkl')
-    classifier = joblib.load('sentiment/models/models_save/classifier')
-    ngram = joblib.load('sentiment/models/models_save/ngrams')
-    lexicon = joblib.load('sentiment/models/models_save/lexicon')
+    __metaclass__ = Singleton
+
+    def __init__(self):
+        self.classifier = joblib.load('sentiment/models/models_save/classifier')
+        self.ngram = joblib.load('sentiment/models/models_save/ngrams')
+        self.lexicon = joblib.load('sentiment/models/models_save/lexicon')
 
     def predict(self, X):
         """

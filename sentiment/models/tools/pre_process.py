@@ -4,13 +4,13 @@
 import codecs
 import re
 from collections import Counter
-
 import sys
 import subprocess
 from scipy.sparse import csr_matrix
 
 reload(sys)
 sys.setdefaultencoding('utf8')
+
 
 def pos_process(data):
     # TODO use tempfile module
@@ -27,6 +27,7 @@ def pos_process(data):
     stderr = subprocess.PIPE
     p = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
     (stdout, stderr) = p.communicate()
+    print stderr
 
     result = stdout.split('\r\n')
     tweets, pos_tags = [], []
@@ -66,72 +67,32 @@ def acronym_count(words, lexicon):
     return count
 
 
-def remove_not_en_words(words, pos_tag):
-    i = 0
-    while i < len(words):
-        chk = re.match(r'([a-zA-z0-9 \+\?\.\*\^\$\(\)\[\]\{\}\|\\/:;\'\"><,#@!~`%&-_=])+$', words[i])
-        if chk:
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
-
-
-def remove_url(words, pos_tag):
-    i = cnt = 0
-    while i < len(words):
-        if pos_tag[i] != 'U':
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
-            cnt += 1
-    return cnt
-
-
-def remove_user_mention(words, pos_tag):
-    i = cnt = 0
-    while i < len(words):
-        if pos_tag[i] != '@' and not words[i].startswith('@'):
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
-            cnt += 1
-    return cnt
+def remove_useless_info(words, pos_tag):
+    # 删除非英文单词、URL、用户提及
+    temp = zip(words, pos_tag)
+    temp = filter(lambda x: re.match(r'([a-zA-z0-9 \+\?\.\*\^\$\(\)\[\]\{\}\|\\/:;\'\"><,#@!~`%&-_=])+$', x[0]), temp)
+    temp = filter(lambda x: x[1] != 'U' and x[1] != '@' and not x[0].startswith('@'), temp)
+    words = [t[0] for t in temp]
+    pos_tag = [t[1] for t in temp]
+    return words, pos_tag
 
 
 def remove_preposition(words, pos_tag):
     # 介词
-    i = 0
-    while i < len(words):
-        if pos_tag[i] != 'P':
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
+    temp = zip(words, pos_tag)
+    temp = filter(lambda x: x[1] != 'P', temp)
+    words = [t[0] for t in temp]
+    pos_tag = [t[1] for t in temp]
+    return words, pos_tag
 
 
 def remove_stopwords(words, pos_tag, lexicon):
-    i = 0
     stopword_dict = lexicon.stopWords
-
-    while i < len(words):
-        if words[i].lower().strip(lexicon.specialChar) not in stopword_dict:
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
-
-
-def remove_proper_common_noun(words, pos_tag):
-    i = 0
-    while i < len(words):
-        if pos_tag[i] != '^' and pos_tag[i] != 'Z':
-            i += 1
-        else:
-            words.pop(i)
-            pos_tag.pop(i)
+    temp = zip(words, pos_tag)
+    temp = filter(lambda x: x[0].lower().strip(lexicon.specialChar) not in stopword_dict, temp)
+    words = [t[0] for t in temp]
+    pos_tag = [t[1] for t in temp]
+    return words, pos_tag
 
 
 def replace_repeat(words, lexicon):
@@ -278,9 +239,8 @@ def pre_process(data, pos_tags, lexicon, ngram):
         cur_feature.extend(count_marks(data[i]))
 
         replace_emotion_pos(data[i], pos_tags[i], lexicon)
-        remove_not_en_words(data[i], pos_tags[i])
-        remove_url(data[i], pos_tags[i])
-        remove_user_mention(data[i], pos_tags[i])
+
+        data[i], pos_tags[i] = remove_useless_info(data[i], pos_tags[i])
 
         cur_feature.append(acronym_count(data[i], lexicon))
         # replace_repeat(data[i])
@@ -290,8 +250,7 @@ def pre_process(data, pos_tags, lexicon, ngram):
         data[i], pos_tags[i], neg_cnt = expand_negation(data[i], pos_tags[i], lexicon)
         # cur_feature.append(neg_cnt)
 
-        # remove_proper_common_noun(data[i], pos_tags[i])
-        remove_preposition(data[i], pos_tags[i])
+        data[i], pos_tags[i] = remove_preposition(data[i], pos_tags[i])
 
         count, words = count_pos_tag(data[i], pos_tags[i], lexicon)
         cur_feature.extend(count)
@@ -299,7 +258,7 @@ def pre_process(data, pos_tags, lexicon, ngram):
         for pos in words:
             cur_feature.extend(lexicon.cal_lexicon_feature(words[pos]))
 
-        remove_stopwords(data[i], pos_tags[i], lexicon)
+        data[i], pos_tags[i] = remove_stopwords(data[i], pos_tags[i], lexicon)
 
         cur_feature.append(find_negation(data[i], lexicon))
         cur_feature.append(find_all_capitalise(data[i], pos_tags[i], lexicon))
@@ -316,7 +275,6 @@ def pre_process(data, pos_tags, lexicon, ngram):
                 csr_feature.append(x)
                 indices.append(feature_id)
         indptr.append(len(indices))
-
     return csr_matrix((csr_feature, indices, indptr))
 
 

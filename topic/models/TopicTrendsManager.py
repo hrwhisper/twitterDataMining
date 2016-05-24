@@ -6,19 +6,11 @@ import threading
 import multiprocessing
 import time
 
+from twitterDataMining.model_p.Singleton import Singleton
 from twitterDataMining.model_p.twitterApi.LocalStream import LocalStream
 from twitterDataMining.model_p.twitterApi.Stream import TwitterStream
 from topic.models.Corpus import Corpus
 from topic.models.OnlineLDA import OnlineLDA
-
-
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
 
 
 class TopicTrendsManager(object):

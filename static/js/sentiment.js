@@ -131,6 +131,11 @@ option = {
             pointer: {
                 width: 2
             },
+            detail: {
+                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                    fontSize: 20
+                }
+            },
             data: [{value: 0, name: 'neutral'}]
         }
     ]
