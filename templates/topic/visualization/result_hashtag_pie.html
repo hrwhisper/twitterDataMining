@@ -1,0 +1,72 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+
+{% block mainbody %}
+    <script src="/static/js/echarts.min.js"></script>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script type="text/javascript">
+        window.addEventListener("message", function (evt) {
+			function pie_format_data(t){
+				var res = {
+					'name':[],
+					'data':[]
+				};
+                for (var i = 0; i < t.length; i++) {
+					res['name'].push(t[i][0]);
+                    res['data'].push({
+						'name' : t[i][0],
+						'value': t[i][1]
+					});
+                }
+				return res;
+			}
+
+			var data =  JSON.parse(evt.data);
+			var res = pie_format_data(data);
+			draw(res);
+		}, false);
+
+
+        function draw(data) {
+            var main = $("#main"), body = $("body");
+            main.width(body.width());
+            main.height(body.width() / 1.34);
+
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 指定图表的配置项和数据
+            option = {
+				tooltip : {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left',
+					data:  data['name']
+				},
+				series : [
+					{
+						name: 'Hashtags',
+						type: 'pie',
+						radius : '55%',
+						center: ['50%', '60%'],
+						data: data['data'],
+						itemStyle: {
+							emphasis: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
+            myChart.setOption(option);
+        }
+    </script>
+
+
+{% endblock %}

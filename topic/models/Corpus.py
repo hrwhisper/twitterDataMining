@@ -14,6 +14,11 @@ class Corpus(object):
         self.locations = Corpus.get_locations_info(tweets)
         self.locations_count = Counter(self.locations)
 
+        hashtags = Corpus.get_hashtags_info(tweets)
+        self.hashtags_count = Counter(hashtags)
+        self.hashtags_time_slice = [Counter(hashtags)]
+        del hashtags
+
         original_docs, docs = filter_tweets([tweet['text'] for tweet in tweets])
 
         self.original_docs = original_docs  # list[str,str...]
@@ -83,6 +88,44 @@ class Corpus(object):
             locations.append(cur)
         return locations
 
+    @staticmethod
+    def get_hashtags_info(tweets):
+        """
+        :param tweets: twitter tweets
+
+        u 'entities' : {
+            u 'hashtags' : [{
+                    u 'indices' : [65, 72],
+                    u 'text' : u 'iPhone'
+                }, {
+                    u 'indices' : [73, 80],
+                    u 'text' : u 'iPhone'
+                }
+            ]
+        },
+
+         -----------
+        local database:
+            hashtags:[
+                s7edge,
+                Samsung
+            ]
+        """
+        hashtags = []
+        for tweet in tweets:
+            cur = []
+            if 'entities' in tweet and tweet['entities'] and 'hashtags' in tweet['entities'] and tweet['entities'][
+                'hashtags']:
+                cur = [hashtag['text'] for hashtag in tweet['entities']['hashtags']]
+            elif 'hashtags' in tweet:
+                cur = [hashtag for hashtag in tweet['hashtags']]
+
+            hashtags.extend(cur)  # if cur is [],it also works
+        return hashtags
+
+    def hashtags_most_common(self, num=20):
+        return self.hashtags_count.most_common(num)
+
     def update(self, tweets):
         if len(self.original_chunk_size) >= self.chunk_limit:
             self.delete_doc_word = self.doc_word[:self.doc_word_chunk_size[0]]
@@ -90,6 +133,11 @@ class Corpus(object):
 
             self.locations_count = self.locations_count - Counter(self.locations[:self.original_chunk_size[0]])
             self.locations = self.locations[self.original_chunk_size[0]:]
+
+            hashtags_count = self.hashtags_time_slice.pop(0)
+            self.hashtags_count = self.hashtags_count - hashtags_count
+            del hashtags_count
+
             self.original_docs = self.original_docs[self.original_chunk_size[0]:]
             self.docs = self.docs[self.original_chunk_size[0]:]
             self.doc_word = self.doc_word[self.doc_word_chunk_size[0]:]
@@ -99,6 +147,12 @@ class Corpus(object):
         locations = Corpus.get_locations_info(tweets)
         self.locations.extend(locations)
         self.locations_count = self.locations_count + Counter(locations)
+        del locations
+
+        hashtags = Corpus.get_hashtags_info(tweets)
+        self.hashtags_time_slice.append(Counter(hashtags))
+        self.hashtags_count = self.hashtags_count + self.hashtags_time_slice[-1]
+        del hashtags
 
         original_docs, docs = filter_tweets([tweet['text'] for tweet in tweets])
         self.original_chunk_size.append(len(docs))

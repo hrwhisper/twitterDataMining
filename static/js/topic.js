@@ -96,10 +96,12 @@ var resultStore = {
     lda_result: test_data(),
     percent_data: percent_visualization_format(test_data()),
     geo: geo_test_data(),
+    hashtags: hashtags_test_data(),
     update: function (v) {
         this.lda_result = v["lda"];
         this.percent_data = percent_visualization_format(v["lda"]);
         this.geo = geo_visualization_format(v["geo"]);
+        this.hashtags = v["hashtags"];
         this.update_visual_diagrams();
     },
     // TODO add array to update visual diagrams
@@ -110,6 +112,8 @@ var resultStore = {
         this.send_message($("#iframe_topic_sunburst")[0]);
         this.send_message($("#iframe_topic_funnel")[0]);
         this.send_message($("#iframe_heatmap")[0], "heatmap");
+        this.send_message($("#iframe_hashtags_pie")[0], "hashtags");
+        this.send_message($("#iframe_hashtags_histogram")[0], "hashtags");
     },
 
     send_message: function (iframe, id) {
@@ -120,6 +124,9 @@ var resultStore = {
         else if (id === "heatmap") {
             console.log("heatmap");
             iframe.contentWindow.postMessage(JSON.stringify(this.geo), '*');
+        }
+        else if (id ==="hashtags"){
+            iframe.contentWindow.postMessage(JSON.stringify(this.hashtags), '*');
         }
         else {
             iframe.contentWindow.postMessage(JSON.stringify(this.percent_data), '*');
@@ -499,6 +506,10 @@ function geo_test_data() {
     ];
 }
 
+function hashtags_test_data() {
+    return [['aaa', 1], ['bbb', 2], ['ccc', 3]]
+}
+
 function percent_visualization_format(res) {
     if (!res) res = test_data();
     // console.log(res);
@@ -519,11 +530,11 @@ function percent_visualization_format(res) {
 
 function geo_visualization_format(data) {
     var res = [];
-    for(var geo in data){
+    for (var geo in data) {
         //console.log(geo);
         var temp = geo.split(",");
-        if(temp=="null") continue;
-        res.push([temp[0],temp[1],data[geo]]);
+        if (temp == "null") continue;
+        res.push([temp[0], temp[1], data[geo]]);
     }
     return res;
 }
@@ -543,6 +554,10 @@ $(function () {
             var iframe = document.createElement("iframe");
             iframe.src = "./" + id;
             iframe.id = "iframe_" + id;
+
+            if(id.split('_')[0] ==='hashtags')
+                id = 'hashtags';
+
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {
                     resultStore.send_message(iframe, id);

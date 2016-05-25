@@ -367,8 +367,6 @@
                     .text(function (d) {
                         return d.name;
                     });
-            ;
-
             // Add breadcrumb and label for entering nodes.
             var entering = g.enter().append("svg:g");
 
@@ -424,7 +422,7 @@
 
 
             d3.select("#percentage")
-                    .text((d.name? d.name:">=0.4") + " : " + percentage);
+                    .text((d.name ? d.name : ">=0.4") + " : " + percentage);
 
             d3.select("#explanation")
                     .style("visibility", "");
@@ -433,7 +431,7 @@
 
             //center_root.text(d.name + " : " + percentage);
 
-            updateBreadcrumbs(sequenceArray, percentage)
+            updateBreadcrumbs(sequenceArray, percentage);
             //d3.select(this).style("fill","yellow");
 
             // Fade all the segments.

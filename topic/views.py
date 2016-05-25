@@ -48,3 +48,11 @@ def funnel(request):
 
 def heatmap(request):
     return render(request, 'topic/visualization/result_heatmap.html')
+
+
+def hashtags_pie(request):
+    return render(request, 'topic/visualization/result_hashtag_pie.html')
+
+
+def hashtags_histogram(request):
+    return render(request, 'topic/visualization/result_hashtag_histogram.html')

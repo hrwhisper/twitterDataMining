@@ -5,7 +5,6 @@
 import threading
 import multiprocessing
 import time
-
 from twitterDataMining.model_p.Singleton import Singleton
 from twitterDataMining.model_p.twitterApi.LocalStream import LocalStream
 from twitterDataMining.model_p.twitterApi.Stream import TwitterStream
@@ -141,7 +140,8 @@ class TopicTrends(multiprocessing.Process):
 
         res = {
             "lda": self.olda.get_lda_info(),
-            "geo": self.olda.corpus.locations_count
+            "geo": self.olda.corpus.locations_count,
+            "hashtags": self.olda.corpus.hashtags_most_common()
         }
         print '-------lda complete'
         # for topic_id, topic_likelihood, topic_words, topic_tweets in res["lda"]:

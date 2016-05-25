@@ -31,6 +31,7 @@ class TwitterStream(TwitterBasic):
         :param collection_name:
         :return: None
         """
+
         def location_bounding_box(_locations):
             t = _locations.split(',')
             res = ''
@@ -59,7 +60,7 @@ class TwitterStream(TwitterBasic):
         stream = twitter_stream.statuses.filter(**kwg)
 
         for i, tweet in enumerate(stream):
-            if not i % 200: print i, datetime.datetime.now(), ' ', tweet
+            if not i % 200 and 'text' in tweet: print i, datetime.datetime.now(), ' ', tweet["text"]
             tweet = dict(tweet)
             if 'id' in tweet:
                 self.tweets.append(tweet)

@@ -1,0 +1,79 @@
+{% extends "topic/visualization/result_basic.html" %}
+
+
+{% block mainbody %}
+    <script src="/static/js/echarts.min.js"></script>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <script type="text/javascript">
+
+        window.addEventListener("message", function (evt) {
+			function histogram_format_data(t){
+				var res = {
+					"name":[],
+					"value":[]
+				};
+				for (var i = 0; i < t.length; i++) {
+					res['name'].push(t[i][0]);
+					res['value'].push(t[i][1]);
+				}
+				return res;
+			}
+
+			var data =  JSON.parse(evt.data);
+			var res = histogram_format_data(data);
+			draw(res);
+		}, false);
+
+
+        function draw(data) {
+            var main = $("#main"), body = $("body");
+            main.width(body.width());
+            main.height(body.width() / 1.34);
+
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 指定图表的配置项和数据
+            option = {
+				title: {
+					text: 'Hashtags'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				legend: {
+					data: ['hashtags']
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: {
+					type: 'value',
+					boundaryGap: [0, 0.01]
+				},
+				yAxis: {
+					type: 'category',
+					data: data['name']
+				},
+				series: [
+					{
+						name: 'hashtags',
+						type: 'bar',
+						data: data['value']
+					}
+				]
+			};
+
+			myChart.setOption(option);
+        }
+    </script>
+
+
+{% endblock %}
