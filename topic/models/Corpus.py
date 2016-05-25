@@ -126,6 +126,11 @@ class Corpus(object):
     def hashtags_most_common(self, num=20):
         return self.hashtags_count.most_common(num)
 
+    def hashtags_timeline(self, num=5):
+        most_common = [x[0] for x in self.hashtags_most_common(num=num)]
+        res = {name: [timeline.get(name, 0) for timeline in self.hashtags_time_slice] for name in most_common}
+        return res
+
     def update(self, tweets):
         if len(self.original_chunk_size) >= self.chunk_limit:
             self.delete_doc_word = self.doc_word[:self.doc_word_chunk_size[0]]

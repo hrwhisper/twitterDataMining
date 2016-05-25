@@ -15,5 +15,4 @@ def query(request):
     query_str = request.GET.get('query_str')
     # TODO if none raise error
     res = query_sentiment_for_online_data(query_str)
-
     return HttpResponse(json.dumps(res), content_type="application/json")

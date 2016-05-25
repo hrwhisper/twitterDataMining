@@ -38,11 +38,15 @@
 
             // 指定图表的配置项和数据
             option = {
+                title: {
+					text: '最后一次更新的Hashtags统计图'
+				},
 				tooltip : {
 					trigger: 'item',
 					formatter: "{a} <br/>{b} : {c} ({d}%)"
 				},
 				legend: {
+                    top: '5%' ,
 					orient: 'vertical',
 					left: 'left',
 					data:  data['name']

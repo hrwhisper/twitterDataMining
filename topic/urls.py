@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'funnel$', topic.views.funnel),
     url(r'heatmap$', topic.views.heatmap),
     url(r'hashtags_pie$', topic.views.hashtags_pie),
-    url(r'hashtags_histogram$', topic.views.hashtags_histogram)
+    url(r'hashtags_histogram$', topic.views.hashtags_histogram),
+    url(r'hashtags_timeline$', topic.views.hashtags_timeline)
 ]

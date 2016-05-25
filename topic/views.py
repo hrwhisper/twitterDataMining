@@ -51,8 +51,12 @@ def heatmap(request):
 
 
 def hashtags_pie(request):
-    return render(request, 'topic/visualization/result_hashtag_pie.html')
+    return render(request, 'topic/visualization/result_hashtags_pie.html')
 
 
 def hashtags_histogram(request):
-    return render(request, 'topic/visualization/result_hashtag_histogram.html')
+    return render(request, 'topic/visualization/result_hashtags_histogram.html')
+
+
+def hashtags_timeline(request):
+    return render(request, 'topic/visualization/result_hashtags_timeline.html')

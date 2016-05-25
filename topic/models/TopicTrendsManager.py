@@ -141,7 +141,8 @@ class TopicTrends(multiprocessing.Process):
         res = {
             "lda": self.olda.get_lda_info(),
             "geo": self.olda.corpus.locations_count,
-            "hashtags": self.olda.corpus.hashtags_most_common()
+            "hashtags": self.olda.corpus.hashtags_most_common(),
+            "hashtags_timeline": self.olda.corpus.hashtags_timeline(),
         }
         print '-------lda complete'
         # for topic_id, topic_likelihood, topic_words, topic_tweets in res["lda"]:

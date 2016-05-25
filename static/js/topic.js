@@ -92,16 +92,270 @@ var userTopicParam = {
     }
 };
 
+var testData = {
+    test_data: function () {
+        return [
+            [
+                "1",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "2",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "3",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "4",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "5",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "6",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "7",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "8",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "9",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "10",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "11",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "12",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "13",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "14",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "15",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "16",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "17",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ],
+            [
+                "18",
+                0.03,
+                [
+                    ['i', 0.2],
+                    ['j', 0.3],
+                    ['k', 0.1],
+                    ['l', 0.4]
+                ],
+                "This is three"
+            ], [
+                "19",
+                0.04,
+                [
+                    ['a', 0.1],
+                    ['b', 0.2],
+                    ['c', 0.3],
+                    ['d', 0.4]
+                ],
+                "This is one"
+            ],
+            [
+                "20",
+                0.03,
+                [
+                    ['e', 0.2],
+                    ['f', 0.3],
+                    ['g', 0.1],
+                    ['h', 0.4]
+                ],
+                "This is two"
+            ]
+        ];
+    },
+    geo_test_data: function () {
+        return [
+            [121.15, 31.89, 9],
+            [-109.781327, 39.608266, 100],
+            [-120.38, 37.35, 33],
+            [-122.207216, 29.985295, 44],
+            [123.97, 47.33, 55],
+            [120.13, 33.38, 11],
+            [118.87, 42.28, 66],
+            [120.33, 36.07, 77],
+            [121.52, 36.89, 88],
+            [102.188043, 38.520089, 123],
+            [118.58, 24.93, 99],
+            [-118.58, 24.73, 9],
+            [-118.58, 24.83, 50],
+            [-120.53, 36.86, 256],
+            [119.46, 35.42, 50],
+            [119.97, 35.88, 1]
+        ];
+    },
+    hashtags_test_data: function () {
+        return [['aaa', 1], ['bbb', 2], ['ccc', 3]]
+    },
+    hashtags_timeline_test_data: function () {
+        return {
+			'aaa':[1,2,3],
+			'bbb':[4,5,6],
+			'ccc':[6,1,0]
+		};
+    }
+};
+
+
 var resultStore = {
-    lda_result: test_data(),
-    percent_data: percent_visualization_format(test_data()),
-    geo: geo_test_data(),
-    hashtags: hashtags_test_data(),
+    lda_result: testData.test_data(),
+    percent_data: percent_visualization_format(testData.test_data()),
+    geo: testData.geo_test_data(),
+    hashtags: testData.hashtags_test_data(),
+    hashtags_timeline: testData.hashtags_timeline_test_data(),
     update: function (v) {
         this.lda_result = v["lda"];
         this.percent_data = percent_visualization_format(v["lda"]);
         this.geo = geo_visualization_format(v["geo"]);
         this.hashtags = v["hashtags"];
+        this.hashtags_timeline = v["hashtags_timeline"];
         this.update_visual_diagrams();
     },
     // TODO add array to update visual diagrams
@@ -112,8 +366,9 @@ var resultStore = {
         this.send_message($("#iframe_topic_sunburst")[0]);
         this.send_message($("#iframe_topic_funnel")[0]);
         this.send_message($("#iframe_heatmap")[0], "heatmap");
-        this.send_message($("#iframe_hashtags_pie")[0], "hashtags");
-        this.send_message($("#iframe_hashtags_histogram")[0], "hashtags");
+        this.send_message($("#iframe_hashtags_pie")[0], "hashtags_pie");
+        this.send_message($("#iframe_hashtags_histogram")[0], "hashtags_histogram");
+        this.send_message($("#iframe_hashtags_timeline")[0], "hashtags_timeline");
     },
 
     send_message: function (iframe, id) {
@@ -125,8 +380,11 @@ var resultStore = {
             console.log("heatmap");
             iframe.contentWindow.postMessage(JSON.stringify(this.geo), '*');
         }
-        else if (id ==="hashtags"){
+        else if (id === "hashtags_pie" || id === "hashtags_histogram") {
             iframe.contentWindow.postMessage(JSON.stringify(this.hashtags), '*');
+        }
+        else if (id === "hashtags_timeline") {
+            iframe.contentWindow.postMessage(JSON.stringify(this.hashtags_timeline), '*');
         }
         else {
             iframe.contentWindow.postMessage(JSON.stringify(this.percent_data), '*');
@@ -266,250 +524,6 @@ $('#streamParameters a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 });
 
 
-function test_data() {
-    return [
-        [
-            "1",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "2",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "3",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "4",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "5",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "6",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "7",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "8",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "9",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "10",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "11",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "12",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "13",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "14",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "15",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "16",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "17",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ],
-        [
-            "18",
-            0.03,
-            [
-                ['i', 0.2],
-                ['j', 0.3],
-                ['k', 0.1],
-                ['l', 0.4]
-            ],
-            "This is three"
-        ], [
-            "19",
-            0.04,
-            [
-                ['a', 0.1],
-                ['b', 0.2],
-                ['c', 0.3],
-                ['d', 0.4]
-            ],
-            "This is one"
-        ],
-        [
-            "20",
-            0.03,
-            [
-                ['e', 0.2],
-                ['f', 0.3],
-                ['g', 0.1],
-                ['h', 0.4]
-            ],
-            "This is two"
-        ]
-    ];
-}
-
-function geo_test_data() {
-    return [
-        [121.15, 31.89, 9],
-        [-109.781327, 39.608266, 100],
-        [-120.38, 37.35, 33],
-        [-122.207216, 29.985295, 44],
-        [123.97, 47.33, 55],
-        [120.13, 33.38, 11],
-        [118.87, 42.28, 66],
-        [120.33, 36.07, 77],
-        [121.52, 36.89, 88],
-        [102.188043, 38.520089, 123],
-        [118.58, 24.93, 99],
-        [-118.58, 24.73, 9],
-        [-118.58, 24.83, 50],
-        [-120.53, 36.86, 256],
-        [119.46, 35.42, 50],
-        [119.97, 35.88, 1]
-    ];
-}
-
-function hashtags_test_data() {
-    return [['aaa', 1], ['bbb', 2], ['ccc', 3]]
-}
-
 function percent_visualization_format(res) {
     if (!res) res = test_data();
     // console.log(res);
@@ -554,9 +568,6 @@ $(function () {
             var iframe = document.createElement("iframe");
             iframe.src = "./" + id;
             iframe.id = "iframe_" + id;
-
-            if(id.split('_')[0] ==='hashtags')
-                id = 'hashtags';
 
             if (iframe.attachEvent) {
                 iframe.attachEvent("onload", function () {
