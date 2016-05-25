@@ -8,25 +8,25 @@
 
     <script type="text/javascript">
         window.addEventListener("message", function (evt) {
-			function pie_format_data(t){
-				var res = {
-					'name':[],
-					'data':[]
-				};
+            function pie_format_data(t) {
+                var res = {
+                    'name': [],
+                    'data': []
+                };
                 for (var i = 0; i < t.length; i++) {
-					res['name'].push(t[i][0]);
+                    res['name'].push(t[i][0]);
                     res['data'].push({
-						'name' : t[i][0],
-						'value': t[i][1]
-					});
+                        'name': t[i][0],
+                        'value': t[i][1]
+                    });
                 }
-				return res;
-			}
+                return res;
+            }
 
-			var data =  JSON.parse(evt.data);
-			var res = pie_format_data(data);
-			draw(res);
-		}, false);
+            var data = JSON.parse(evt.data);
+            var res = pie_format_data(data);
+            draw(res);
+        }, false);
 
 
         function draw(data) {
@@ -39,35 +39,35 @@
             // 指定图表的配置项和数据
             option = {
                 title: {
-					text: '最后一次更新的Hashtags统计图'
-				},
-				tooltip : {
-					trigger: 'item',
-					formatter: "{a} <br/>{b} : {c} ({d}%)"
-				},
-				legend: {
-                    top: '5%' ,
-					orient: 'vertical',
-					left: 'left',
-					data:  data['name']
-				},
-				series : [
-					{
-						name: 'Hashtags',
-						type: 'pie',
-						radius : '55%',
-						center: ['50%', '60%'],
-						data: data['data'],
-						itemStyle: {
-							emphasis: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-							}
-						}
-					}
-				]
-			};
+                    text: '最后一次更新的Hashtags统计图'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    top: '5%',
+                    orient: 'vertical',
+                    left: 'left',
+                    data: data['name']
+                },
+                series: [
+                    {
+                        name: 'Hashtags',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: data['data'],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
             myChart.setOption(option);
         }
     </script>

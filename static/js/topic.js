@@ -336,10 +336,10 @@ var testData = {
     },
     hashtags_timeline_test_data: function () {
         return {
-			'aaa':[1,2,3],
-			'bbb':[4,5,6],
-			'ccc':[6,1,0]
-		};
+            'aaa': [1, 2, 3],
+            'bbb': [4, 5, 6],
+            'ccc': [6, 1, 0]
+        };
     }
 };
 

@@ -9,22 +9,22 @@
     <script type="text/javascript">
 
         window.addEventListener("message", function (evt) {
-			function histogram_format_data(t){
-				var res = {
-					"name":[],
-					"value":[]
-				};
-				for (var i = 0; i < t.length; i++) {
-					res['name'].push(t[i][0]);
-					res['value'].push(t[i][1]);
-				}
-				return res;
-			}
+            function histogram_format_data(t) {
+                var res = {
+                    "name": [],
+                    "value": []
+                };
+                for (var i = 0; i < t.length; i++) {
+                    res['name'].push(t[i][0]);
+                    res['value'].push(t[i][1]);
+                }
+                return res;
+            }
 
-			var data =  JSON.parse(evt.data);
-			var res = histogram_format_data(data);
-			draw(res);
-		}, false);
+            var data = JSON.parse(evt.data);
+            var res = histogram_format_data(data);
+            draw(res);
+        }, false);
 
 
         function draw(data) {
@@ -36,39 +36,39 @@
 
             // 指定图表的配置项和数据
             option = {
-				title: {
-					text: '最后一次更新的Hashtags统计图'
-				},
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: {
-						type: 'shadow'
-					}
-				},
-				grid: {
-					left: '3%',
-					right: '4%',
-					bottom: '3%',
-					containLabel: true
-				},
-				xAxis: {
-					type: 'value',
-					boundaryGap: [0, 0.01]
-				},
-				yAxis: {
-					type: 'category',
-					data: data['name']
-				},
-				series: [
-					{
-						name: 'hashtags',
-						type: 'bar',
-						data: data['value']
-					}
-				]
-			};
+                title: {
+                    text: '最后一次更新的Hashtags统计图'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: data['name']
+                },
+                series: [
+                    {
+                        name: 'hashtags',
+                        type: 'bar',
+                        data: data['value']
+                    }
+                ]
+            };
 
-			myChart.setOption(option);
+            myChart.setOption(option);
         }
     </script>
 
