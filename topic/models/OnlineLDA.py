@@ -5,6 +5,8 @@ import codecs
 import datetime
 from collections import Counter
 import itertools
+
+import math
 import numpy as np
 import pymongo
 from scipy.special import gammaln, psi
@@ -53,7 +55,7 @@ class OnlineLDA(object):
     Base on gensim and Hoffman's code.
     """
 
-    def __init__(self, corpus, K=10, alpha=None, eta=None, tau0=1.0, kappa=0.5, iterations=50, passes=1,
+    def __init__(self, corpus, K=10, alpha=None, eta=None, C=0.5, tau0=1.0, kappa=0.5, iterations=50, passes=1,
                  gamma_threshold=0.001, chunk_size=3000):
         """
         Arguments:
@@ -79,6 +81,7 @@ class OnlineLDA(object):
         self._D = len(corpus)
         self._alpha = 1.0 / self._K  # np.asarray([1.0 / self._K for _ in xrange(self._K)])  # 1.0 / K  #
         self._eta = 1.0 / self._K  # np.asarray([1.0 / self._K for _ in xrange(self._K)]).reshape((self._K, 1))
+        self._C = C
         self._tau0 = tau0 + 1
         self._kappa = kappa
         self._updatect = 0
@@ -224,15 +227,15 @@ class OnlineLDA(object):
 
         # old self._W + new_word_size - len(delete_word_ids) == new self._W
         self._W = len(self.corpus.vocab)
-        self._D = len(self.corpus)
-        self._updatect = 0
+        self._D = len(self.corpus)  # self._corpus.doc_word_chunk_size[-1]  #
+        self._updatect = math.pow(1 - self._C, - 1.0 / self._kappa) - self._tau0
 
         # lambda update
-        for id in sorted(delete_word_ids, reverse=True):
-            self._lambda = np.delete(self._lambda, id, 1)
+        for _id in sorted(delete_word_ids, reverse=True):
+            self._lambda = np.delete(self._lambda, _id, 1)
 
         append_lambda = 1 * np.random.gamma(100., 1. / 100., (self._K, new_word_size))
-        self._lambda = np.hstack((self._lambda * 0.5, append_lambda))
+        self._lambda = np.hstack((self._lambda, append_lambda))
         # self._lambda = 1 * np.random.gamma(100., 1. / 100., (self._K, self._W))
         self._Elogbeta = dirichlet_expectation(self._lambda)
         self._expElogbeta = np.exp(self._Elogbeta)
@@ -341,7 +344,7 @@ class OnlineLDA(object):
         topic_count = Counter(topic_distribution)
         topic_order = sorted(topic_count.items(), key=lambda x: x[1], reverse=True)
         # 兼容python 3 ,写个list
-        topic_order = list(map(lambda x: (x[0], x[1] * 1.0 / self._D), topic_order))
+        topic_order = list(map(lambda x: (x[0], x[1] * 1.0 / self.corpus.doc_word_chunk_size[-1]), topic_order))
         return topic_order
 
     def get_most_representative_tweets(self, topic_distribution=None):
@@ -378,6 +381,8 @@ class OnlineLDA(object):
                 cur.append(topic_words[topic_id])
             if return_most_representative_tweets:
                 cur.append(self.corpus.original_docs[representative_tweets[topic_id]])
+            else:
+                cur.append('')
 
             res.append(cur)
         return res

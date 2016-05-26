@@ -197,9 +197,12 @@ class Corpus(object):
         pro_matrix = _normalization(probability_matrix)
         doc_entropy = [[] for _ in xrange(K)]
         doc_entropy_id = [[] for _ in xrange(K)]
-        for doc_id, (doc, topic_id) in enumerate(zip(self.doc_word, docs_topic_distribution)):
+        # print 'len(self.doc_word)', len(self.doc_word)
+        ptr = len(self.doc_word) - self.doc_word_chunk_size[-1]
+        for doc_id, (doc, topic_id) in enumerate(
+                zip(self.doc_word[-self.doc_word_chunk_size[-1]:], docs_topic_distribution)):
             doc_entropy[topic_id].append(_calculate_entropy(doc, pro_matrix[topic_id]))
-            doc_entropy_id[topic_id].append(doc_id)
+            doc_entropy_id[topic_id].append(doc_id + ptr)
 
         max_entropy_id = []
         for cur_topic_entropy, cur_topic_entropy_id in zip(doc_entropy, doc_entropy_id):
@@ -211,7 +214,8 @@ class Corpus(object):
         return len(self.doc_word)
 
     def __iter__(self):
-        return iter(self.doc_word)  # [-self.chunk_size[-1]:])
+        return iter(self.doc_word[-self.doc_word_chunk_size[-1]:])
+        # iter(self.doc_word)  # [-self.doc_word_chunk_size[-1]:])
 
 
 class Vocabulary(object):
