@@ -433,10 +433,6 @@ var streamStatus = {
         console.log(userTopicParam.getParam());
 
         loading_control.start();
-        if (this.interval) {
-            this.interval.clearInterval();
-            this.interval = null;
-        }
         this.safe_interval();
         //.__first = false;
         $('#streamParameters').modal('hide');
