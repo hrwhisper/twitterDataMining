@@ -14,15 +14,17 @@
                     'time': [],
                     'series': []
                 };
-                var i = 0;
                 for (var name in t) {
                     res['name'].push(name);
-                    res['time'].push(i++);
                     res['series'].push({
                         name: name,
                         type: 'line',
                         data: t[name]
                     });
+                    var _len = t[name].length;
+                }
+                for (var i = 0; i < _len; i++) {
+                    res['time'].push(i);
                 }
                 return res;
             }
@@ -34,6 +36,7 @@
 
 
         function draw(data) {
+            console.log(data);
             var main = $("#main"), body = $("body");
             main.width(body.width());
             main.height(body.width() / 1.34);

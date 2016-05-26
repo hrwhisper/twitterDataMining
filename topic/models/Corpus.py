@@ -134,7 +134,7 @@ class Corpus(object):
     def update(self, tweets):
         if len(self.original_chunk_size) >= self.chunk_limit:
             self.delete_doc_word = self.doc_word[:self.doc_word_chunk_size[0]]
-            print self.locations[:self.original_chunk_size[0]]
+            # print self.locations[:self.original_chunk_size[0]]
 
             self.locations_count = self.locations_count - Counter(self.locations[:self.original_chunk_size[0]])
             self.locations = self.locations[self.original_chunk_size[0]:]
