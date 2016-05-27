@@ -52,28 +52,22 @@ def chunkize_serial(iterable, chunksize, as_numpy=True):
 class OnlineLDA(object):
     """
     Implements online VB for LDA as described in (Hoffman et al. 2010).
-    Base on gensim and Hoffman's code.
+    Base on Gensim and Hoffman's code.
     """
 
-    def __init__(self, corpus, K=10, alpha=None, eta=None, C=0.5, tau0=1.0, kappa=0.5, iterations=50, passes=1,
+    def __init__(self, corpus, K=10, C=0.5, tau0=1.0, kappa=0.5, iterations=50, passes=1,
                  gamma_threshold=0.001, chunk_size=3000):
         """
         Arguments:
+        corpus: Corpus object. Saving tweets and words.
         K: Number of topics
-        vocab: A set of words to recognize. When analyzing documents, any word
-           not in this set will be ignored.
-        D: Total number of documents in the population. For a fixed corpus,
-           this is the size of the corpus. In the truly online setting, this
-           can be an estimate of the maximum number of documents that
-           could ever be seen.
-        alpha: Hyperparameter for prior on weight vectors theta
-        eta: Hyperparameter for prior on topics beta
+        C: contribute factor
         tau0: A (positive) learning parameter that downweights early iterations
         kappa: Learning rate: exponential decay rate---should be between
              (0.5, 1.0] to guarantee asymptotic convergence.
 
-        Note that if you pass the same set of D documents in every time and
-        set kappa=0 this class can also be used to do batch VB.
+        iteration:  inference maximum iteration number
+        chunk_size: the size of chunk
         """
         self.corpus = corpus
         self._K = K
@@ -106,7 +100,7 @@ class OnlineLDA(object):
         weights for each document in the mini-batch.
 
         Arguments:
-        docs:  List of D documents. Each document must be represented
+        chunk:  List of documents. Each document must be represented
                as a string. (Word order is unimportant.) Any
                words not in the vocabulary will be ignored.
 
@@ -179,26 +173,6 @@ class OnlineLDA(object):
         self._updatect += 1
 
     def update(self, corpus=None, print_log_perplexity=True):
-        """
-        First does an E step on the mini-batch given in wordids and
-        wordcts, then uses the result of that E step to update the
-        variational parameter matrix lambda.
-
-        Arguments:
-        docs:  List of D documents. Each document must be represented
-               as a string. (Word order is unimportant.) Any
-               words not in the vocabulary will be ignored.
-
-        Returns gamma, the parameters to the variational distribution
-        over the topic weights theta for the documents analyzed in this
-        update.
-
-        Also returns an estimate of the variational bound for the
-        entire corpus for the OLD setting of lambda based on the
-        documents passed in. This can be used as a (possibly very
-        noisy) estimate of held-out likelihood.
-        """
-
         # rhot will be between 0 and 1, and says how much to weight
         # the information we got from this mini-batch.
         if not corpus:

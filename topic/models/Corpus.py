@@ -175,12 +175,12 @@ class Corpus(object):
         return list(map(lambda x: (self.to_original_id[x[0]], x[1]), closest_tweet_id))
 
     def calculate_entropy(self, K, docs_topic_distribution, probability_matrix):
-        '''
+        """
             To calculate entropy from given probability_matrix
         :param docs_topic_distribution: list[int]
-        :param probality_matrix:  (_lambda ),size: K * V
+        :param probability_matrix:  (_lambda ),size: K * V
         :return: list[entropy] for each document
-        '''
+        """
 
         def _calculate_entropy(doc, p):
             # TODO use reduce function:
@@ -227,10 +227,10 @@ class Vocabulary(object):
         self.get_word_to_id(docs)
 
     def get_word_to_id(self, docs):
-        '''
+        """
             Get word2id and id2word for given docs.
-            docs: list of list of words
-        '''
+            :param docs: list of list of words
+        """
         self.word_count = Counter([word for doc in docs for word in doc])
         for word, cnt in self.word_count.items():
             if cnt < self.min_df:
@@ -277,13 +277,13 @@ class Vocabulary(object):
         return new_word_size, delete_word_ids
 
     def docs_to_bow(self, docs, last_original_chunk_docs_size=None):
-        '''
+        """
             Convert `document` (a docs list of words list) into the bag-of-words format = list
             of `(token_id, token_count)` 2-tuples.
             return: to_original_id: list[doc_id]
                     doc_word: [[word,count]]
-
-        '''
+                    last_chunk_size: int
+        """
         if isinstance(docs, str):
             docs = [docs]
 
