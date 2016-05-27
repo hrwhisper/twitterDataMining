@@ -3,10 +3,26 @@
  */
 
 (function () {
+
+    $(function () {
+        $('#myCarousel').on('slide.bs.carousel', function (e) {
+//                var slideFrom = $(this).find('.active').index();
+            var slideTo = $(e.relatedTarget).index();
+//               console.log(slideFrom + ' => ' + slideTo);
+            var change_obj = $("#header_info_button");
+            if (slideTo == 1) {
+                change_obj.attr("href", "/topic");
+                change_obj.text("Start topic Now");
+            } else {
+                change_obj.attr("href", "/sentiment");
+                change_obj.text("Start sentiment Now");
+            }
+        });
+    });
     "use strict";
 
-    var π = Math.PI
-    var τ = 2 * Math.PI
+    var π = Math.PI;
+    var τ = 2 * Math.PI;
 
     var types = {
         square: function (n) {
@@ -18,15 +34,6 @@
         },
         sawtooth: function (n) {
             return ((n % 2) ? -1 : 1) / (n + 1);
-        },
-        fibonacci: function (n) {
-            var fst = 0.01, sec = 0.01, add;
-            for (var i = 0; i < n; i++) {
-                add = fst + sec;
-                fst = sec;
-                sec = add;
-            }
-            return add;
         },
         pulse: function (n) {
             return 0.1;
@@ -44,20 +51,10 @@
         }
     }
 
-    function once(fn) {
-        var exec = false;
-        return function () {
-            if (exec) return;
-            exec = true,
-            fn && fn();
-        };
-    }
-
     var
         margin = {top: 0, right: 0, bottom: 0, left: 0},
         W = 450,
         H = 450,
-        w = W - margin.left - margin.right,
         h = H - margin.top - margin.bottom,
 
         radius = 140,
@@ -79,7 +76,7 @@
 
         Fxy, fx, fy,
 
-        draw, timer, data = [];
+        timer, data = [];
 
     var graph = d3.svg.line()
         .x(function (d) {
@@ -109,14 +106,10 @@
         return "translate(" + xCirc(d.x) + "," + yCirc(d.y) + ")";
     }
 
-    function hTransform(d) {
-        return "translate(" + xAxis(d.f) + "," + yCirc(0) + ")";
-    }
-
     var svg = d3.select(".visualization")
         .append("svg")
         .attr("width", W)
-        .attr("height", H)
+        .attr("height", H);
 
     svg.append("line")
         .attr("class", "axis")
@@ -144,11 +137,11 @@
         }
 
         fx = FT(A, L - 1, π / 2);
-        fy = FT(A, L - 1, 0),
+        fy = FT(A, L - 1, 0);
 
-            Fxy = A.map(function (a, i) {
-                return {X: FT(A, i, π / 2), Y: FT(A, i, 0), r: Math.abs(a)};
-            });
+        Fxy = A.map(function (a, i) {
+            return {X: FT(A, i, π / 2), Y: FT(A, i, 0), r: Math.abs(a)};
+        });
     }
 
     function calc() {
@@ -186,7 +179,7 @@
 
         co.select(".circle").attr("r", function (d) {
             return rAxis(d.r);
-        })
+        });
 
         return co;
     }
@@ -200,41 +193,6 @@
         tPath.attr("d", trace(tDomain));
     }
 
-    function drawHisto() {
-        xAxis.domain([1, L]);
-        coeff().attr("transform", hTransform);
-    }
-
-    function toggle(callback) {
-        var tran;
-        tran = (draw === drawGraph) ? hTransform : gTransform;
-        draw = (draw === drawGraph) ? drawHisto : drawGraph;
-        coeff().transition()
-            .duration(1000)
-            .attr("transform", tran)
-            .each("end", once(callback));
-    }
-
-
-    function toggleGraph() {
-        xAxis.domain([0, xmax]);
-        toggle(function () {
-            pPath.classed("hide", false);
-            gPath.classed("hide", false);
-            tPath.classed("hide", false);
-            play();
-        });
-    }
-
-    function toggleHisto() {
-        xAxis.domain([1, L]);
-        pPath.classed("hide", true);
-        gPath.classed("hide", true);
-        tPath.classed("hide", true);
-        pause();
-        toggle(drawHisto);
-    }
-
     function play() {
         if (timer) return;
         (function loop() {
@@ -244,21 +202,8 @@
         })();
     }
 
-    function pause() {
-        if (!timer) return;
-        clearTimeout(timer);
-        timer = null;
-    }
-
-    function redraw() {
-        cache();
-        draw();
-    }
-
-
     C = types['sawtooth'];
 
-    draw = drawGraph;
     play();
 
 })();

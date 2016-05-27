@@ -12,17 +12,30 @@ class LocalStream(object):
         self.tweets = []
 
     def stream_data(self, condition, start_date, end_date, collection_name='stream'):
-        cursor = self.db[collection_name].find(
-            # [{
-            #     '$match': {
-            #         'date': {
-            #             '$gt': datetime.datetime.strptime(start_date, '%Y-%m-%d'),
-            #             '$lt': datetime.datetime.strptime(end_date, '%Y-%m-%d')
-            #         }
-            #     }},
-            # {'$sort': {'date': 1}},
-            # {'$project': {'text': 1, 'date': 1}},]
-        )
+
+        start = end = None
+        try:
+            start = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+            end = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+        except Exception, e:
+            pass
+
+        match = {
+            '$match': {
+                'date': {
+                }
+            }}
+        if start:
+            match['$match']['date']['$gt'] = start
+        if end:
+            match['$match']['date']['$lt'] = end
+
+        pipeline = []
+        if start and end:
+            pipeline.append(match)
+            pipeline.append({'$sort': {'date': 1}})
+
+        cursor = self.db[collection_name].aggregate(pipeline)
 
         if condition.acquire():
             print 'loading local data'
