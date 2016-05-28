@@ -20,8 +20,8 @@ class TopicParameterManager(object):
         self.storeIntoDBName = param.get('storeIntoDBName', 'stream')
 
         # ---------- LDA ------------
-        self.LDA_k = param.get('LDA_k', 15)
-        self.LDA_timeWindow = param.get('LDA_timeWindow', 30)
+        self.LDA_k = int(param.get('LDA_k', 15))
+        self.LDA_timeWindow = int(param.get('LDA_timeWindow', 30))
 
         # ----------- Local -----------
         self.startDate = param.get('startDate', None)

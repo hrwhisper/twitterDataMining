@@ -33,7 +33,7 @@ if __name__ == '__main__':
                 'entities.hashtags': 1
             }
         }
-    ]);
+    ])
     cnt = 0
     hashtag_dic = collections.defaultdict(lambda: collections.defaultdict(int), {})
     for tweet in cursor:

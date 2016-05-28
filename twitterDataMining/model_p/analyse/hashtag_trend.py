@@ -28,7 +28,7 @@ if __name__ == '__main__':
                 'cnt': {'$sum': 1},
             }
         },
-    ]);
+    ])
 
     for i , group in enumerate(cursor):
         print i,group

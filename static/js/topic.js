@@ -410,7 +410,7 @@ var streamStatus = {
     },
 
     stop_stream: function () {
-        if (this.mode == 2) return null;
+        //if (this.mode == 2) return null;
         this.mode = 2;
         this.stop_interval();
         $.ajax({

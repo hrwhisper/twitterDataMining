@@ -9,9 +9,9 @@
         var myChart = echarts.init(document.getElementById('main'));
 
         window.addEventListener("message", function (evt) {
-            console.log("Receive , heatmap");
+{#            console.log("Receive , heatmap");#}
             var data = JSON.parse(evt.data);
-            console.log(data);
+{#            console.log(data);#}
             draw(data);
         }, false);
 
