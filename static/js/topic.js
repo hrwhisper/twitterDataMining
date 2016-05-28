@@ -377,7 +377,7 @@ var resultStore = {
             iframe.contentWindow.postMessage(JSON.stringify(this.lda_result), '*');
         }
         else if (id === "heatmap") {
-            console.log("heatmap");
+
             iframe.contentWindow.postMessage(JSON.stringify(this.geo), '*');
         }
         else if (id === "hashtags_pie" || id === "hashtags_histogram") {
@@ -543,7 +543,7 @@ function geo_visualization_format(data) {
     for (var geo in data) {
         //console.log(geo);
         var temp = geo.split(",");
-        if (temp == "null") continue;
+        if (temp == "null" || temp[0] ==='type') continue;
         res.push([temp[0], temp[1], data[geo]]);
     }
     return res;
