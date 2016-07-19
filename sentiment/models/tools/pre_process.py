@@ -22,12 +22,15 @@ def pos_process(data):
             fw.write(line[-1].replace('\n', ' ').replace('\r', ' ') + '\n')
 
     cmd = ['java', '-jar', 'sentiment/models/tools/ark-tweet-nlp-0.3.2.jar', '--no-confidence', temp_file_path]
-    stdin = subprocess.PIPE
-    stdout = subprocess.PIPE
-    stderr = subprocess.PIPE
-    p = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
-    (stdout, stderr) = p.communicate()
-    print stderr
+
+    stdout = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+
+    # stdin = subprocess.PIPE
+    # stdout = subprocess.PIPE
+    # stderr = subprocess.PIPE
+    # p = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
+    # (stdout, stderr) = p.communicate()
+    # print stderr
 
     result = stdout.split('\r\n')
     tweets, pos_tags = [], []
